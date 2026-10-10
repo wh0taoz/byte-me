@@ -3,18 +3,63 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0e2a55;
+}
+
+/* ---- brand fonts ----------------------------------------------------
+   TT Neoris (titles) + JustSans (body) — commercial TypeType fonts.
+   Files are NOT committed; they live in public/fonts/ (see its README).
+   Until the licensed files are dropped in, these @font-face rules fail
+   silently and the stacks below fall back to Geist.                     */
+@font-face {
+  font-family: "TT Neoris";
+  src: url("/fonts/TTNeoris-Regular.woff2") format("woff2"),
+       url("/fonts/TTNeoris-Regular.ttf") format("truetype");
+  font-weight: 400 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "TT Neoris";
+  src: url("/fonts/TTNeoris-Bold.woff2") format("woff2"),
+       url("/fonts/TTNeoris-Bold.ttf") format("truetype");
+  font-weight: 600 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JustSans";
+  src: url("/fonts/JustSans-Regular.woff2") format("woff2"),
+       url("/fonts/JustSans-Regular.ttf") format("truetype");
+  font-weight: 400 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JustSans";
+  src: url("/fonts/JustSans-Medium.woff2") format("woff2"),
+       url("/fonts/JustSans-Medium.ttf") format("truetype");
+  font-weight: 500 700;
+  font-style: normal;
+  font-display: swap;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-title: "TT Neoris", "TT Neoris Trial", var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-body: "JustSans", "Just Sans", var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-body);
   --font-mono: var(--font-geist-mono);
 }
 
 body {
-  font-family: var(--font-sans);
+  font-family: var(--font-body);
+}
+
+/* big & important titles use the title face */
+h1, h2, h3, .font-title {
+  font-family: var(--font-title);
 }
 
 ::selection {
@@ -28,6 +73,33 @@ body {
   border: 1px solid var(--color-line);
   border-radius: var(--radius-card);
 }
+
+/* ---- winter accents ------------------------------------------------- */
+.bg-winter {
+  background: linear-gradient(135deg, #629bb5 0%, #447f98 100%);
+}
+.shadow-winter {
+  box-shadow: 0 8px 24px rgba(68, 127, 152, 0.16);
+}
+
+/* ---- level badges ----------------------------------------------------
+   The word is always shown (never colour alone); the stoat pose is the
+   friendly signal.                                                              */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.1rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.badge-high   { background: color-mix(in srgb, var(--color-urgent) 12%, transparent); color: var(--color-urgent); }
+.badge-medium { background: color-mix(in srgb, var(--color-warning) 12%, transparent); color: var(--color-warning); }
+.badge-low    { color: var(--color-muted); }
 
 /* ---- motion ------------------------------------------------------- */
 @keyframes fade-in {

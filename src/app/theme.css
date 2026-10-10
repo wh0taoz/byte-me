@@ -8,8 +8,8 @@
   --color-primary: #447f98;        /* buttons, links — interactive */
   --color-primary-deep: #35657a;   /* hover / pressed */
   --color-accent: #629bb5;         /* AI / highlights */
-  --color-ink: #1b3242;            /* body text — deep winter navy */
-  --color-muted: #4a6274;          /* secondary text (AA on bg + surface) */
+  --color-ink: #0e2a55;            /* body text — deep blue */
+  --color-muted: #3f5b85;          /* secondary text (AA on bg + surface) */
   --color-bg: #edf3f6;             /* page background */
   --color-surface: #ffffff;        /* cards */
   --color-ice: #d6ebf3;            /* tint fills, hero, AI blocks */
