@@ -1,33 +1,53 @@
-/* Import this from src/app/globals.css right after `@import "tailwindcss";`
-   Tailwind v4: tokens become classes like bg-primary, text-ink, bg-accent, text-urgent. */
+/* Winter blues — the team palette.
+   Mains:   #DADEE1  #B9D8E1  #D6EBF3
+   Deeps:   #447F98  #629BB5   (gradients, shadows)
+   Plus a few in-family additions (ink, muted, bg) for text contrast.
+   Tailwind v4: tokens become classes like bg-primary, text-ink, border-line. */
 
 @theme {
-  --color-primary: #3B4CCA;      /* buttons, links — trust, focus (6.8:1 on white) */
-  --color-accent: #F5A524;       /* firefly glow, highlights — always dark text on it */
-  --color-ink: #1F2433;          /* body text */
-  --color-bg: #FAF8F5;           /* page background */
-  --color-surface: #FFFFFF;      /* cards */
-  --color-muted: #5B6275;        /* secondary text */
-  --color-success: #15803D;      /* done, in stock */
-  --color-warning: #B45309;      /* low stock, due soon */
-  --color-urgent: #C62828;       /* overdue / critical only */
-  --radius-card: 12px;
-}
+  --color-primary: #447f98;        /* buttons, links — interactive */
+  --color-primary-deep: #35657a;   /* hover / pressed */
+  --color-accent: #629bb5;         /* AI / highlights */
+  --color-ink: #1b3242;            /* body text — deep winter navy */
+  --color-muted: #4a6274;          /* secondary text (AA on bg + surface) */
+  --color-bg: #edf3f6;             /* page background */
+  --color-surface: #ffffff;        /* cards */
+  --color-ice: #d6ebf3;            /* tint fills, hero, AI blocks */
+  --color-line: #dadee1;           /* borders */
+  --color-line-strong: #b9d8e1;    /* emphasized borders */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-primary: #8C9BFF;
-    --color-ink: #E8EAF6;
-    --color-bg: #14172A;
-    --color-surface: #1C2036;
-    --color-muted: #A3A9C2;
-  }
+  --color-success: #2e7d6e;
+  --color-warning: #9a6b2f;
+  --color-urgent: #b0483f;
+
+  --radius-card: 12px;
 }
 
 body { background: var(--color-bg); color: var(--color-ink); }
 
-/* Urgency must never rely on colour alone: always render the word too. */
-.badge { display: inline-flex; gap: .25rem; align-items: center; padding: .125rem .5rem; border-radius: 999px; font-size: .75rem; font-weight: 600; }
+/* ---- winter accents -------------------------------------------------- */
+.bg-winter {
+  background: linear-gradient(135deg, #629bb5 0%, #447f98 100%);
+}
+.shadow-winter {
+  box-shadow: 0 8px 24px rgba(68, 127, 152, 0.16);
+}
+
+/* ---- level badges ------------------------------------------------------
+   The word is always shown (never colour alone); the stoat pose is the
+   friendly signal.                                                              */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.1rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
 .badge-high   { background: color-mix(in srgb, var(--color-urgent) 12%, transparent); color: var(--color-urgent); }
 .badge-medium { background: color-mix(in srgb, var(--color-warning) 12%, transparent); color: var(--color-warning); }
-.badge-low    { background: color-mix(in srgb, var(--color-muted) 12%, transparent); color: var(--color-muted); }
+.badge-low    { color: var(--color-muted); }
