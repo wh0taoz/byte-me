@@ -103,7 +103,12 @@ export function EventDetailView() {
 
       {/* ---- Pip says the AI summary ---- */}
       <section className="mt-6 flex items-start gap-2.5 md:gap-4" aria-label="AI summary">
-        <Stoat level={e.level} className="mt-1 size-16 shrink-0 md:size-20" />
+        <span
+          className="mt-1 flex size-16 shrink-0 items-center justify-center rounded-full md:size-20"
+          style={{ background: "radial-gradient(circle, rgba(98,155,181,0.30) 0%, rgba(98,155,181,0.10) 62%, transparent 72%)" }}
+        >
+          <Stoat level={e.level} className="size-12 md:size-16" />
+        </span>
         <div className="card relative flex-1 p-4 md:p-5">
           {/* speech bubble tail pointing at Pip */}
           <span

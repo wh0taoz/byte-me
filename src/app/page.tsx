@@ -199,7 +199,12 @@ function EventCard({ event: e }: { event: EventRow }) {
             "linear-gradient(145deg, #eaf5fa 0%, #d6ebf3 45%, #b7d6e4 100%)",
         }}
       >
-        <Stoat level={e.level} className="size-24 md:size-28" />
+        <span
+          className="flex size-28 items-center justify-center rounded-full md:size-32"
+          style={{ background: "radial-gradient(circle, rgba(98,155,181,0.30) 0%, rgba(98,155,181,0.10) 62%, transparent 72%)" }}
+        >
+          <Stoat level={e.level} className="size-20 md:size-24" />
+        </span>
         <LevelPill level={e.level} className="absolute bottom-3 left-3" />
       </div>
 
