@@ -6,6 +6,16 @@ Format:
 - Reason: why we decided it
 - Consequence: what this means for the project
 
+## 10 Oct 2026, 23:55 — AiSummary shape changed by P1
+- Decision: ai_summary uses {what_to_expect, is_this_for_me, key_terms, prior_knowledge, bring} instead of originally locked {summary, key_terms, prior_knowledge, good_for_beginners_because}.
+- Reason: P1 implemented the function; simpler to adapt routes than rewrite prompts.
+- Consequence: P3's summary card UI must use the new shape. AGENTS.md updated accordingly.
+
+## 10 Oct 2026, 23:55 — English seed data for demo
+- Decision: Translate all seed data (events, guides, team posts) from Serbian to English.
+- Reason: All site text is in English. Demo (pitch) is in Serbian. Consistency matters for judges.
+- Consequence: Seed re-run in Supabase. UI stays English.
+
 ## 10 Oct 2026, 22:31 — Feature freeze moved to Hour 04:00
 - Decision: Feature freeze at 04:00, adjusted from the 06:00 in 00-TEAM-SPLIT.md.
 - Reason: More buffer for seed polish, backup video and two timed rehearsals before submission.

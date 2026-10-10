@@ -28,24 +28,58 @@ either.
 - team_posts: id, event_id, kind (looking_for_team|looking_for_member),
   nickname, level, skills[], message, contact, created_at
 
-`ai_summary` jsonb shape:
-`{ summary, key_terms: [{term, explanation}], prior_knowledge: [],
-good_for_beginners_because }`
+`ai_summary` jsonb shape (P1's `AiSummary` interface in src/lib/gemma.ts):
+`{ what_to_expect: string (2–3 sentences), is_this_for_me: string,
+key_terms: [{term, explanation}], prior_knowledge: string[],
+bring: string[] }`
 
 ## API routes
 Live:
-- GET /api/health → {ok: true}
+- GET /api/health → {ok, gemma, supabase}
 - GET /api/events → Event[] sorted by starts_at asc; filters
   ?level=&type=&city=
-- GET /api/events/[id] → Event (ai_summary may be null; generation +
-  caching lands with the AI pass)
+- GET /api/events/[id] → Event (generates + caches ai_summary on first
+  read; friendly fallback + fallback: true if Gemma fails)
+- POST /api/going → {going, buddy: {nickname} | null} (first-timer
+  buddy pairing)
+- GET /api/events/[id]/ics → .ics file
+- POST /api/explain → {reply}; {reply, fallback: true} on Gemma failure
+- POST /api/simplify → {text}; {text: original, fallback: true} on failure
 
 Planned (P2, contracts in 00-TEAM-SPLIT.md):
-- POST /api/explain, POST /api/simplify, POST /api/going,
-  GET /api/events/[id]/ics; light: POST /api/events,
-  POST /api/going/attended
+- light: POST /api/events, POST /api/going/attended
 - team_posts: P3 reads/writes directly with the Supabase browser client
   (no route of our own)
+
+## Gemma API (in src/lib/gemma.ts)
+
+Base calls:
+- `ask(system, user, opts?)` — plain-text completion; throws if Gemma
+  is unreachable after retries. opts: {model?, temperature?}
+- `askJSON<T>(system, user, opts?)` — parsed JSON or null, never throws
+
+Constants: `GEMMA_FAST` = gemma-4-26b-a4b-it (chat, simplify) ·
+`GEMMA_QUALITY` = gemma-4-31b-it (summaries, level suggestions).
+Type `Level` = "beginner" | "intermediate" | "expert".
+
+Route-facing prompt functions:
+- `answerWithoutJudgment(question, level, eventContext?)` → string —
+  chat reply with judgment-regeneration built in (the signature demo
+  feature; POST /api/explain calls this — routes never reimplement
+  the regen)
+- `eventSummary(event: EventInput)` → AiSummary | null
+- `suggestLevel(title, description)` → {level, reason} | null
+- `simplify(text, level?)` → string
+- `guideDraft(topic)` → markdown string
+
+Helpers: `containsJudgment(text)` / `judgmentWords(text)` (banned-word
+gate), `rewriteRequest(question, words)`.
+
+Also exported (mentor matching, unused so far): `explainSystem(level,
+eventContext?)` (internal building block of the chat prompt),
+`extractTags(about)`, `shortlist(p, mentors, k?)`, `suggestMentor(p,
+mentors)`, `matchEvent(participants, mentors)`, `matchIntro(p, m,
+eventName)`.
 
 ## Conventions
 - Dates: ISO 8601

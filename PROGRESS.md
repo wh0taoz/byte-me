@@ -1,28 +1,33 @@
 # Progress
 
-Last updated: 10 Oct 2026, 22:54
+Last updated: 11 Oct 2026, 01:20
 
 ## P1 — AI / Pitch
-- [ ] Prompt functions in src/lib/gemma.ts (eventSummary, explainSystem, simplify, suggestLevel)
-- [ ] No-judgment chatbot tone + containsJudgment filter
+- [x] Prompt functions in src/lib/gemma.ts (all exported functions, incl. answerWithoutJudgment, simplify, eventSummary, suggestLevel, guideDraft)
+- [x] containsJudgment + judgmentWords helpers
+- [x] No-judgment chatbot tone (smoke test: 5/5 replies clean, Serbian answered in Serbian)
+- [x] scripts/test-gemma.ts smoke test (note: suggestLevel returned null on the misleading-description case — P1 to check before POST /api/events)
 - [ ] Kaggle notebook + synthetic dataset
 - [ ] Before/after accuracy number for the pitch
 - [ ] Pitch deck skeleton + demo script
-- Blocked by: none (events API ready for prompt testing)
+- Blocked by: none — next is Kaggle + pitch
 
 ## P2 — Backend
-- [x] /api/health green (Gemma + Supabase)
+- [x] /api/health green (Gemma + Supabase; fixed for P1's gemma.ts API in eb9c12a)
 - [x] schema-esc.sql run in Supabase
 - [x] seed-esc.sql run (15 events, 3 guides, 4 profiles, 2 going, 5 team posts)
 - [x] GET /api/events works (verified: 6 beginner, 2 hackathon)
-- [x] GET /api/events/[id] works (ai_summary pending)
+- [x] GET /api/events/[id] works (with ai_summary generate + cache)
 - [x] Legacy organiser routes + unused lib files removed (dbb2d54)
 - [x] POST /api/going with buddy pairing
 - [x] GET /api/events/[id]/ics
-- [ ] AI routes (explain, simplify) — in progress
-- [ ] Vercel deploy (00:30 checkpoint)
-- [ ] Pre-generated summaries
-- Blocked by: none
+- [x] POST /api/explain (calls answerWithoutJudgment)
+- [x] POST /api/simplify
+- [x] AI summary cache in GET /api/events/[id]
+- [x] Pre-generated summaries for all 15 events (15/15)
+- [ ] Seed re-run in English (translated, awaiting run in Supabase — wipes summaries, re-generate after)
+- [ ] Vercel deploy (00:30 checkpoint — overdue)
+- Blocked by: none — next is Vercel deploy
 
 ## P3 — Frontend
 - [ ] Event list with level badges + filters (level, type, city)
