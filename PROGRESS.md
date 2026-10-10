@@ -25,9 +25,11 @@ Last updated: 11 Oct 2026, 01:20
 - [x] POST /api/simplify
 - [x] AI summary cache in GET /api/events/[id]
 - [x] Pre-generated summaries for all 15 events (15/15)
-- [ ] Seed re-run in English (translated, awaiting run in Supabase — wipes summaries, re-generate after)
-- [ ] Vercel deploy (00:30 checkpoint — overdue)
-- Blocked by: none — next is Vercel deploy
+- [x] Seed translated to English (fcf4d11)
+- [x] Seed re-run in Supabase (verified: 15 events, 6 beginner / 6 intermediate / 3 expert, 2 hackathons, English)
+- [x] 15 AI summaries regenerated after the re-run (15/15; one retry on ReDesign for Her)
+- Vercel deploy skipped — no live demo possible (projector issue). Pitch is video + slides.
+- Blocked by: none
 
 ## P3 — Frontend
 - [ ] Event list with level badges + filters (level, type, city)
