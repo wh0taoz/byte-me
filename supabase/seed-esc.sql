@@ -8,185 +8,185 @@ truncate events, guides, profiles, going, team_posts restart identity cascade;
 -- ============================================================
 insert into events (title, organizer, type, level, city, starts_at, ends_at, venue, registration_url, description, what_to_expect) values
 
--- 1. Wed 14 Oct, beginner workshop, Beograd
-('Git i GitHub za potpune početnike', 'HUB 201', 'workshop', 'beginner', 'Beograd',
+-- 1. Wed 14 Oct, beginner workshop, Belgrade
+('Git and GitHub for Complete Beginners', 'HUB 201', 'workshop', 'beginner', 'Belgrade',
  '2026-10-14 18:00+02', '2026-10-14 21:00+02', 'HUB 201, Kralja Petra 20',
  'https://hub201.rs/git-za-pocetnike',
- 'Kroz tri sata prolazimo kroz osnovne git komande — clone, commit, branch i merge — i rešavamo konflikte kakvi se dešavaju u svakom timu. Na kraju večeri tvoj kod živi na GitHub-u, sa pull request-om koji si sam otvorio. Ponesi laptop i malo radoznalosti, sve ostalo smo pripremili.',
- array['Kratak uvod bez koda, pa komande korak po korak',
-       'Ponesi laptop — radićemo na pravom projektu',
-       'Nije potrebno nikakvo iskustvo, mentori prolaze oko stolova',
-       'Odlaziš sa svojim prvim repozitorijumom na GitHub-u']),
+ 'Over three hours we walk through the core git commands — clone, commit, branch and merge — and resolve the kind of conflicts that happen in every team. By the end of the evening your code lives on GitHub, with a pull request you opened yourself. Bring a laptop and some curiosity; we have prepared everything else.',
+ array['A short intro without code, then commands step by step',
+       'Bring a laptop — we work on a real project',
+       'No experience needed, mentors walk around the tables',
+       'You leave with your first repository on GitHub']),
 
--- 2. Sat 17 Oct, beginner workshop, Beograd
-('ReDesign for Her: UX od prve skice', 'ReDesign zajednica', 'workshop', 'beginner', 'Beograd',
- '2026-10-17 10:00+02', '2026-10-17 14:00+02', 'Startit centar, Kraljice Natalije 32',
+-- 2. Sat 17 Oct, beginner workshop, Belgrade
+('ReDesign for Her: UX from the First Sketch', 'ReDesign zajednica', 'workshop', 'beginner', 'Belgrade',
+ '2026-10-17 10:00+02', '2026-10-17 14:00+02', 'Startit Center, Kraljice Natalije 32',
  'https://redesign.rs/for-her-2026',
- 'U vedroj atmosferi prolazimo kroz ceo UX proces — user research, persona, wireframe i prototip u Figmi. Nakon toga testiramo prototipe na ekipi sa drugih stolova i iteriramo na osnovu povratnih informacija. Dizajnersko iskustvo nije potrebno, radoznalost jeste.',
- array['Radi se u parovima, a timovi se prave na licu mesta',
-       'Ponesi laptop ili tablet sa besplatnim Figma nalogom',
-       'Nema pogrešnih odgovora — skiciranje je dozvoljeno i poželjno',
-       'Očekuj prijatnu ekipu i radionicu bez pritiska']),
+ 'In a relaxed atmosphere we go through the whole UX process — user research, personas, wireframes and a prototype in Figma. After that we test the prototypes with teams from other tables and iterate based on feedback. Design experience is not needed; curiosity is.',
+ array['You work in pairs, and teams are formed on the spot',
+       'Bring a laptop or tablet with a free Figma account',
+       'There are no wrong answers — sketching is allowed and encouraged',
+       'Expect a friendly crowd and a workshop without pressure']),
 
--- 3. Tue 20 Oct, intermediate meetup, Beograd
-('Startit AI Hub: RAG pipeline od nule', 'Startit', 'meetup', 'intermediate', 'Beograd',
- '2026-10-20 18:30+02', '2026-10-20 21:00+02', 'Startit centar, Kraljice Natalije 32',
+-- 3. Tue 20 Oct, intermediate meetup, Belgrade
+('Startit AI Hub: RAG Pipeline from Scratch', 'Startit', 'meetup', 'intermediate', 'Belgrade',
+ '2026-10-20 18:30+02', '2026-10-20 21:00+02', 'Startit Center, Kraljice Natalije 32',
  'https://startit.rs/ai-hub-oktobar-2026',
- 'Meetup posvećen RAG pipeline-u: chunking, embeddingi i vektorske baze. Pokazaćemo kako se dokumenti seckaju, pretvaraju u embeddinge i čuvaju u Pgvector-u, i kako LLM poziva bazu da odgovori na pitanja korisnika. Na kraju diskutujemo o halucinacijama i kako meriti kvalitet odgovora.',
- array['Dva tehnička izlaganja po 30 minuta, pa diskusija',
-       'Koristan, ali ne obavezan osnov: Python i osnovni SQL',
-       'Posle meetupa ostajemo na neformalnom ćaskanju uz piće',
-       'Snimak i slajdovi stižu mejlom posle događaja']),
+ 'A meetup dedicated to the RAG pipeline: chunking, embeddings and vector databases. We will show how documents are split, turned into embeddings and stored in Pgvector, and how an LLM queries the database to answer user questions. We close with a discussion about hallucinations and how to measure answer quality.',
+ array['Two 30-minute technical talks, then a discussion',
+       'Helpful but not required: Python and basic SQL',
+       'After the meetup we stay for informal chats over drinks',
+       'Recording and slides arrive by email after the event']),
 
--- 4. Thu 22 Oct, expert seminar, Beograd
-('Yettel Tech Talk: 5G core u oblaku', 'Yettel Srbija', 'seminar', 'expert', 'Beograd',
- '2026-10-22 18:30+02', '2026-10-22 20:30+02', 'Yettel poslovna zgrada, Bulevar Zorana Đinđića',
+-- 4. Thu 22 Oct, expert seminar, Belgrade
+('Yettel Tech Talk: 5G Core in the Cloud', 'Yettel Srbija', 'seminar', 'expert', 'Belgrade',
+ '2026-10-22 18:30+02', '2026-10-22 20:30+02', 'Yettel office building, Bulevar Zorana Đinđića',
  'https://yettel.rs/tech-talk-oktobar-2026',
- 'Kako izgleda 5G core kada se preseli u Kubernetes: service mesh, stateful set-ovi i zero-downtime nadogradnje radio mreže. Dotaknućemo i observability stack — OpenTelemetry, distributed tracing i kako čuvamo SLA od 99.999 posto. Predavanje drži glavni arhitekta tima za core mrežu.',
- array['Jedno duboko predavanje od sat vremena, pa pitanja',
-       'Namenski za inženjere koji već rade u oblaku ili telekomunikacijama',
-       'Retka prilika da čuješ kako backend telekoma izgleda iznutra',
-       'Osveženje i razgovor sa inženjerima posle talka']),
+ 'What the 5G core looks like once it moves into Kubernetes: service mesh, stateful sets and zero-downtime upgrades of the radio network. We also touch the observability stack — OpenTelemetry, distributed tracing and how we protect a 99.999 percent SLA. The talk is given by the chief architect of the core network team.',
+ array['One deep one-hour talk, then questions',
+       'Aimed at engineers already working in cloud or telecom',
+       'A rare chance to hear what a telecom backend looks like from the inside',
+       'Refreshments and conversation with the engineers after the talk']),
 
--- 5. Fri 23 → Sun 25 Oct, beginner hackathon, Beograd
-('FONIS Hakaton 2026', 'FONIS', 'hackathon', 'beginner', 'Beograd',
+-- 5. Fri 23 → Sun 25 Oct, beginner hackathon, Belgrade
+('FONIS Hackathon 2026', 'FONIS', 'hackathon', 'beginner', 'Belgrade',
  '2026-10-23 16:00+02', '2026-10-25 16:00+02', 'FON, Jove Ilića 10',
  'https://fonis.rs/hakaton-2026',
- 'FONIS Hakaton: 48 sati, timovi do četiri člana i teme iz sveta AI aplikacija. Mentori pomažu od prve ideje do prezentacije — kako definisati problem, šta je MVP i kako ispričati priču žiriju. Kafa i hrana su obezbeđene svih 48 sati.',
- array['Prijavljuješ se sam ili sa ekipom — timove formiramo i na licu mesta',
-       'Ponesi laptop i punjač, hranu i piće obezbeđujemo mi',
-       'Iskustvo nije potrebno — mentori su tu od petka do nedelje',
-       'Nedelja je demo dan: svaki tim pokazuje šta je napravio']),
+ 'The FONIS Hackathon: 48 hours, teams of up to four and topics from the world of AI applications. Mentors help from the first idea to the presentation — how to define the problem, what an MVP is and how to tell the story to the jury. Coffee and food are provided for all 48 hours.',
+ array['Sign up alone or with a crew — we also form teams on the spot',
+       'Bring a laptop and charger, food and drinks are on us',
+       'No experience needed — mentors are there from Friday to Sunday',
+       'Sunday is demo day: every team shows what they built']),
 
 -- 6. Sat 24 Oct, intermediate workshop, Novi Sad
-('Crafthub radionica: CI/CD sa GitHub Actions', 'Crafthub', 'workshop', 'intermediate', 'Novi Sad',
- '2026-10-24 11:00+02', '2026-10-24 16:00+02', 'Startit centar Novi Sad, Veljka Petrovića 2',
+('Crafthub Workshop: CI/CD with GitHub Actions', 'Crafthub', 'workshop', 'intermediate', 'Novi Sad',
+ '2026-10-24 11:00+02', '2026-10-24 16:00+02', 'Startit Center Novi Sad, Veljka Petrovića 2',
  'https://crafthub.rs/ci-cd-radionica',
- 'Hands-on radionica: CI/CD pipeline sa GitHub Actions — od push-a do produkcije. Pišemo workflow YAML korak po korak: build, test, containerizacija u Docker image i deploy na staging okruženje. Na kraju svako ima svoj automatski pipeline koji radi.',
- array['Radi se na sopstvenom računaru, korak po korak sa predavačem',
-       'Potrebno: GitHub nalog i osnovno snalaženje u terminalu',
-       'Grupa je mala, dvadeset mesta, da svi stignemo do kraja',
-       'Zajednička kafa na početku — upoznavanje pre koda']),
+ 'A hands-on workshop: a CI/CD pipeline with GitHub Actions — from push to production. We write the workflow YAML step by step: build, test, containerization into a Docker image and deploy to a staging environment. At the end everyone has their own working automated pipeline.',
+ array['You work on your own computer, step by step with the instructor',
+       'Required: a GitHub account and basic comfort in the terminal',
+       'The group is small, twenty seats, so everyone reaches the end',
+       'Coffee together at the start — meeting each other before the code']),
 
--- 7. Wed 28 Oct, intermediate meetup, Beograd
-('Data Science Serbia #58: Model serving u produkciji', 'Data Science Serbia', 'meetup', 'intermediate', 'Beograd',
+-- 7. Wed 28 Oct, intermediate meetup, Belgrade
+('Data Science Serbia #58: Model Serving in Production', 'Data Science Serbia', 'meetup', 'intermediate', 'Belgrade',
  '2026-10-28 19:00+02', '2026-10-28 21:30+02', 'ICT Hub, Kralja Milana 10',
  'https://dss.rs/meetup-58',
- 'Zašto se model ne deploy-uje kao običan API, šta je feature drift i kako ga monitoriti u produkciji. U drugom delu meetup-a: benchmark vektorskih baza — Pgvector, Qdrant i Weaviate — na upitima na srpskom jeziku. Očekuje se živa diskusija o evaluaciji rezultata.',
- array['Dva izlaganja po 25 minuta sa pauzom između',
-       'Nivo je srednji — nema tablica sa formulama, ali ima koda',
-       'Dođi ranije za bolje mesto, sala se brzo popuni',
-       'Posle nastavljamo razgovor u kafani preko puta, van programa']),
+ 'Why a model is not deployed like an ordinary API, what feature drift is and how to monitor it in production. In the second part of the meetup: a benchmark of vector databases — Pgvector, Qdrant and Weaviate — on queries in Serbian. A lively discussion about evaluating the results is expected.',
+ array['Two 25-minute talks with a break in between',
+       'The level is intermediate — no slides full of formulas, but there is code',
+       'Come early for a better seat, the room fills up fast',
+       'Afterwards we continue the conversation in the pub across the street, off the record']),
 
 -- 8. Thu 29 Oct, beginner meetup, Niš
-('Space Station Niš: Prvi koraci u web razvoju', 'Space Station Niš', 'meetup', 'beginner', 'Niš',
- '2026-10-29 18:00+02', '2026-10-29 20:30+02', 'Inovacioni centar Niš, Univerzitet u Nišu',
+('Space Station Niš: First Steps in Web Development', 'Space Station Niš', 'meetup', 'beginner', 'Niš',
+ '2026-10-29 18:00+02', '2026-10-29 20:30+02', 'Innovation Center Niš, University of Niš',
  'https://spacestationnis.rs/meetup-7',
- 'Opuštena večer o tome kako internet uopšte radi — šta se desi kada otkucaš adresu, šta je frontend, a šta backend. Na jednostavnim primerima sklapamo prvu web stranicu od HTML-a i CSS-a. Cilj večeri: da izađeš sa jasnijom slikom i svojom prvom stranicom na internetu.',
- array['Izlaganje bez stručnih reči, pitanja u svakom trenutku',
-       'Ponesi laptop ako hoćeš da pratiš primere — ali može i bez',
-       'Možeš i samo da gledaš i pišeš beleške',
-       'Ulaz je slobodan, prijava je potrebna samo zbog mesta']),
+ 'A relaxed evening about how the internet actually works — what happens when you type an address, what is frontend and what is backend. On simple examples we put together a first web page from HTML and CSS. The goal of the evening: you leave with a clearer picture and your first page on the internet.',
+ array['A talk without technical jargon, questions welcome at any moment',
+       'Bring a laptop if you want to follow the examples — but you can come without one',
+       'You can also just watch and take notes',
+       'Entry is free, registration is only needed to count the seats']),
 
 -- 9. Sat 31 Oct, beginner workshop, Online
-('Online uvod u veštačku inteligenciju', 'AI Beginners Srbija', 'workshop', 'beginner', 'Online',
- '2026-10-31 10:00+02', '2026-10-31 13:00+02', 'Google Meet (link dolazi mejlom)',
+('Online Introduction to Artificial Intelligence', 'AI Beginners Srbija', 'workshop', 'beginner', 'Online',
+ '2026-10-31 10:00+02', '2026-10-31 13:00+02', 'Google Meet (link arrives by email)',
  'https://aibeginners.rs/online-uvod-2026',
- 'Šta je veštačka inteligencija, a šta large language model — bez matematike. Kroz primere pokazujemo šta model radi dobro, gde halucinira i kako se piše dobar prompt. Radionica je besplatna i potpuno namenjena ljudima koji prvi put dodiruju temu.',
- array['Učestvuješ od kuće — link dobijaš mejlom dan ranije',
-       'Nema koda i nema matematike, samo primeri i razgovor',
-       'Pitanja se pišu u chat, odgovaramo na sva',
-       'Snimak se deli svim prijavljenima posle radionice']),
+ 'What artificial intelligence is, and what a large language model is — without math. Through examples we show what the model does well, where it hallucinates and how to write a good prompt. The workshop is free and made for people touching the topic for the first time.',
+ array['You join from home — the link arrives by email the day before',
+       'No code and no math, only examples and conversation',
+       'Questions go in the chat, we answer all of them',
+       'The recording is shared with everyone who signed up after the workshop']),
 
--- 10. Wed 4 Nov, intermediate seminar, Beograd
-('BEST Course: Agile i Scrum u praksi', 'BEST Beograd', 'seminar', 'intermediate', 'Beograd',
- '2026-11-04 18:00+02', '2026-11-04 20:00+02', 'Elektrotehnički fakultet, Bulevar kralja Aleksandra 73',
+-- 10. Wed 4 Nov, intermediate seminar, Belgrade
+('BEST Course: Agile and Scrum in Practice', 'BEST Beograd', 'seminar', 'intermediate', 'Belgrade',
+ '2026-11-04 18:00+02', '2026-11-04 20:00+02', 'Faculty of Electrical Engineering (ETF), Bulevar kralja Aleksandra 73',
  'https://bestbeograd.org.rs/course-jesen-2026',
- 'Kroz simulaciju pravog sprinta dodeljujemo role — product owner, scrum master i development tim — i vodimo ga od planiranja do retrospektive. Govorimo o backlog-u, estimaciji i Daily sastancima, ali i o tome gde agile puca u praksi. Na kraju diskutujemo kada je waterfall zapravo bolji izbor.',
- array['Interaktivna sesija — radićemo u grupama po šestoro',
-       'Znanje o menadžmentu nije potrebno, sve se objasni',
-       'Dobijaš sertifikat o pohađanju na kraju',
-       'Prijave se zatvaraju dan ranije, mesta su ograničena']),
+ 'Through a simulation of a real sprint we assign roles — product owner, scrum master and development team — and run it from planning to retrospective. We talk about the backlog, estimation and Daily meetings, but also about where agile breaks in practice. We close with a discussion of when waterfall is actually the better choice.',
+ array['An interactive session — we work in groups of six',
+       'No management knowledge needed, everything is explained',
+       'You get a certificate of attendance at the end',
+       'Registration closes the day before, seats are limited']),
 
 -- 11. Sat 7 → Sun 8 Nov, beginner hackathon, Novi Sad (main demo hackathon)
 ('Garaža Frontier Hackathon', 'Garaža', 'hackathon', 'beginner', 'Novi Sad',
  '2026-11-07 09:00+02', '2026-11-08 18:00+02', 'Garaža, Zmaj Jovina 12',
  'https://garaza.rs/frontier-hackathon-2026',
- 'Frontier Hackathon: 33 sata, open theme i timovi od dva do pet članova. Fokus je na prvim koracima — kako se bira ideja, šta je MVP, kako se pravi pitch i šta žiri zapravo gleda. Mentori iz novosadskih IT kompanija kruže ceo vikend, pa niko ne ostaje zaglavljen.',
- array['Prijavi se sam — subotom ujutru formiramo timove',
-       'Ponesi laptop i punjač, za hranu i kafu se ne brini',
-       'Iskustvo nije bitno: pola učesnika je na prvom hakatonu',
-       'Nedelja u 17č: demo dan i nagrade za tri najbolja tima']),
+ 'The Frontier Hackathon: 33 hours, an open theme and teams of two to five. The focus is on first steps — how to pick an idea, what an MVP is, how to build a pitch and what the jury actually looks at. Mentors from Novi Sad IT companies circle the whole weekend, so nobody stays stuck.',
+ array['Sign up alone — we form teams on Saturday morning',
+       'Bring a laptop and charger, do not worry about food and coffee',
+       'Experience does not matter: half of the participants are at their first hackathon',
+       'Sunday at 5 pm: demo day and prizes for the three best teams']),
 
--- 12. Tue 10 Nov, intermediate meetup, Beograd
-('Nordeus Tech Meetup: Arhitektura igre u produkciji', 'Nordeus', 'meetup', 'intermediate', 'Beograd',
+-- 12. Tue 10 Nov, intermediate meetup, Belgrade
+('Nordeus Tech Meetup: Game Architecture in Production', 'Nordeus', 'meetup', 'intermediate', 'Belgrade',
  '2026-11-10 18:00+02', '2026-11-10 21:00+02', 'Nordeus, Bulevar Vojvođanske brigade',
  'https://nordeus.com/events/tech-meetup-novembar-2026',
- 'Šta se dešava kada milion igrača klikne istovremeno: game serveri, matchmaking i live ops eventovi. Pričamo kako se balansira ekonomija igre bez da se pokvari zabava, i kako izgleda pipeline od ideje do live featura. Bonus tema: kakav je dan game programera u najvećem srpskom game studiju.',
- array['Dva kraća izlaganja iz inženjerskog tima Nordeusa',
-       'Obilazak studija posle talka za zainteresovane',
-       'Prijava je na ulazu, nosi ličnu kartu — traži je obezbeđenje',
-       'Piće i pizza posle programa, uz razgovor sa inženjerima']),
+ 'What happens when a million players tap at the same time: game servers, matchmaking and live ops events. We talk about balancing a game economy without ruining the fun, and what the pipeline from idea to a live feature looks like. Bonus topic: what a day of a game programmer looks like in the biggest Serbian game studio.',
+ array['Two shorter talks from the Nordeus engineering team',
+       'A studio tour after the talks for anyone interested',
+       'Registration is at the entrance, bring an ID — security asks for it',
+       'Drinks and pizza after the program, with conversation with the engineers']),
 
--- 13. Thu 12 Nov, intermediate workshop, Beograd
-('Microsoft Developer Workshop: .NET 10 i GitHub Copilot', 'Microsoft Srbija', 'workshop', 'intermediate', 'Beograd',
+-- 13. Thu 12 Nov, intermediate workshop, Belgrade
+('Microsoft Developer Workshop: .NET 10 and GitHub Copilot', 'Microsoft Srbija', 'workshop', 'intermediate', 'Belgrade',
  '2026-11-12 17:00+02', '2026-11-12 20:00+02', 'Microsoft Srbija, Ulica Španskih boraca 3',
  'https://aka.ms/rs-dev-workshop-2026',
- 'Gradićemo mali web API u .NET 10, pisati testove i puštati GitHub Copilot da nam piše boilerplate — a onda procenjivati šta je prihvatljivo, a šta treba preraditi. Tema večeri: šta AI može da uradi umesto nas, a za šta i dalje moramo mi. Radimo u parovima, pa će svako imati druga za kod review.',
- array['Radionica uživo u Microsoft kancelariji',
-       'Potrebno je osnovno znanje C# ili nekog sličnog jezika',
-       'Ponesi laptop sa Visual Studio ili VS Code okruženjem',
-       'Četrdeset mesta, prijave po principu ko prvi']),
+ 'We will build a small web API in .NET 10, write tests and let GitHub Copilot write our boilerplate — and then judge what is acceptable and what needs a rework. The theme of the evening: what AI can do instead of us, and what we still have to do ourselves. We work in pairs, so everyone has a partner for code review.',
+ array['A live workshop in the Microsoft office',
+       'Basic knowledge of C# or a similar language is expected',
+       'Bring a laptop with Visual Studio or VS Code set up',
+       'Forty seats, registration is first come first served']),
 
--- 14. Sat 14 Nov, expert conference, Beograd
-('DevFest Belgrade 2026', 'GDG Beograd', 'conference', 'expert', 'Beograd',
+-- 14. Sat 14 Nov, expert conference, Belgrade
+('DevFest Belgrade 2026', 'GDG Beograd', 'conference', 'expert', 'Belgrade',
  '2026-11-14 09:00+02', '2026-11-14 18:00+02', 'Dom omladine Beograda, Makedonska 22',
  'https://gdgbelgrade.dev/devfest-2026',
- 'Jedan dan, pet paralelnih trackova i preko trideset predavanja — od Kotlin multiplatform preko WebGPU do optimizacije troškova u oblaku. Keynote drži glavni inženjer iz Minhena o sledećoj generaciji on-device modela. Između izlaganja: demo štandovi, lightning talkovi i ulična hrana u dvorištu.',
- array['Preko trideset predavanja u pet sala — biraš šta ti je zanimljivo',
-       'Keynote je u 10č, zatim trackovi po salama',
-       'Ulaznica pokriva ručak, kafu i after-party',
-       'Slajdovi i snimci svih predavanja dostupni su posle konferencije']),
+ 'One day, five parallel tracks and more than thirty talks — from Kotlin multiplatform through WebGPU to cloud cost optimization. The keynote is given by a principal engineer from Munich about the next generation of on-device models. Between talks: demo booths, lightning talks and street food in the yard.',
+ array['More than thirty talks in five rooms — you pick what interests you',
+       'The keynote is at 10 am, then tracks across the rooms',
+       'The ticket covers lunch, coffee and the after-party',
+       'Slides and recordings of all talks are available after the conference']),
 
--- 15. Sat 21 Nov, expert workshop, Beograd
-('EESTEC Advanced Workshop: Embedded Rust', 'EESTEC Beograd', 'workshop', 'expert', 'Beograd',
+-- 15. Sat 21 Nov, expert workshop, Belgrade
+('EESTEC Advanced Workshop: Embedded Rust', 'EESTEC Beograd', 'workshop', 'expert', 'Belgrade',
  '2026-11-21 10:00+02', '2026-11-21 17:00+02', 'ETF, Bulevar kralja Aleksandra 73',
  'https://eestec-beograd.rs/advanced-workshop-2026',
- 'Ceo dan pišemo no_std Rust za ESP32 pločice, čitamo senzore preko I2C protokola i borimo se sa borrow checker-om na hardveru koji ne prašta. Na kraju svaki tim ima mali uređaj koji nešto meri i prikazuje na displeju. Radionica je za one koji već sigurno programiraju i žele da siđu sa aplikacija na metal.',
- array['Napredna radionica — potrebno je sigurno znanje nekog programskog jezika',
-       'Pločice i senzori su obezbeđeni, ponesi samo laptop',
-       'Radi se u timovima po troje uz mentore sa katedre',
-       'Ručak i pauze su u ceni radionice']);
+ 'We spend the whole day writing no_std Rust for ESP32 boards, reading sensors over the I2C protocol and fighting the borrow checker on hardware that shows no mercy. At the end every team has a small device that measures something and shows it on a display. The workshop is for people who already program confidently and want to step down from applications to the metal.',
+ array['An advanced workshop — confident knowledge of some programming language is required',
+       'Boards and sensors are provided, bring only a laptop',
+       'We work in teams of three with mentors from the faculty',
+       'Lunch and breaks are included in the workshop price']);
 
 -- ============================================================
--- 3 GUIDES (Serbian, plain language)
+-- 3 GUIDES (English, plain language)
 -- ============================================================
 insert into guides (slug, title, body_md, emoji, "order") values
 
-('sta-je-hakaton', 'Šta je hakaton i kako izgleda', E'Hakaton je događaj na kome se skupi više ljudi, podeli u timove i za 24 do 48 sati napravi nešto od nule — aplikaciju, igru, sajt ili prototip. Zvuči zastrašujuće? Znam. Ali hajde da razbijemo mitove.\n\nPrvo: ne moraš da znaš da programiraš da bi došao. Mnogim timovima treba neko za dizajn, za prezentaciju, za testiranje ili samo neko ko postavlja dobra pitanja. Na svakom hakatonu postoji bar jedan tim sa članom na prvom hakatonu — najčešće ih je pola.\n\nKako izgleda dan? Prvo jutro je za upoznavanje i formiranje timova — ako dođeš sam, ne brineš, tu su i drugi sami. Onda se objave teme, timovi biraju ideju i počinje rad. Mentori šetaju između timova i pomažu kad zapne. Neko radi celu noć, neko spava kod kuće — oba su normalna.\n\nPoslednje popodne je za demo: svaki tim u par minuta pokazuje šta je napravio. Žiri ne očekuje gotov proizvod, očekuje priču — koji problem ste rešili i kako. Ako se aplikacija raspadne na pola demoa, dešava se i najboljima, timovi se smeju i nastavljaju.\n\nPrvi hakaton se ne zaboravlja. Dođi, vidi kako ti je, i već si napravio korak više nego prošlog meseca.', '🏆', 1),
+('sta-je-hakaton', 'What a Hackathon Is and What It Looks Like', E'A hackathon is an event where a group of people gathers, splits into teams and, in 24 to 48 hours, builds something from scratch — an app, a game, a website or a prototype. Sounds intimidating? We know. So let us break down the myths.\n\nFirst: you do not have to know how to program to come. Many teams need someone for design, for the presentation, for testing, or simply someone who asks good questions. At every hackathon there is at least one team with a first-time member — most often half of the participants are.\n\nWhat does the day look like? The first morning is for meeting people and forming teams — if you come alone, do not worry, others came alone too. Then the themes are announced, teams pick an idea and the work starts. Mentors walk between the teams and help when things get stuck. Some work through the night, some sleep at home — both are normal.\n\nThe last afternoon is for the demo: each team shows what they built in a few minutes. The jury does not expect a finished product, it expects a story — which problem you solved and how. If the app falls apart in the middle of a demo, it happens to the best teams too; people laugh and carry on.\n\nYour first hackathon is not something you forget. Come, see how it feels, and you have already made a bigger step than last month.', '🏆', 1),
 
-('sta-ponijeti', 'Šta ponijeti na prvi meetup', E'Dobra vest: za prvi meetup ne treba ti skoro ništa. Loša vest: baš zato ljudi preteruju. Evo kratke liste koja pokriva 95 posto situacija.\n\nPonesi: laptop ako najava kaže da se radi na računarima (proveri sekciju šta očekivati na stranici događaja), punjač i flašu vode. Za hakatone dodaj i produžni kabl ako ga imaš — utičnica nikad nije dovoljno. QR kod ili potvrdu prijave drži u telefonu, ne štampaj ništa.\n\nPapir i olovka zvuče staromodno, ali za beleške tokom predavanja i dalje rade bolje od telefona. Ako nosiš laptop, ponesi i slušalice — znaš ti sebe.\n\nŠta ne treba: posebna odeća (farmerke i majica su sasvim u redu), vizitke (niko ih ne traži) i znanje o temi — o tome pišemo u trećem vodiču.\n\nI najvažnije: svi smo mi nekada bili ti prvi neprijatni minuti kada ne znaš nikoga. Prođu posle prvog razgovora, a na meetupima skoro svako dolazi samo.', '🎒', 2),
+('sta-ponijeti', 'What to Bring to Your First Meetup', E'Good news: for your first meetup you need almost nothing. Bad news: that is exactly why people overpack. Here is a short list that covers 95 percent of situations.\n\nBring: a laptop if the announcement says you will work on computers (check the what-to-expect section on the event page), a charger and a bottle of water. For hackathons add a power strip if you have one — there are never enough outlets. Keep the QR code or registration confirmation on your phone; do not print anything.\n\nPaper and a pen sound old-fashioned, but for notes during a talk they still work better than a phone. If you bring a laptop, pack your headphones too — you know yourself.\n\nWhat you do not need: special clothes (jeans and a t-shirt are perfectly fine), business cards (nobody asks for them) or knowledge about the topic — that is what the third guide is about.\n\nAnd the most important part: all of us once had those first uncomfortable minutes of not knowing anyone. They pass after the first conversation, and at meetups almost everyone comes alone.', '🎒', 2),
 
-('smem-li-doci', 'Da li smem doći ako ne znam ništa o temi', E'Kratak odgovor: da. Duži odgovor: da, i evo zašto.\n\nSkoro svaki meetup, radionica ili hakaton u Srbiji računa na ljude koji prvi put dolaze. Organizatori to pišu u najavama, a predavači uvod prilagođavaju baš zato. Ako nešto ne razumeš, velika je šansa da ni pola sale ne razume — samo se ne usude da pitaju. Pitaj ti.\n\nŠta ako predavanje bude preteško? To se dešava i to je u redu. Sedi, slušaj koliko možeš i iznesi jednu stvar koja ti je jasna. Niko od tebe ne očekuje da sve razumeš — često ni predavač ne računa na to.\n\nAko je strah od ljudi veći od straha od teme: dođi pet minuta ranije i predstavi se organizatoru. To je najlakši prvi razgovor na svetu, a njihov posao je da te upoznaju sa još nekim novim. Na svakom događaju ima bar troje ljudi kojima je ovo takođe prvi put.\n\nMatematika je prosta: ako od kuće odneseš jednu novu stvar koju si naučio i jednog novog poznanika, događaj je bio uspešan. A ako dođeš samo da vidiš kako izgleda — i to je korak. Svaki korak se računa.', '🤔', 3);
+('smem-li-doci', 'Can I Come if I Know Nothing about the Topic?', E'Short answer: yes. Longer answer: yes, and here is why.\n\nAlmost every meetup, workshop or hackathon in Serbia counts on people coming for the first time. Organizers write it in the announcements, and speakers adjust their intro for exactly that reason. If you do not understand something, there is a good chance half the room does not either — they just do not dare to ask. You ask.\n\nWhat if the talk turns out to be too hard? That happens, and it is fine. Sit, listen as long as you can, and take away one thing that is clear to you. Nobody expects you to understand everything — often even the speaker does not count on that.\n\nIf the fear of people is bigger than the fear of the topic: come five minutes early and introduce yourself to the organizer. It is the easiest first conversation in the world, and their job is to connect you with another newcomer. At every event there are at least three people for whom this is also the first time.\n\nThe math is simple: if you take home one new thing you learned and one new acquaintance, the event was a success. And if you come only to see what it looks like — that is a step too. Every step counts.', '🤔', 3);
 
 -- ============================================================
--- 4 PROFILES (Ana i Luka are first-timers for the buddy demo)
+-- 4 PROFILES (Ana and Luka are first-timers for the buddy demo)
 -- ============================================================
 insert into profiles (nickname, level, interests, first_timer, steps) values
-('Ana',   'beginner',     array['frontend','dizajn'],            true,  0),
-('Luka',  'beginner',     array['backend','AI'],                 true,  0),
-('Marko', 'intermediate', array['python','data','sql'],          false, 5),
-('Jovana','expert',       array['devops','cloud','mentorstvo'],  false, 20);
+('Ana',   'beginner',     array['frontend','design'],           true,  0),
+('Luka',  'beginner',     array['backend','AI'],                true,  0),
+('Marko', 'intermediate', array['python','data','sql'],         false, 5),
+('Jovana','expert',       array['devops','cloud','mentoring'],  false, 20);
 
 -- ============================================================
 -- 5 TEAM POSTS (all on the Garaža Frontier Hackathon)
 -- ============================================================
 insert into team_posts (event_id, kind, nickname, level, skills, message, contact) values
-((select id from events where title = 'Garaža Frontier Hackathon'), 'looking_for_team', 'Mina',   'beginner',     array['figma','UX dizajn'],          'Prvi hakaton, radim u Figmi. Tražim tim koji ne mari što sam početnica — spremna sam i na kafu i na učenje uz pomoć.', '@mina_uix'),
-((select id from events where title = 'Garaža Frontier Hackathon'), 'looking_for_team', 'Luka',   'beginner',     array['python','osnove AI'],         'Učim Python i pokušavam da ukapiram kako rade AI alati. Idem na prvi hakaton, tražim strpljiv tim.', 'luka@example.com'),
-((select id from events where title = 'Garaža Frontier Hackathon'), 'looking_for_member','Petar',  'intermediate', array['react','node.js','typescript'],'Imamo tim od dva (React i Node) i tražimo trećeg za frontend. Početnici dobrodošli — sve ćemo objasniti.', 'petar@dev.rs'),
-((select id from events where title = 'Garaža Frontier Hackathon'), 'looking_for_member','Marko',  'intermediate', array['python','pandas','sql'],      'Tražimo nekog za obradu podataka. Iskustvo sa Pandas bibliotekom je plus, ali nije uslov — glavno da želiš da učestvuješ.', 'marko@data.rs'),
-((select id from events where title = 'Garaža Frontier Hackathon'), 'looking_for_team', 'Jelena', 'expert',       array['kubernetes','llm','python'],   'Inženjerka sa osam godina iskustva, ovog puta idem zbog zabave i mentorstva. Ako vašem timu treba neko ko je video produkciju — javite se.', 'jelena@cloud.rs');
+((select id from events where title = 'Garaža Frontier Hackathon'), 'looking_for_team', 'Mina',   'beginner',     array['figma','UX design'],           'First hackathon, I work in Figma. Looking for a team that does not mind I am a beginner — ready for coffee and for learning along the way.', '@mina_uix'),
+((select id from events where title = 'Garaža Frontier Hackathon'), 'looking_for_team', 'Luka',   'beginner',     array['python','AI basics'],          'Learning Python and trying to figure out how AI tools work. Going to my first hackathon, looking for a patient team.', 'luka@example.com'),
+((select id from events where title = 'Garaža Frontier Hackathon'), 'looking_for_member','Petar',  'intermediate', array['react','node.js','typescript'],'We have a team of two (React and Node) and are looking for a third for the frontend. Beginners welcome — we will explain everything.', 'petar@dev.rs'),
+((select id from events where title = 'Garaža Frontier Hackathon'), 'looking_for_member','Marko',  'intermediate', array['python','pandas','sql'],      'Looking for someone for data work. Experience with the Pandas library is a plus but not a requirement — what matters is that you want to take part.', 'marko@data.rs'),
+((select id from events where title = 'Garaža Frontier Hackathon'), 'looking_for_team', 'Jelena', 'expert',       array['kubernetes','llm','python'],   'An engineer with eight years of experience, this time going for fun and mentoring. If your team needs someone who has seen production — get in touch.', 'jelena@cloud.rs');
 
 -- ============================================================
 -- GOING (for buddy demo)
