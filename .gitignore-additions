@@ -1,0 +1,5 @@
+# add to the .gitignore create-next-app makes
+.env.local
+.env*.local
+*.safetensors
+kaggle/output/
