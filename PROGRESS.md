@@ -1,44 +1,43 @@
 # Progress
 
-Last updated: 10 Oct 2026, 16:52
+Last updated: 10 Oct 2026, 22:31
 
-## P1 — AI / Kaggle
-- [ ] Generate synthetic dataset (300–500 rows)
-- [ ] Baseline accuracy: tag-overlap
-- [ ] Gemma prompt v1 for task assignment
-- [ ] Before/after accuracy number
-- [ ] Publish Kaggle notebook + dataset
+## P1 — AI / Pitch
+- [ ] Prompt functions in src/lib/gemma.ts (eventSummary, explainSystem, simplify, suggestLevel)
+- [ ] No-judgment chatbot tone + containsJudgment filter
+- [ ] Kaggle notebook + synthetic dataset
+- [ ] Before/after accuracy number for the pitch
+- [ ] Pitch deck skeleton + demo script
+- Blocked by: none (events API ready for prompt testing)
+
+## P2 — Backend
+- [x] /api/health green (Gemma + Supabase)
+- [x] schema-esc.sql run in Supabase
+- [x] seed-esc.sql run (15 events, 3 guides, 4 profiles, 2 going, 5 team posts)
+- [x] GET /api/events works (verified: 6 beginner, 2 hackathon)
+- [x] GET /api/events/[id] works (ai_summary pending)
+- [ ] AI routes (explain, simplify, going, ics) — in progress
+- [ ] Vercel deploy (00:30 checkpoint)
+- [ ] Pre-generated summaries
 - Blocked by: none
 
-## P2 — Backend / Integrations
-- [x] Next.js init (temp-app merge)
-- [x] .env.local filled
-- [x] schema.sql run in Supabase
-- [x] /api/health returns {"ok": true}
-- [ ] Google OAuth + Drive scope working
-- [ ] /api/role-pack/apply works
-- [ ] /api/role-pack/revoke works
-- [ ] /api/restock works
-- Blocked by: none
-
-## P3 — UI / Pitch
-- [ ] Google Form sent to organisers
-- [ ] /people screen
-- [ ] /tasks screen
-- [ ] /resources screen
-- [ ] /me screen
-- [ ] Command bar (Ctrl+K)
-- [ ] Pitch deck skeleton
-- [ ] Backup video
-- Blocked by: P2 setup completion
+## P3 — Frontend
+- [ ] Event list with level badges + filters (level, type, city)
+- [ ] Event page: what to expect, AI summary, "Say it simply", chatbot
+- [ ] First-timer tag + buddy pairing UI
+- [ ] Add to calendar (.ics)
+- [ ] Guides pages (3)
+- [ ] Light if green: Team Board, organizer form, My steps
+- Blocked by: none — unblocked since the 22:30 checkpoint
 
 ## Checkpoints
-- Hour 2: Setup done, contracts agreed
-- Hour 9: Role Pack end-to-end
-- Hour 13: FEATURE FREEZE
-- Hour 15: Backup video recorded
-- Hour 17: Rehearsal #1
-- Hour 19: Rehearsal #2
+- 22:30 ✓ Schema + seed in Supabase, /api/health ok, events API live
+- 00:30 Deployed on Vercel (moved up from 01:30)
+- 01:30 Event page AI summary, chatbot, "Say it simply", Kaggle notebook running
+- 04:00 FEATURE FREEZE (adjusted from 06:00) — bug fixes only after this
+- After freeze: seed polish, deck, backup video, 2 timed rehearsals
 
 ## Blockers / Notes
-- Next: seed.sql run, then Google OAuth (Step 5)
+- Old organiser routes (role-pack, restock, assign, command) still in src/ — remove before deploy if they break the build
+- Old organiser tables kept in Supabase (harmless)
+- 00-TEAM-SPLIT says feature branches (ml/backend/frontend); DECISIONS.md says main-only — we work on main, 00-TEAM-SPLIT Git section is stale

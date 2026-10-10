@@ -1,55 +1,83 @@
 # byte-me — AI Agent Context
 
 ## Project
-Organiser platform for events. Stack: Next.js (App Router, TypeScript,
-Tailwind), Supabase, Gemma via Google AI Studio, Google Drive API,
+"Every Step Counts": all tech events in one place, labeled by difficulty
+(beginner / intermediate / expert), with Gemma explaining everything to a
+beginner — without judgment. The test for every feature: does it reduce
+the fear of the first step? Stack: Next.js (App Router, TypeScript,
+Tailwind v4), Supabase (Postgres), Gemma via Google AI Studio API,
 deployed on Vercel.
 
-## The one thing we build
-Role Packs: organiser adds a person, picks a role, platform instantly
-grants Drive access + chat groups + starter tasks + a personal welcome
-brief from Gemma.
+## Status
+Pivoted on 10 Oct 2026 evening from the old "organiser platform" (Role
+Packs). Authoritative scope + contracts: `00-TEAM-SPLIT.md` (repo root),
+plus `P1-ml-and-pitch.md`, `P2-backend.md`, `P3-frontend.md`. Old
+organiser tables remain in Supabase (kept, harmless) and old organiser
+routes remain in `src/app/api/` until they break the build — do not
+extend them.
 
 ## Data model (LOCKED — do not change without team agreement)
-- people: id, name, email, github, level (beginner/intermediate/advanced),
-  tags[], open_hours
-- roles: id, name, description
-- role_files: role_id, drive_file_id, access (reader/commenter/writer)
-- role_groups: role_id, group_name, invite_url
-- person_roles: person_id, role_id, granted_at, revoked_at
-- tasks: id, title, deadline, urgency, tags[], estimate_h, assignee_id,
-  status, ai_reason
-- resources: id, type (stock/vendor/sponsor/budget), name, qty,
-  per_person_rate, amount, status
-- event: id, name, dates, rsvp_count, venue_notes
-- speakers: id, name, topic, level, av_needs, access_needs, arrival
-- incidents: id, text, routed_to_role, created_at
+- events: id, title, organizer, type (hackathon|meetup|seminar|workshop|
+  conference), level (beginner|intermediate|expert), city, starts_at,
+  ends_at, venue, registration_url, description, what_to_expect[],
+  ai_summary jsonb, ai_level_suggestion, created_at
+- guides: slug (pk), title, body_md, emoji, "order"
+- profiles: id, nickname, level, interests[], first_timer (bool), steps
+- going: id, event_id, profile_id, first_timer, buddy_profile_id,
+  attended, created_at
+- team_posts: id, event_id, kind (looking_for_team|looking_for_member),
+  nickname, level, skills[], message, contact, created_at
+
+`ai_summary` jsonb shape:
+`{ summary, key_terms: [{term, explanation}], prior_knowledge: [],
+good_for_beginners_because }`
 
 ## API routes
-- POST /api/role-pack/apply → {person_id, role_ids[]} → {success, brief}
-- POST /api/role-pack/revoke → {person_id, role_id} → {success}
-- POST /api/restock → {rsvp_count} → {tasks_created[]}
-- POST /api/assign → {task_id} → {assignee_id, ai_reason, top_3}
-- POST /api/command → {text} → {action, needs_confirmation}
+Live:
 - GET /api/health → {ok: true}
+- GET /api/events → Event[] sorted by starts_at asc; filters
+  ?level=&type=&city=
+- GET /api/events/[id] → Event (ai_summary may be null; generation +
+  caching lands with the AI pass)
+
+Planned (P2, contracts in 00-TEAM-SPLIT.md):
+- POST /api/explain, POST /api/simplify, POST /api/going,
+  GET /api/events/[id]/ics; light: POST /api/events,
+  POST /api/going/attended
+- team_posts: P3 reads/writes directly with the Supabase browser client
+  (no route of our own)
+
+Legacy (old product, still on disk — do not use, remove if they break
+the build): /api/role-pack/apply, /api/role-pack/revoke, /api/restock,
+/api/assign, /api/command
 
 ## Conventions
-- Always "task", never "todo" or "job"
 - Dates: ISO 8601
-- All API routes return JSON
+- All API routes return JSON; lists are bare arrays (Event[]), single
+  resources are bare objects (Event)
 - Error format: {error: string, code: number}
-- Every AI suggestion MUST include ai_reason field
+- Every AI output is labeled: "AI summary — may contain errors."
+- If Gemma fails: friendly fallback text + `fallback: true`, status 200 —
+  the UI must never show a raw error in the demo
+- Gemma prompts live as functions in src/lib/gemma.ts (P1 owns them);
+  routes call the functions. Change a prompt without touching a route.
+- `export const maxDuration = 30` on AI routes (Gemma is slow; Vercel)
 - service_role key: backend only, NEVER in frontend
+- Gemma never writes to the database directly — it produces, our route
+  code saves
 
 ## Out of scope (do not build)
-- Chat (use Discord/WhatsApp invite links)
-- Mascot
-- Calendar view
-- Command bar UI (only if time allows at end)
-- GitHub integration
-- Speaker intake UI
+- Login / accounts (demo profile = localStorage + a profiles row)
+- Scraping or Meetup/Luma import (events are entered manually)
+- Matching algorithm (buddy pairing is a simple first-timer lookup)
+- Self-hosting Gemma (production plan only; hackathon uses the hosted API)
+- Native app
+- Monetization
+- Social features (feeds, ratings, leaderboards)
 
 ## Rules
-- Gemma never writes to database directly — it picks, our code acts
-- Every AI result shows its reason and can be overridden
-- Feature freeze at Hour 13
+- Feature freeze at Hour 04:00 (adjusted from 06:00); first deploy at
+  Hour 00:30 (moved up from 01:30)
+- Every AI result can be overridden (e.g. organizer confirms the
+  suggested level in the UI)
+- 00-TEAM-SPLIT.md wins on any scope or contract disagreement
