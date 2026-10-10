@@ -157,8 +157,7 @@ export function Stoat({
   );
 }
 
-/** Mid-leap pose for the motto lockup — stretched body, trailing tail. */
-export function StoatLeap({ className }: { className?: string }) {
+/** Mid-leap pose for the motto lockup — stretched body, trailing tail. */export function StoatLeap({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 64 64" className={className} aria-hidden>
       {/* speed lines */}
@@ -189,6 +188,27 @@ export function StoatLeap({ className }: { className?: string }) {
       <circle cx="55.5" cy="10.5" r="1.6" fill={INK} />
       <path d="M60.5 12.5 l-1.6 1.2 1.2 1 Z" fill={INK} />
       <path d="M56.5 16.5 Q59 18 61 16" fill="none" stroke={INK} strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+/** Just the head — used for the chat button, AI message avatars, chat header. */
+export function StoatHead({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 64 64" className={className} aria-hidden>
+      <path d="M20 18 C16 8 22 5 26 12 L25 17 Z" fill={COAT} stroke={INK} strokeWidth="2.4" strokeLinejoin="round" />
+      <path d="M38 12 C38 3 46 4 44 12 L41 16 Z" fill={COAT} stroke={INK} strokeWidth="2.4" strokeLinejoin="round" />
+      <circle cx="17" cy="15" r="2" fill={INK} />
+      <circle cx="43.5" cy="10.5" r="2" fill={INK} />
+      <circle cx="32" cy="34" r="22" fill={COAT} stroke={INK} strokeWidth="2.6" />
+      <circle cx="23" cy="31" r="2.6" fill={INK} />
+      <circle cx="41" cy="31" r="2.6" fill={INK} />
+      <path d="M30 40 h4 l-2 2.4 Z" fill={INK} />
+      <path d="M25 46 Q32 51 39 46" fill="none" stroke={INK} strokeWidth="2.2" strokeLinecap="round" />
+      {/* snowflake */}
+      <g stroke={ACCENT} strokeWidth="1.6" strokeLinecap="round">
+        <path d="M52 12 v6 M49 15 h6 M50.2 13.2 l3.6 3.6 M53.8 13.2 l-3.6 3.6" />
+      </g>
     </svg>
   );
 }

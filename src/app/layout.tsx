@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Suspense } from "react";
 import "./globals.css";
+import { PipChat } from "@/components/pip-chat";
 import { SiteHeader } from "@/components/site-header";
 import { BRAND } from "@/lib/brand";
 
@@ -42,6 +43,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </p>
           </div>
         </footer>
+        <Suspense fallback={null}>
+          <PipChat />
+        </Suspense>
       </body>
     </html>
   );
