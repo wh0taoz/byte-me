@@ -1,6 +1,6 @@
 # Progress
 
-Last updated: 10 Oct 2026, 22:42
+Last updated: 10 Oct 2026, 22:54
 
 ## P1 — AI / Pitch
 - [ ] Prompt functions in src/lib/gemma.ts (eventSummary, explainSystem, simplify, suggestLevel)
@@ -17,7 +17,9 @@ Last updated: 10 Oct 2026, 22:42
 - [x] GET /api/events works (verified: 6 beginner, 2 hackathon)
 - [x] GET /api/events/[id] works (ai_summary pending)
 - [x] Legacy organiser routes + unused lib files removed (dbb2d54)
-- [ ] AI routes (explain, simplify, going, ics) — in progress
+- [x] POST /api/going with buddy pairing
+- [x] GET /api/events/[id]/ics
+- [ ] AI routes (explain, simplify) — in progress
 - [ ] Vercel deploy (00:30 checkpoint)
 - [ ] Pre-generated summaries
 - Blocked by: none
