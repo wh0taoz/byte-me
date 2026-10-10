@@ -19,7 +19,7 @@ Last updated: 10 Oct 2026, 16:52
 - [ ] /api/role-pack/apply works
 - [ ] /api/role-pack/revoke works
 - [ ] /api/restock works
-- Blocked by: compatibility audit (Task 2–4)
+- Blocked by: none
 
 ## P3 — UI / Pitch
 - [ ] Google Form sent to organisers
