@@ -11,16 +11,17 @@ export async function GET() {
     result.gemma = { ok: true, model: MODELS.fast, reply: reply.trim() };
   } catch (e) {
     result.ok = false;
-    result.gemma = { ok: false, error: String(e) };
+    result.gemma = { ok: false, error: e instanceof Error ? e.message : JSON.stringify(e) };
   }
 
   try {
-    const { error } = await supabaseAdmin.from("sessions").select("id").limit(1);
+    const { error } = await supabaseAdmin.from("people").select("id").limit(1);
     if (error) throw error;
     result.supabase = { ok: true };
   } catch (e) {
     result.ok = false;
-    result.supabase = { ok: false, error: String(e) };
+    result.supabase = { ok: false, error: e instanceof Error ? e.message : JSON.stringify(e) };
+    console.log("[health] supabase error:", e);
   }
 
   return NextResponse.json(result, { status: result.ok ? 200 : 500 });

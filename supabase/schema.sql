@@ -143,3 +143,16 @@ begin
     execute format('create policy "demo_all" on %I for all using (true) with check (true)', t);
   end loop;
 end $$;
+
+-- ============================================================
+-- service_role grants
+-- Supabase SQL Editor does not auto-grant service_role on tables
+-- created manually. This block ensures the app (which uses the
+-- service_role key on the backend) can read/write all tables.
+-- ============================================================
+GRANT ALL ON ALL TABLES IN SCHEMA public TO service_role;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO service_role;
+GRANT ALL ON ALL FUNCTIONS IN SCHEMA public TO service_role;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO service_role;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO service_role;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON FUNCTIONS TO service_role;

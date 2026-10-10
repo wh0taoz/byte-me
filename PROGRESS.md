@@ -1,6 +1,6 @@
 # Progress
 
-Last updated: 10 Oct 2026, 16:28
+Last updated: 10 Oct 2026, 16:52
 
 ## P1 — AI / Kaggle
 - [ ] Generate synthetic dataset (300–500 rows)
@@ -12,9 +12,9 @@ Last updated: 10 Oct 2026, 16:28
 
 ## P2 — Backend / Integrations
 - [x] Next.js init (temp-app merge)
-- [ ] .env.local filled
-- [ ] schema.sql + seed.sql run in Supabase
-- [ ] /api/health returns {"ok": true}
+- [x] .env.local filled
+- [x] schema.sql run in Supabase
+- [x] /api/health returns {"ok": true}
 - [ ] Google OAuth + Drive scope working
 - [ ] /api/role-pack/apply works
 - [ ] /api/role-pack/revoke works
@@ -41,5 +41,4 @@ Last updated: 10 Oct 2026, 16:28
 - Hour 19: Rehearsal #2
 
 ## Blockers / Notes
-- Next.js 16 vs pack compatibility: pending audit
-- Tailwind v4: theme.css import pending
+- Next: seed.sql run, then Google OAuth (Step 5)
