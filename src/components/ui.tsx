@@ -4,16 +4,16 @@ import { Loader2, Sparkles } from "lucide-react";
 import type { ReactNode } from "react";
 import type { Level } from "@/lib/types";
 import { levelLabel } from "@/lib/api";
+import { levelArt } from "@/lib/kit";
 import { cn } from "@/lib/utils";
-import { Stoat } from "./stoat";
 
 export function Spinner({ className }: { className?: string }) {
   return <Loader2 className={cn("size-4 animate-spin", className)} aria-label="Loading" />;
 }
 
 /**
- * Level indicator: the stoat pose + the word — never colour alone.
- * beginner waves, intermediate has the book & glasses, expert is on the laptop.
+ * Level indicator: official Pip level art + the word — never colour alone.
+ * beginner waves, intermediate reads, expert is on the laptop.
  */
 export function LevelPill({
   level,
@@ -27,13 +27,14 @@ export function LevelPill({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full border border-line-strong bg-surface font-semibold text-ink",
+        "inline-flex items-center gap-1.5 rounded-full border border-line-strong bg-mint font-semibold text-ink",
         size === "sm" ? "px-2 py-0.5 text-[11px]" : "px-2.5 py-1 text-xs",
         className,
       )}
       title={`Level: ${levelLabel(level)}`}
     >
-      <Stoat level={level} className={size === "sm" ? "size-4" : "size-4.5"} />
+      {/* eslint-disable-next-line @next/next/no-img-element -- kit art is a static PNG asset */}
+      <img src={levelArt(level)} alt="" className={size === "sm" ? "size-4" : "size-4.5"} />
       {levelLabel(level)}
     </span>
   );

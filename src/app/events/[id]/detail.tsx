@@ -15,7 +15,7 @@ import {
 } from "@/lib/api";
 import type { EventRow, GoingResult } from "@/lib/types";
 import { fmtTime, smartRange } from "@/lib/format";
-import { Stoat } from "@/components/stoat";
+import { levelArt } from "@/lib/kit";
 import { Button, Chip, Empty, LevelPill, Skeleton, inputClass } from "@/components/ui";
 
 export function EventDetailView() {
@@ -103,12 +103,12 @@ export function EventDetailView() {
 
       {/* ---- Pip says the AI summary ---- */}
       <section className="mt-6 flex items-start gap-2.5 md:gap-4" aria-label="AI summary">
-        <span
-          className="mt-1 flex size-16 shrink-0 items-center justify-center rounded-full md:size-20"
-          style={{ background: "radial-gradient(circle, rgba(98,155,181,0.30) 0%, rgba(98,155,181,0.10) 62%, transparent 72%)" }}
-        >
-          <Stoat level={e.level} className="size-12 md:size-16" />
-        </span>
+        {/* eslint-disable-next-line @next/next/no-img-element -- official kit level art */}
+        <img
+          src={levelArt(e.level)}
+          alt={`Pip the stoat, ${e.level} level art`}
+          className="mt-1 h-20 w-20 shrink-0 object-contain md:h-24 md:w-24"
+        />
         <div className="card relative flex-1 p-4 md:p-5">
           {/* speech bubble tail pointing at Pip */}
           <span

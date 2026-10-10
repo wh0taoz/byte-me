@@ -74,12 +74,12 @@ h1, h2, h3, .font-title {
   border-radius: var(--radius-card);
 }
 
-/* ---- winter accents ------------------------------------------------- */
+/* ---- brand accents ------------------------------------------------- */
 .bg-winter {
-  background: linear-gradient(135deg, #629bb5 0%, #447f98 100%);
+  background: linear-gradient(135deg, #0096a1 0%, #00747d 100%);
 }
 .shadow-winter {
-  box-shadow: 0 8px 24px rgba(68, 127, 152, 0.16);
+  box-shadow: 0 8px 24px rgba(0, 116, 125, 0.18);
 }
 
 /* ---- level badges ----------------------------------------------------

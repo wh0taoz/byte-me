@@ -1,40 +1,37 @@
-/* Winter blues — the team palette.
-   Mains:   #DADEE1  #B9D8E1  #D6EBF3
-   Deeps:   #447F98  #629BB5   (gradients, shadows)
-   Plus a few in-family additions (ink, muted, bg) for text contrast.
-   Tailwind v4: tokens become classes like bg-primary, text-ink, border-line. */
+/* StepIn UI kit V2 palette (design-tokens.json):
+   navy type, teal actions, mint surfaces, white cards, tactile borders. */
 
 @theme {
-  --color-primary: #447f98;        /* buttons, links — interactive */
-  --color-primary-deep: #35657a;   /* hover / pressed */
-  --color-accent: #629bb5;         /* AI / highlights */
-  --color-ink: #0e2a55;            /* body text — deep blue */
-  --color-muted: #3f5b85;          /* secondary text (AA on bg + surface) */
-  --color-bg: #edf3f6;             /* page background */
+  --color-primary: #0096a1;        /* buttons, links — teal actions */
+  --color-primary-deep: #00747d;   /* hover / pressed */
+  --color-accent: #0096a1;         /* AI / highlights */
+  --color-ink: #132039;            /* body text — navy */
+  --color-muted: #52647b;          /* secondary text (AA on bg + surface) */
+  --color-bg: #f2f5f1;             /* page background */
   --color-surface: #ffffff;        /* cards */
-  --color-ice: #d6ebf3;            /* tint fills, hero, AI blocks */
-  --color-line: #dadee1;           /* borders */
-  --color-line-strong: #b9d8e1;    /* emphasized borders */
+  --color-ice: #e5f5ee;            /* mint tint fills */
+  --color-line: #e2e8ed;           /* borders */
+  --color-line-strong: #b5dacd;    /* emphasized borders (mint-dark) */
 
-  --color-success: #2e7d6e;
+  --color-success: #4c711f;
   --color-warning: #9a6b2f;
   --color-urgent: #b0483f;
 
-  --radius-card: 12px;
+  --radius-card: 20px;
 }
 
 body { background: var(--color-bg); color: var(--color-ink); }
 
-/* ---- winter accents -------------------------------------------------- */
+/* ---- brand accents --------------------------------------------------- */
 .bg-winter {
-  background: linear-gradient(135deg, #629bb5 0%, #447f98 100%);
+  background: linear-gradient(135deg, #0096a1 0%, #00747d 100%);
 }
 .shadow-winter {
-  box-shadow: 0 8px 24px rgba(68, 127, 152, 0.16);
+  box-shadow: 0 8px 24px rgba(0, 116, 125, 0.18);
 }
 
 /* ---- level badges ------------------------------------------------------
-   The word is always shown (never colour alone); the stoat pose is the
+   The word is always shown (never colour alone); the Pip level art is the
    friendly signal.                                                              */
 .badge {
   display: inline-flex;
@@ -43,7 +40,7 @@ body { background: var(--color-bg); color: var(--color-ink); }
   padding: 0.1rem 0.55rem;
   border-radius: 999px;
   font-size: 0.6875rem;
-  font-weight: 600;
+  font-weight: 650;
   letter-spacing: 0.02em;
   text-transform: uppercase;
   white-space: nowrap;

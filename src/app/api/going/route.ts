@@ -1,7 +1,29 @@
 // POST /api/going — mark going. First-timers get paired with another unpaired
 // first-timer for the same event (buddy_profile_id linked both ways).
+// GET /api/going?profile_id= — the profile's going rows with event data (My events).
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
+
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const profileId = searchParams.get("profile_id");
+  if (!profileId) {
+    return NextResponse.json({ error: "profile_id is required", code: 400 }, { status: 400 });
+  }
+
+  const { data, error } = await supabaseAdmin
+    .from("going")
+    .select(
+      "id, first_timer, buddy_profile_id, attended, created_at, events(id, title, organizer, type, level, city, starts_at, ends_at, venue, registration_url, description, what_to_expect, ai_summary, ai_level_suggestion, created_at)",
+    )
+    .eq("profile_id", profileId)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    return NextResponse.json({ error: error.message, code: 500 }, { status: 500 });
+  }
+  return NextResponse.json(data ?? []);
+}
 
 export async function POST(req: Request) {
   let body: { event_id?: string; profile_id?: string; first_timer?: boolean };

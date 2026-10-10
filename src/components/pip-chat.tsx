@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { getEvent } from "@/lib/api";
 import { cn } from "@/lib/utils";
-import { StoatHead } from "./stoat";
+import { MASCOT } from "@/lib/kit";
 
 interface Msg {
   role: "user" | "assistant";
@@ -80,7 +80,12 @@ export function PipChat() {
         aria-label={open ? "Close Pip chat" : "Chat with Pip"}
         className="bg-winter fixed bottom-5 right-5 z-50 flex size-14 items-center justify-center rounded-full border-2 border-surface text-surface shadow-winter transition-transform hover:scale-105"
       >
-        {open ? <X className="size-6" aria-hidden /> : <StoatHead className="size-11" />}
+        {open ? (
+          <X className="size-6" aria-hidden />
+        ) : (
+          // eslint-disable-next-line @next/next/no-img-element -- kit art
+          <img src={MASCOT.avatar} alt="" className="size-11 object-contain" />
+        )}
       </button>
 
       {/* ---- chat panel ---- */}
@@ -88,7 +93,8 @@ export function PipChat() {
         <div className="card fixed bottom-22 right-5 z-50 flex h-[min(60vh,30rem)] w-[calc(100vw-2.5rem)] max-w-sm flex-col overflow-hidden shadow-winter animate-slide-up">
           <div className="bg-winter flex items-center gap-2.5 px-4 py-3 text-surface">
             <span className="flex size-9 items-center justify-center rounded-full bg-surface">
-              <StoatHead className="size-7" />
+              {/* eslint-disable-next-line @next/next/no-img-element -- kit art */}
+              <img src={MASCOT.avatar} alt="" className="size-7 object-contain" />
             </span>
             <div className="leading-tight">
               <p className="text-sm font-semibold">Pip</p>
@@ -106,7 +112,7 @@ export function PipChat() {
                 </div>
               ) : (
                 <div key={i} className="flex items-end gap-2">
-                  <StoatHead className="size-7 shrink-0 rounded-full border border-line bg-surface" />
+                  <img src={MASCOT.avatar} alt="" className="size-7 shrink-0 rounded-full border border-line bg-surface object-contain" />
                   <p className="max-w-[85%] rounded-2xl rounded-bl-sm border border-line bg-surface px-3.5 py-2 text-sm leading-relaxed text-ink">
                     {m.content}
                   </p>
@@ -116,7 +122,7 @@ export function PipChat() {
 
             {busy ? (
               <div className="flex items-end gap-2">
-                <StoatHead className="size-7 shrink-0 rounded-full border border-line bg-surface" />
+                <img src={MASCOT.avatar} alt="" className="size-7 shrink-0 rounded-full border border-line bg-surface object-contain" />
                 <p className="flex items-center gap-1 rounded-2xl rounded-bl-sm border border-line bg-surface px-3.5 py-2.5">
                   {[0, 1, 2].map((d) => (
                     <span

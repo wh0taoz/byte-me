@@ -35,6 +35,25 @@ export function icsUrl(id: string): string {
 }
 
 // ---- going / buddy pairing ---------------------------------------------------
+export interface GoingRow {
+  id: string;
+  first_timer: boolean | null;
+  buddy_profile_id: string | null;
+  attended: boolean | null;
+  events: EventRow;
+}
+
+export async function getMyGoing(profileId: string): Promise<GoingRow[]> {
+  const res = await fetch(`/api/going?profile_id=${encodeURIComponent(profileId)}`, {
+    cache: "no-store",
+  });
+  if (!res.ok) {
+    const body = (await res.json().catch(() => null)) as { error?: string } | null;
+    throw new Error(body?.error ?? `Request failed: ${res.status}`);
+  }
+  return res.json() as Promise<GoingRow[]>;
+}
+
 export async function markGoing(input: {
   event_id: string;
   profile_id: string;
