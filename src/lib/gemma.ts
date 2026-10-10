@@ -17,17 +17,19 @@ export const GEMMA_QUALITY = "gemma-4-31b-it";    // summaries, levels, intros, 
 let supportsSystem = true;
 let supportsJson = true;
 
-interface AskOptions { model?: string; temperature?: number }
+interface AskOptions { model?: string; temperature?: number; maxTokens?: number }
 
 async function generate(system: string, user: string, json: boolean, opts: AskOptions = {}): Promise<string> {
-  const { model = GEMMA_FAST, temperature = json ? 0 : 0.4 } = opts;
+  const { model = GEMMA_FAST, temperature = json ? 0 : 0.4, maxTokens = 2048 } = opts;
   for (let attempt = 0; attempt < 4; attempt++) {
     try {
       const res = await ai.models.generateContent({
         model,
         contents: supportsSystem ? user : `${system}\n\n${user}`,
         config: {
-          temperature,
+          // cap stops rare runaway generations; retries add a little randomness so a stuck answer isn't repeated
+          temperature: attempt === 0 ? temperature : Math.max(temperature, 0.3),
+          maxOutputTokens: maxTokens,
           ...(supportsSystem ? { systemInstruction: system } : {}),
           ...(json && supportsJson ? { responseMimeType: "application/json" } : {}),
         },
@@ -51,10 +53,14 @@ export function ask(system: string, user: string, opts?: AskOptions): Promise<st
 
 /** Structured answer. Returns null if Gemma fails or the JSON can't be parsed. */
 export async function askJSON<T>(system: string, user: string, opts?: AskOptions): Promise<T | null> {
+  let raw = "";
   try {
-    const m = (await generate(system, user, true, opts)).match(/\{[\s\S]*\}/);
-    return m ? (JSON.parse(m[0]) as T) : null;
-  } catch {
+    raw = await generate(system, user, true, opts);
+    const m = raw.match(/\{[\s\S]*\}/);
+    if (!m) { console.warn("[gemma] askJSON: no JSON in reply:", raw.slice(0, 200)); return null; }
+    return JSON.parse(m[0]) as T;
+  } catch (e) {
+    console.error("[gemma] askJSON failed:", String(e).slice(0, 300), raw ? `| reply: ${raw.slice(0, 200)}` : "");
     return null;
   }
 }
@@ -134,12 +140,24 @@ Judge by who the event is FOR and what attendees must already know, not by how t
 Words like "intro", "advanced" or "beginner" can be misleading. Read the prerequisites.
 Return JSON only: {"level": "beginner|intermediate|expert", "reason": "<one short sentence>"}`;
 
-/** Suggestion only: the organiser confirms or changes it in the form. */
+/** Accepts "Beginner", " expert ", "advanced" (→ expert) etc. */
+export function normalizeLevel(value: unknown): Level | null {
+  const s = String(value ?? "").toLowerCase();
+  const m = s.includes("|") ? null : s.match(/beginner|intermediate|expert|advanced/); // "a|b|c" = template echoed, not a choice
+  if (!m) return null;
+  return m[0] === "advanced" ? "expert" : (m[0] as Level);
+}
+
+/** Suggestion only: the organiser confirms or changes it in the form. Returns null only if Gemma is unreachable. */
 export async function suggestLevel(title: string, description: string): Promise<{ level: Level; reason: string } | null> {
-  const out = await askJSON<{ level: string; reason?: string }>(
+  const out = await askJSON<{ level?: unknown; reason?: string }>(
     LEVEL_SYSTEM, JSON.stringify({ title, description }), { model: GEMMA_QUALITY });
-  if (!out || !(LEVELS as string[]).includes(out.level)) return null;
-  return { level: out.level as Level, reason: out.reason ?? "" };
+  const level = normalizeLevel(out?.level);
+  if (!level) {
+    if (out) console.warn("[gemma] suggestLevel: unexpected output", out);
+    return null;
+  }
+  return { level, reason: typeof out?.reason === "string" ? out.reason : "" };
 }
 
 // ---------- explainSystem → POST /api/explain (from Kaggle: explain_system) ----------
@@ -161,7 +179,8 @@ How to answer:
 - Explain in 2-4 short sentences, then give one everyday analogy, then one tiny example.
 - If the person apologises for asking, reassure them in one short phrase, with no lecture.${ctx}
 - If you are not sure, say so. Never invent details about events.
-- Reply in the same language as the question. If the question is in Serbian, answer in Serbian (Latin script).`;
+- Write plain text: no LaTeX or math notation (write "1024 x 1024", not formulas).
+- Reply in the same language as the question. If the question is in Serbian, answer in Serbian (Latin script) and use the informal "ti" throughout.`;
 }
 
 /** Non-streaming answer with the quality gate built in (regenerates once if judgment words slip through). */
@@ -194,7 +213,7 @@ export async function guideDraft(topic: string): Promise<string> {
 Markdown: a title, 3-5 short sections with ## headings, a short "You've got this" ending. 300-450 words.
 Answer the questions a nervous first-timer actually has. Never call anything easy, basic or obvious; never use "just" or "simply".
 Do not invent specific events, dates, prices or organisations.`;
-  return ask(system, topic, { model: GEMMA_QUALITY, temperature: 0.6 });
+  return ask(system, topic, { model: GEMMA_QUALITY, temperature: 0.6, maxTokens: 4096 });
 }
 
 // =====================================================================
