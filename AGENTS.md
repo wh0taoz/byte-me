@@ -12,9 +12,9 @@ deployed on Vercel.
 Pivoted on 10 Oct 2026 evening from the old "organiser platform" (Role
 Packs). Authoritative scope + contracts: `00-TEAM-SPLIT.md` (repo root),
 plus `P1-ml-and-pitch.md`, `P2-backend.md`, `P3-frontend.md`. Old
-organiser tables remain in Supabase (kept, harmless) and old organiser
-routes remain in `src/app/api/` until they break the build — do not
-extend them.
+organiser routes and unused lib files were removed (commit dbb2d54); old
+organiser tables remain in Supabase (kept, harmless) — do not resurrect
+either.
 
 ## Data model (LOCKED — do not change without team agreement)
 - events: id, title, organizer, type (hackathon|meetup|seminar|workshop|
@@ -46,10 +46,6 @@ Planned (P2, contracts in 00-TEAM-SPLIT.md):
   POST /api/going/attended
 - team_posts: P3 reads/writes directly with the Supabase browser client
   (no route of our own)
-
-Legacy (old product, still on disk — do not use, remove if they break
-the build): /api/role-pack/apply, /api/role-pack/revoke, /api/restock,
-/api/assign, /api/command
 
 ## Conventions
 - Dates: ISO 8601
