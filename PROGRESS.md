@@ -1,12 +1,14 @@
 # Progress
 
-Last updated: 11 Oct 2026, 01:20
+Last updated: 11 Oct 2026, 02:02
 
 ## P1 — AI / Pitch
 - [x] Prompt functions in src/lib/gemma.ts (all exported functions, incl. answerWithoutJudgment, simplify, eventSummary, suggestLevel, guideDraft)
 - [x] containsJudgment + judgmentWords helpers
 - [x] No-judgment chatbot tone (smoke test: 5/5 replies clean, Serbian answered in Serbian)
 - [x] scripts/test-gemma.ts smoke test (note: suggestLevel returned null on the misleading-description case — P1 to check before POST /api/events)
+- [x] suggestLevel bug fixed (normalizeLevel helper) — commit 30ad0b9
+- [x] gemma.ts hardening (maxTokens, retry temp, LaTeX rule)
 - [ ] Kaggle notebook + synthetic dataset
 - [ ] Before/after accuracy number for the pitch
 - [ ] Pitch deck skeleton + demo script
@@ -28,7 +30,7 @@ Last updated: 11 Oct 2026, 01:20
 - [x] Seed translated to English (fcf4d11)
 - [x] Seed re-run in Supabase (verified: 15 events, 6 beginner / 6 intermediate / 3 expert, 2 hackathons, English)
 - [x] 15 AI summaries regenerated after the re-run (15/15; one retry on ReDesign for Her)
-- Vercel deploy skipped — no live demo possible (projector issue). Pitch is video + slides.
+- [x] Skip Vercel deploy logged — video-first pitch
 - Blocked by: none
 
 ## P3 — Frontend
@@ -38,6 +40,8 @@ Last updated: 11 Oct 2026, 01:20
 - [ ] Add to calendar (.ics)
 - [ ] Guides pages (3)
 - [ ] Light if green: Team Board, organizer form, My steps
+- [ ] P3's work is on `origin/homepage` branch (commit b12e07a, Krstinja, 01:55) — NOT merged to main. BLOCKER for video recording.
+- Note: violates the 16:00 main-only decision. P3 must merge to main ASAP.
 - Blocked by: none — unblocked since the 22:30 checkpoint
 
 ## Checkpoints

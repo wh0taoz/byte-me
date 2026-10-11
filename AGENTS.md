@@ -5,8 +5,9 @@
 (beginner / intermediate / expert), with Gemma explaining everything to a
 beginner — without judgment. The test for every feature: does it reduce
 the fear of the first step? Stack: Next.js (App Router, TypeScript,
-Tailwind v4), Supabase (Postgres), Gemma via Google AI Studio API,
-deployed on Vercel.
+Tailwind v4), Supabase (Postgres), Gemma via Google AI Studio API.
+Deployment: localhost only for hackathon demo (video-first pitch, no
+live demo).
 
 ## Status
 Pivoted on 10 Oct 2026 evening from the old "organiser platform" (Role
@@ -104,10 +105,11 @@ eventName)`.
 - Native app
 - Monetization
 - Social features (feeds, ratings, leaderboards)
+- Vercel deploy for hackathon (video-first pitch)
 
 ## Rules
-- Feature freeze at Hour 04:00 (adjusted from 06:00); first deploy at
-  Hour 00:30 (moved up from 01:30)
+- Feature freeze at Hour 04:00 (adjusted from 06:00)
+- No Vercel deploy for hackathon — all testing on localhost
 - Every AI result can be overridden (e.g. organizer confirms the
   suggested level in the UI)
 - 00-TEAM-SPLIT.md wins on any scope or contract disagreement

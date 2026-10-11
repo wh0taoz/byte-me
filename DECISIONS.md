@@ -6,6 +6,11 @@ Format:
 - Reason: why we decided it
 - Consequence: what this means for the project
 
+## 11 Oct 2026, 01:30 — Skip Vercel deploy
+- Decision: No Vercel deploy for hackathon demo.
+- Reason: Cannot connect laptop to projector during pitch. Live demo impossible. Pitch is video + slides.
+- Consequence: All testing on localhost. Backup video is primary demo artifact. Vercel remains future roadmap item.
+
 ## 10 Oct 2026, 23:55 — AiSummary shape changed by P1
 - Decision: ai_summary uses {what_to_expect, is_this_for_me, key_terms, prior_knowledge, bring} instead of originally locked {summary, key_terms, prior_knowledge, good_for_beginners_because}.
 - Reason: P1 implemented the function; simpler to adapt routes than rewrite prompts.
@@ -25,6 +30,7 @@ Format:
 - Decision: Vercel deploy at the 00:30 checkpoint instead of 01:30.
 - Reason: Deploy early to catch env/build issues before the AI routes land.
 - Consequence: /api/health and the events endpoints go live early; every merge to main must keep deploying.
+- (Superseded 11 Oct 01:30: Vercel deploy skipped for hackathon — see the newer decision.)
 
 ## 10 Oct 2026, 21:15 — Pivot to EVERY STEP COUNTS
 - Decision: Drop the organiser platform (Role Packs). Build "Every Step Counts": all tech events in one place, labeled by difficulty, with Gemma explaining everything to a beginner without judgment.
