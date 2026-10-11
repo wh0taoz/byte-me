@@ -7,13 +7,6 @@ import { fmtTime, smartRange } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { LevelPill } from "./ui";
 
-/** Card art header background: the level's soft fill. */
-const LEVEL_BG: Record<EventRow["level"], string> = {
-  beginner: "bg-level-beginner-soft",
-  intermediate: "bg-level-intermediate-soft",
-  expert: "bg-level-expert-soft",
-};
-
 export function EventCard({
   event: e,
   saved,
@@ -32,8 +25,8 @@ export function EventCard({
         past && "opacity-75 saturate-[0.6]",
       )}
     >
-      {/* ---- art half: level tint + Pip level art IS the level ---- */}
-      <div className={cn("relative h-[150px] shrink-0", LEVEL_BG[e.level])}>
+      {/* ---- art half: position-based gradient + Pip level art ---- */}
+      <div className="art-flow relative h-[150px] shrink-0">
         <LevelPill level={e.level} className="absolute left-4 top-4" />
         {/* eslint-disable-next-line @next/next/no-img-element -- kit level art */}
         <img

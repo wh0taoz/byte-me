@@ -76,6 +76,25 @@ h1, h2, h3, .font-title {
   border-radius: var(--radius-card);
 }
 
+/* ---- event card art ----------------------------------------------------
+   One gradient flowing ACROSS each row of cards — position-based, not
+   level-based: lightest→mid, mid→dark, dark→darkest (nth-child cycle).
+   Mobile (1 column) keeps the steady mid gradient so nothing jumps. */
+.art-flow {
+  background: linear-gradient(135deg, #F7B26A 0%, #D65505 100%);
+}
+@media (min-width: 640px) {
+  .events-grid > li:nth-child(3n+1) .art-flow {
+    background: linear-gradient(135deg, #FDDF84 0%, #F7B26A 100%);
+  }
+  .events-grid > li:nth-child(3n+2) .art-flow {
+    background: linear-gradient(135deg, #F7B26A 0%, #D65505 100%);
+  }
+  .events-grid > li:nth-child(3n) .art-flow {
+    background: linear-gradient(135deg, #D65505 0%, #4A0D02 100%);
+  }
+}
+
 /* ---- brand accents ------------------------------------------------- */
 /* SCOUT gradient — hero, Ask Pip floating button (and nothing else). */
 .brand-gradient {
