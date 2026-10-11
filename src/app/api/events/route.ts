@@ -21,11 +21,16 @@ export async function GET(req: Request) {
   let query = supabaseAdmin.from("events").select("*").order("starts_at", { ascending: true });
   if (level) query = query.eq("level", level);
   if (type) query = query.eq("type", type);
-  if (city) query = query.eq("city", city);
+  const cityTrimmed = city?.trim();
+  if (cityTrimmed) query = query.ilike("city", cityTrimmed); // "belgrade" works too
 
   const { data, error } = await query;
   if (error) {
-    return NextResponse.json({ error: error.message, code: 500 }, { status: 500 });
+    console.error("[events] list failed:", error.message);
+    return NextResponse.json(
+      { error: "We couldn't load events right now — please try again.", code: 500 },
+      { status: 500 },
+    );
   }
   return NextResponse.json(data);
 }

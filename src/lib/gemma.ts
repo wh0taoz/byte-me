@@ -6,7 +6,16 @@
 
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! });
+// Lazy init: a missing GEMINI_API_KEY must not crash module load (that would
+// take down every importing route before its try/catch could show a fallback).
+let ai: GoogleGenAI | null = null;
+function client(): GoogleGenAI {
+  if (!ai) {
+    if (!process.env.GEMINI_API_KEY) throw new Error("GEMINI_API_KEY is not set");
+    ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+  }
+  return ai;
+}
 
 export const GEMMA_FAST = "gemma-4-26b-a4b-it";   // chat, tagging, matching, simplify
 export const GEMMA_QUALITY = "gemma-4-31b-it";    // summaries, levels, intros, guides
@@ -21,9 +30,10 @@ interface AskOptions { model?: string; temperature?: number; maxTokens?: number 
 
 async function generate(system: string, user: string, json: boolean, opts: AskOptions = {}): Promise<string> {
   const { model = GEMMA_FAST, temperature = json ? 0 : 0.4, maxTokens = 2048 } = opts;
+  const g = client(); // throws fast when unconfigured, before any retries
   for (let attempt = 0; attempt < 4; attempt++) {
     try {
-      const res = await ai.models.generateContent({
+      const res = await g.models.generateContent({
         model,
         contents: supportsSystem ? user : `${system}\n\n${user}`,
         config: {

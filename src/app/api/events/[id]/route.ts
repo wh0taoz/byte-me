@@ -17,6 +17,11 @@ const FALLBACK_SUMMARY: AiSummary = {
 
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  // A non-UUID id makes Postgres throw "invalid input syntax" — answer 404
+  // instead of leaking a raw database error for typo'd/stale URLs.
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)) {
+    return NextResponse.json({ error: "Event not found", code: 404 }, { status: 404 });
+  }
 
   const { data: event, error } = await supabaseAdmin
     .from("events")
@@ -25,7 +30,11 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     .maybeSingle();
 
   if (error) {
-    return NextResponse.json({ error: error.message, code: 500 }, { status: 500 });
+    console.error("[events] detail failed:", error.message);
+    return NextResponse.json(
+      { error: "We couldn't load this event right now — please try again.", code: 500 },
+      { status: 500 },
+    );
   }
   if (!event) {
     return NextResponse.json({ error: "Event not found", code: 404 }, { status: 404 });
