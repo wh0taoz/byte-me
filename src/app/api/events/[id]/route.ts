@@ -6,6 +6,8 @@ import { eventSummary, type AiSummary } from "@/lib/gemma";
 
 export const maxDuration = 30;
 
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 // Never cached — if Gemma fails we say so kindly and retry on the next read.
 const FALLBACK_SUMMARY: AiSummary = {
   what_to_expect: "I couldn't load the AI summary right now — try again in a moment.",
@@ -17,10 +19,10 @@ const FALLBACK_SUMMARY: AiSummary = {
 
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  // A non-UUID id makes Postgres throw "invalid input syntax" — answer 404
-  // instead of leaking a raw database error for typo'd/stale URLs.
-  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)) {
-    return NextResponse.json({ error: "Event not found", code: 404 }, { status: 404 });
+  // A non-UUID id makes Postgres throw "invalid input syntax" — reject it
+  // up front instead of leaking a raw database error for typo'd/stale URLs.
+  if (!UUID_RE.test(id)) {
+    return NextResponse.json({ error: "Invalid event id", code: 400 }, { status: 400 });
   }
 
   const { data: event, error } = await supabaseAdmin
