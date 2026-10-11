@@ -35,7 +35,7 @@ export function EventCard({
     >
       {/* ---- art half: level gradient + Pip level art ---- */}
       <div className={cn("relative h-[150px] shrink-0", LEVEL_BG[e.level])}>
-        <LevelPill level={e.level} className="absolute left-4 top-4" />
+        <LevelPill level={e.level} bare className="absolute left-4 top-4" />
         {/* eslint-disable-next-line @next/next/no-img-element -- kit level art */}
         <img
           src={levelArt(e.level)}

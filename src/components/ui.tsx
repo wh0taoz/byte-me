@@ -11,9 +11,15 @@ export function Spinner({ className }: { className?: string }) {
 }
 
 /**
- * Level badge: 8px dot + the word (never colour alone) on the level's soft fill.
- * Light → dark = easy → hard.
+ * Level badge: 8px dot + the word (never colour alone).
+ * `bare` = dot + text only, no pill shape — for use on the card gradients,
+ * where the level's own tint already provides the backdrop.
  */
+const LEVEL_TEXT: Record<Level, string> = {
+  beginner: "text-level-beginner",
+  intermediate: "text-level-intermediate",
+  expert: "text-level-expert",
+};
 const LEVEL_STYLE: Record<Level, string> = {
   beginner: "bg-level-beginner-soft text-level-beginner",
   intermediate: "bg-level-intermediate-soft text-level-intermediate",
@@ -23,18 +29,23 @@ const LEVEL_STYLE: Record<Level, string> = {
 export function LevelPill({
   level,
   size = "md",
+  bare = false,
   className,
 }: {
   level: Level;
   size?: "sm" | "md";
+  bare?: boolean;
   className?: string;
 }) {
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-2 rounded-full font-bold uppercase tracking-[0.06em]",
-        size === "sm" ? "px-2.5 py-1 text-[11px]" : "px-3 py-[5px] text-xs",
-        LEVEL_STYLE[level],
+        "inline-flex items-center gap-2 font-bold uppercase tracking-[0.06em]",
+        bare
+          ? cn(LEVEL_TEXT[level], "[text-shadow:0_1px_2px_rgba(39,9,2,0.3)]")
+          : cn("rounded-full", LEVEL_STYLE[level]),
+        !bare && (size === "sm" ? "px-2.5 py-1" : "px-3 py-[5px]"),
+        size === "sm" ? "text-[11px]" : "text-xs",
         className,
       )}
       title={`Level: ${levelLabel(level)}`}
