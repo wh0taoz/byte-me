@@ -45,7 +45,7 @@ Format:
 ## 10 Oct 2026, 21:15 — Self-hosted Gemma deferred to production
 - Decision: Hosted Gemma via Google AI Studio API for the hackathon; self-hosting (Ollama, small Gemma) is the production plan for the pitch slide only.
 - Reason: The hosted API is faster to ship in the time we have.
-- Consequence: Pitch says "Gemma 4" (current generation); models: gemma-4-26b-a4b-it for chat/simplify, gemma-4-31b-it for summaries and level suggestions.
+- Consequence: Pitch says "Gemma 4" (current generation); models: gemma-4-26b-a4b-it for chat, gemma-4-31b-it for simplify, summaries and level suggestions. (Updated 11 Oct: simplify moved to the 31b model in bd6267b.)
 
 ## 10 Oct 2026, 21:15 — Manual event data, no scraping
 - Decision: Events are entered manually (seed data + organizer submit form). No scraping, no Meetup/Luma import.

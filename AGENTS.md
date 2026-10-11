@@ -77,8 +77,9 @@ Base calls:
   is unreachable after retries. opts: {model?, temperature?}
 - `askJSON<T>(system, user, opts?)` — parsed JSON or null, never throws
 
-Constants: `GEMMA_FAST` = gemma-4-26b-a4b-it (chat, simplify) ·
-`GEMMA_QUALITY` = gemma-4-31b-it (summaries, level suggestions).
+Constants: `GEMMA_FAST` = gemma-4-26b-a4b-it (chat) ·
+`GEMMA_QUALITY` = gemma-4-31b-it (simplify, summaries, level
+suggestions).
 Type `Level` = "beginner" | "intermediate" | "expert".
 
 Route-facing prompt functions:

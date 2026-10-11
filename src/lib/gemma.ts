@@ -17,8 +17,8 @@ function client(): GoogleGenAI {
   return ai;
 }
 
-export const GEMMA_FAST = "gemma-4-26b-a4b-it";   // chat, tagging, matching, simplify
-export const GEMMA_QUALITY = "gemma-4-31b-it";    // summaries, levels, intros, guides
+export const GEMMA_FAST = "gemma-4-26b-a4b-it";   // chat (answerWithoutJudgment)
+export const GEMMA_QUALITY = "gemma-4-31b-it";    // simplify, summaries, level suggestions, guides, intros
 
 // =====================================================================
 // Core helpers: ask() for text, askJSON() for structured output
