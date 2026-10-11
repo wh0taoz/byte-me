@@ -60,6 +60,10 @@ Live:
 - GET /api/guides → Guide[] ordered
 - GET/POST /api/profiles → list / create demo profile (nickname
   identity, no auth)
+- GET /api/github/[username] → GitHub profile + recent repos
+  (top languages derived; 1h in-memory cache; 400 invalid name,
+  404 not found, 429 rate limit, 502 GitHub down; optional
+  GITHUB_TOKEN raises 60→5000 req/h)
 
 Planned (P2, contracts in 00-TEAM-SPLIT.md):
 - light: POST /api/events (organizer form with suggestLevel)

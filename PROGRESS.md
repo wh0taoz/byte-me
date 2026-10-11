@@ -1,6 +1,6 @@
 # Progress
 
-Last updated: 11 Oct 2026, 10:44
+Last updated: 11 Oct 2026, 11:01
 
 ## P1 — AI / Pitch
 - [x] Prompt functions in src/lib/gemma.ts (all exported functions, incl. answerWithoutJudgment, simplify, eventSummary, suggestLevel, guideDraft)
@@ -39,6 +39,7 @@ Last updated: 11 Oct 2026, 10:44
 - [x] Friendly errors everywhere: uuid guards → 404 (no raw Postgres), FK → 422, 5xx mapped to friendly text (details only in server logs)
 - [x] ICS: DTSTAMP + CALSCALE, DTEND defaults +2h, 75-octet folding, escaped URL, slug filename
 - [x] gemma.ts client is lazy — missing GEMINI_API_KEY degrades to fallbacks instead of crashing route module load
+- [x] GET /api/github/[username] (GitHub profile + recent repos, 1h cache, friendly errors; verified torvalds/gaearon/sindresorhus + 404/400/long-name cases)
 - Blocked by: none
 
 ## P3 — Frontend
