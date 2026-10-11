@@ -1,10 +1,10 @@
 -- Every Step Counts — demo seed. Re-runnable: truncate + re-insert, paste & run any time.
--- All dates are within 6 weeks of 2026-10-10. Level mix: 6 beginner / 6 intermediate / 3 expert.
+-- All dates are within 7 weeks of 2026-10-10. Level mix: 11 beginner / 14 intermediate / 10 expert.
 
 truncate events, guides, profiles, going, team_posts restart identity cascade;
 
 -- ============================================================
--- 15 EVENTS
+-- 35 EVENTS
 -- ============================================================
 insert into events (title, organizer, type, level, city, starts_at, ends_at, venue, registration_url, description, what_to_expect) values
 
@@ -156,7 +156,207 @@ insert into events (title, organizer, type, level, city, starts_at, ends_at, ven
  array['An advanced workshop — confident knowledge of some programming language is required',
        'Boards and sensors are provided, bring only a laptop',
        'We work in teams of three with mentors from the faculty',
-       'Lunch and breaks are included in the workshop price']);
+       'Lunch and breaks are included in the workshop price']),
+
+-- 16. Thu 5 → Fri 6 Nov, expert conference, Belgrade
+('Heapcon 2026', 'Heapspace', 'conference', 'expert', 'Belgrade',
+ '2026-11-05 09:00+02', '2026-11-06 18:30+02', 'Kolarac Endowment, Studentski trg 11',
+ 'https://heapcon.rs/2026',
+ 'Heapcon is the annual conference of the Heapspace community for developers who ship software: two tracks on backend performance, distributed systems and developer experience. Talks go deep into profiling flame graphs, garbage collector tuning, event sourcing and the tradeoffs of eventual consistency. The hallway track is part of the program, so expect sharp arguments about programming languages until late.',
+ array['Two days of talks in two tracks, no workshops',
+       'Talks assume you build software for a living',
+       'Short lightning talks between the main ones',
+       'Tickets sell out, decide early']),
+
+-- 17. Wed 4 → Thu 5 Nov, intermediate conference, Belgrade
+('BIZIT 2026', 'BIZIT', 'conference', 'intermediate', 'Belgrade',
+ '2026-11-04 09:00+02', '2026-11-05 16:00+02', 'Belexpo Centar, Bulevar Vojvode Mišića 18',
+ 'https://bizit.rs/2026',
+ 'BIZIT gathers the business and IT sides of companies: digital transformation, ERP implementations and product management in large organizations. Presentations cover integration platforms, process mining and change management when a new system replaces twenty years of spreadsheets. Case studies come from banks, telecoms and public administration.',
+ array['Two days of case studies from regional companies',
+       'Talks sit between business and technology, no code on slides',
+       'Panels with people who decide on IT budgets',
+       'A good place to meet managers and companies']),
+
+-- 18. Tue 24 → Thu 26 Nov, expert conference, Belgrade
+('TELFOR 2026', 'ETF Belgrade', 'conference', 'expert', 'Belgrade',
+ '2026-11-24 09:00+02', '2026-11-26 16:00+02', 'ETF, Bulevar kralja Aleksandra 73',
+ 'https://telfor.rs/2026',
+ 'TELFOR is the traditional telecommunications forum: three days of papers on radio access networks, optical transport, signal processing and spectrum policy. Sessions run in English and Serbian, and every paper is reviewed before it reaches the program. The exhibition floor shows test and measurement equipment from operator networks.',
+ array['Scientific program, each paper gets twenty minutes',
+       'Presentations in English and Serbian',
+       'Students have their own session and a jury',
+       'Registration is cheaper for students and IEEE members']),
+
+-- 19. Sun 25 Oct, beginner meetup, Belgrade
+('Python Belgrade Monthly Meetup', 'Python Belgrade', 'meetup', 'beginner', 'Belgrade',
+ '2026-10-25 18:00+02', '2026-10-25 21:00+02', 'ICT Hub, Kralja Milana 10',
+ 'https://pythonbelgrade.rs/meetup-oktobar-2026',
+ 'An evening with two talks: a gentle tour of async and await in Python and when they actually help, then building a command line tool in Typer and publishing it to PyPI. Between talks there is time for questions, lightning announcements and the traditional pub continuation. All levels are welcome.',
+ array['Two talks, the first one friendly to complete beginners',
+       'No Python experience needed to follow the story',
+       'The second half is open conversation',
+       'We continue in the pub next door afterwards']),
+
+-- 20. Tue 27 Oct, beginner meetup, Belgrade
+('JS Belgrade Monthly Meetup', 'JS Belgrade', 'meetup', 'beginner', 'Belgrade',
+ '2026-10-27 18:30+02', '2026-10-27 21:30+02', 'HUB 201, Kralja Petra 20',
+ 'https://jsbelgrade.rs/meetup-oktobar-2026',
+ 'Two talks about the modern web platform: what the V8 engine does between your source file and the CPU, and how React server components change where your code runs. We close with a live session on finding memory leaks in browser DevTools. Questions from beginners are explicitly welcome.',
+ array['Two talks with a break, then open discussion',
+       'Recordings land on the YouTube channel afterwards',
+       'Bring a laptop if you want to follow the demo',
+       'Free entry, registration only counts the seats']),
+
+-- 21. Fri 30 Oct, beginner meetup, Niš
+('NišJS Meetup', 'NišJS', 'meetup', 'beginner', 'Niš',
+ '2026-10-30 18:00+02', '2026-10-30 20:30+02', 'Innovation Center Niš, University of Niš',
+ 'https://nisjs.rs/meetup-oktobar-2026',
+ 'A meetup of the Niš JavaScript community: this month a talk about how bundlers work — parse, transform, minify — and why the node_modules folder grows so large. The second part is a show and tell of small side projects from the community. The atmosphere is informal.',
+ array['One talk, then anyone can show what they are building',
+       'Half of the audience is at their first meetup',
+       'Free entry, registration just counts the seats',
+       'We go for a drink together afterwards']),
+
+-- 22. Fri 6 Nov, intermediate meetup, Niš
+('NisJUG Java User Group', 'NisJUG', 'meetup', 'intermediate', 'Niš',
+ '2026-11-06 18:00+02', '2026-11-06 20:30+02', 'Faculty of Electronic Engineering Niš, Aleksandra Medvedeva 14',
+ 'https://nisjug.rs/meetup-novembar-2026',
+ 'The Niš Java User Group meets at the faculty of electronic engineering: this session covers JVM garbage collectors after the generational ZGC change, plus a practical part on profiling a Spring Boot service under load. Expect live flame graphs and long arguments about heap sizes.',
+ array['A technical talk, then hands-on profiling on provided laptops',
+       'Best if you already write Java or a similar language',
+       'Students from the faculty get the front seats',
+       'The speaker stays for questions after the session']),
+
+-- 23. Tue 3 Nov, intermediate meetup, Belgrade
+('Kubernetes Belgrade Meetup', 'Kubernetes Belgrade', 'meetup', 'intermediate', 'Belgrade',
+ '2026-11-03 18:30+02', '2026-11-03 21:30+02', 'Endava, Ulica Kneza Miloša 33',
+ 'https://kubernetesbelgrade.rs/meetup-novembar-2026',
+ 'This month: GitOps with Argo CD — how a git commit becomes a deployment, rollbacks included. The second talk covers pod autoscaling under real traffic and why the horizontal pod autoscaler needs custom metrics. A short hands-on slot lets everyone deploy a demo app to a local cluster.',
+ array['Two talks plus a short hands-on demo',
+       'Basic Docker knowledge helps, the rest is explained',
+       'Bring a laptop if you want to deploy along',
+       'Pizza and drinks during the break']),
+
+-- 24. Wed 11 Nov, intermediate meetup, Belgrade
+('DevOps Meetup Belgrade', 'DevOps Belgrade', 'meetup', 'intermediate', 'Belgrade',
+ '2026-11-11 18:00+02', '2026-11-11 21:00+02', 'Vega IT, Bulevar Zorana Đinđića 80',
+ 'https://devopsbelgrade.rs/meetup-novembar-2026',
+ 'An evening about the unglamorous parts of the pipeline: secrets management with Vault, tracing with OpenTelemetry and post-mortems after incidents. The main talk walks through a real production outage and what the blameless retrospective changed afterwards. We close with a tooling show and tell.',
+ array['One main talk, one short one, then discussion',
+       'For people who run systems, or plan to',
+       'Engineers present their own setups, no sales talks',
+       'Questions during the talks are fine']),
+
+-- 25. Thu 19 Nov, intermediate meetup, Belgrade
+('Game Dev Meetup by SGA', 'SGA', 'meetup', 'intermediate', 'Belgrade',
+ '2026-11-19 18:00+02', '2026-11-19 21:00+02', 'Startit Center, Kraljice Natalije 32',
+ 'https://sga.rs/meetup-novembar-2026',
+ 'The Serbian Games Association meetup: a talk about procedural content generation in Unity — noise functions, tile based generation and keeping the result fun to play. The second slot is a portfolio review where artists and designers get honest feedback. Studios from Belgrade usually come to scout.',
+ array['A technical talk, then portfolio review in small groups',
+       'For artists, designers and programmers alike',
+       'Local studios come to look for people',
+       'Registration helps us count the pizza']),
+
+-- 26. Sat 14 → Sun 15 Nov, intermediate hackathon, Belgrade
+('FON Hackathon: Web4 Challenge', 'FON', 'hackathon', 'intermediate', 'Belgrade',
+ '2026-11-14 10:00+02', '2026-11-15 18:00+02', 'FON, Jove Ilića 10',
+ 'https://fon.rs/hakaton-web4-2026',
+ 'The Web4 Challenge at FON: a weekend around decentralized identity, verifiable credentials and what a semantic web application looks like in practice. Teams get API credits from sponsors and mentors who have shipped products in this space. The jury values a working demo over a whitepaper.',
+ array['Teams of three to five, formed on Saturday morning',
+       'Bring a laptop, mentors handle the rest',
+       'The opening session explains the Web4 basics',
+       'Sunday afternoon is demo day with sponsor prizes']),
+
+-- 27. Sun 15 Nov, expert conference, Belgrade
+('Bubble Cup Finals 2026', 'Microsoft Development Center Serbia', 'conference', 'expert', 'Belgrade',
+ '2026-11-15 09:00+02', '2026-11-15 16:00+02', 'Ušće Business Center, Bulevar Mihajla Pupina 6',
+ 'https://bubblecup.com/finals-2026',
+ 'The finals of the Bubble Cup competitive programming tournament: the best teams from the region solve problems live on stage, with commentary. After the contest an engineer from the organizing team explains the intended solutions and the trick behind the hardest problem. The atmosphere is a sports final for algorithms.',
+ array['Live competitive programming finals with commentary',
+       'The problems are explained after the contest',
+       'You can solve along on your own laptop',
+       'For lovers of algorithms, heavy math on the screen']),
+
+-- 28. Thu 12 Nov, expert conference, Niš
+('Forum of Advanced Technologies (FNT)', 'FNT', 'conference', 'expert', 'Niš',
+ '2026-11-12 09:00+02', '2026-11-12 17:00+02', 'Science Technology Park Niš',
+ 'https://fntnis.rs/2026',
+ 'FNT gathers the advanced manufacturing and deep tech scene of southern Serbia: industrial automation, photonics, PCB design and embedded control systems. Exhibitors range from university labs to suppliers for automotive production lines. The conference program connects research groups with factories looking for automation.',
+ array['Exhibition floor plus a full day of talks',
+       'Talks aim at engineers and researchers',
+       'Students enter free with a student card',
+       'Meetings between laboratories and companies all day']),
+
+-- 29. Wed 18 Nov, intermediate meetup, Novi Sad
+('NS Tech Connect', 'NS Tech', 'meetup', 'intermediate', 'Novi Sad',
+ '2026-11-18 18:30+02', '2026-11-18 21:30+02', 'Startit Center Novi Sad, Veljka Petrovića 2',
+ 'https://nstech.rs/connect-2026',
+ 'The Novi Sad meetup for people between disciplines: this edition pairs a talk on search relevance engineering with one on onboarding design for developer tools. The format is short talks and long breaks, because the point is the conversations in between. Recruiters are politely asked to listen, not to pitch.',
+ array['Two short talks, long breaks in between',
+       'A mixed crowd of developers, designers and product people',
+       'Come alone, the format starts new conversations',
+       'Free with registration, drinks covered by sponsors']),
+
+-- 30. Sun 8 → Tue 10 Nov, expert conference, Novi Sad
+('IS 26 Conference', 'ZNIS', 'conference', 'expert', 'Novi Sad',
+ '2026-11-08 09:00+02', '2026-11-10 16:00+02', 'Fakultet tehničkih nauka (FTN), Trg Dositeja Obradovića 6',
+ 'https://znis.rs/is-26',
+ 'IS 26 is the international conference on information society technologies: three days of refereed papers on data engineering, software quality and human-computer interaction. Sessions run in parallel tracks, each paper gets a discussant, and the best papers go to a journal special issue. The proceedings are indexed, so citations matter here.',
+ array['Academic conference, three days of parallel tracks',
+       'Presentations in English, each followed by questions',
+       'Registration includes the printed proceedings',
+       'Students can volunteer for free entry']),
+
+-- 31. Sun 8 → Tue 10 Nov, beginner workshop, Kragujevac
+('ParkUP! Student Startup Camp', 'ParkUP', 'workshop', 'beginner', 'Kragujevac',
+ '2026-11-08 10:00+02', '2026-11-10 18:00+02', 'Fakultet inženjerskih nauka (FINK), Sestre Janjić 6',
+ 'https://parkup.rs/2026',
+ 'ParkUP! is a three-day camp where student teams turn rough ideas into pitched startups: customer discovery, the lean canvas and a demo that has to work on the last day. Mentors from Belgrade and Kragujevac startups rotate between the teams. No business experience is expected.',
+ array['A camp, not a lecture, you work on your own idea',
+       'Teams of two to four, formed on the first morning',
+       'No experience needed, mentors explain every step',
+       'The last day is pitch day in front of a friendly jury']),
+
+-- 32. Wed 28 Oct, beginner meetup, Novi Sad
+('LUGoNS Linux User Group', 'LUGoNS', 'meetup', 'beginner', 'Novi Sad',
+ '2026-10-28 18:00+02', '2026-10-28 20:30+02', 'LUGoNS hackerspace, Bulevar Oslobođenja 92',
+ 'https://lugons.org/meetup-oktobar-2026',
+ 'The Novi Sad Linux user group meets monthly: this time a hands-on session on installing Arch Linux the manual way — partitioning, chroot and a window manager that does nothing until you configure it. Bring a laptop, or just watch someone else fix their bootloader. All questions get answers.',
+ array['A hands-on session, you can follow on your own laptop',
+       'Absolute beginners welcome, we start from zero',
+       'Free entry, no registration needed',
+       'The group is small, so everyone gets attention']),
+
+-- 33. Fri 20 → Sat 21 Nov, expert conference, Subotica
+('MLC — Machine Learning Conference', 'MLC', 'conference', 'expert', 'Subotica',
+ '2026-11-20 09:00+02', '2026-11-21 17:00+02', 'Open University Subotica, Segedinski put 21',
+ 'https://mlc.rs/2026',
+ 'MLC brings the machine learning community to Subotica: invited talks on diffusion models, quantization of large language models and evaluation under distribution shift. The second day is hands-on, with a guided lab on fine-tuning a small model on local hardware. Papers and demos fill the poster session in between.',
+ array['Invited talks the first day, a hands-on lab the second',
+       'The lab has computers, you can come without a laptop',
+       'Aimed at people already working with machine learning',
+       'Student tickets are half price']),
+
+-- 34. Sun 22 Nov, expert conference, Niš
+('TechIntelligence 2026', 'TechIntelligence', 'conference', 'expert', 'Niš',
+ '2026-11-22 09:00+02', '2026-11-22 17:00+02', 'Science Technology Park Niš',
+ 'https://techintelligence.rs/2026',
+ 'A one-day conference on data platforms and applied machine learning: streaming with Kafka, feature stores and real-time fraud detection case studies from regional banks. The closing panel argues whether retrieval-augmented generation is a product or a feature. Talks are dense and assume a data background.',
+ array['One day, one track, eight talks',
+       'Talks assume you work with data or machine learning',
+       'A long lunch break with exhibitor booths',
+       'Certificates of attendance for students']),
+
+-- 35. Mon 16 → Sun 22 Nov, intermediate conference, Belgrade
+('Belgrade Blockchain Week 2026', 'Blockchain Srbija', 'conference', 'intermediate', 'Belgrade',
+ '2026-11-16 18:00+02', '2026-11-22 20:00+02', 'Various venues across Belgrade — see the schedule',
+ 'https://blockchainweek.rs/2026',
+ 'A week of events across Belgrade about distributed ledgers: workshops on writing and auditing smart contracts, panels on regulation under MiCA, and a hackathon weekend that closes the program. Venues change daily, as companies and hubs each host one evening. The full schedule lives on the website.',
+ array['A different event every evening, all over the city',
+       'The weekend hackathon closes the week',
+       'Each evening needs its own registration on the website',
+       'A mixed crowd, from the curious to professional auditors']);
 
 -- ============================================================
 -- 3 GUIDES (English, plain language)
