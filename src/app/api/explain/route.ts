@@ -43,7 +43,7 @@ export async function POST(req: Request) {
     if (event) {
       eventContext =
         `${event.title} (${event.type}, ${event.level} level, ${event.city}, ` +
-        `${new Date(event.starts_at).toLocaleDateString("sr-RS")}) — ` +
+        `${new Date(event.starts_at).toLocaleDateString("en-GB")}) — ` +
         `${String(event.description ?? "").slice(0, 400)}`;
     }
   }

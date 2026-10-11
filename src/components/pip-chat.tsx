@@ -3,7 +3,7 @@
 import { Send, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { getEvent } from "@/lib/api";
+import { getLocalProfile } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import { MASCOT } from "@/lib/kit";
 
@@ -24,24 +24,29 @@ export function PipChat() {
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const pathname = usePathname();
-  const contextRef = useRef<string | undefined>(undefined);
+  const eventIdRef = useRef<string | undefined>(undefined);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  // If we're on an event page, feed Pip the event as context.
+  // Event-aware: /api/explain loads the event server-side from the URL id.
   useEffect(() => {
-    contextRef.current = undefined;
-    const m = pathname?.match(/^\/events\/([^/?]+)/);
-    if (!m) return;
-    void getEvent(m[1])
-      .then((e) => {
-        contextRef.current = `Title: ${e.title}\nOrganizer: ${e.organizer}\nType: ${e.type}\nLevel: ${e.level}\nCity: ${e.city}\nDescription: ${e.description}`;
-      })
-      .catch(() => undefined);
+    eventIdRef.current = pathname?.match(/^\/events\/([^/?]+)/)?.[1];
   }, [pathname]);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
   }, [messages, busy, open]);
+
+  // Focus the composer on open; Esc closes the panel.
+  useEffect(() => {
+    if (!open) return;
+    inputRef.current?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
 
   async function send() {
     const text = input.trim();
@@ -51,13 +56,18 @@ export function PipChat() {
     const next = [...messages, { role: "user" as const, content: text }];
     setMessages(next);
     try {
-      const res = await fetch("/api/chat", {
+      const res = await fetch("/api/explain", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: next.slice(1), context: contextRef.current }),
+        body: JSON.stringify({
+          messages: next.slice(1),
+          event_id: eventIdRef.current,
+          level: getLocalProfile()?.level ?? "beginner",
+        }),
       });
       if (!res.ok) throw new Error(`chat failed (${res.status})`);
       const data = (await res.json()) as { reply: string };
+      // On Gemma failure the route answers 200 with a friendly fallback reply.
       setMessages([...next, { role: "assistant", content: data.reply || "…hiccup. Try again?" }]);
     } catch {
       setMessages([
@@ -69,6 +79,7 @@ export function PipChat() {
       ]);
     } finally {
       setBusy(false);
+      inputRef.current?.focus();
     }
   }
 
@@ -78,6 +89,7 @@ export function PipChat() {
       <button
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Close Pip chat" : "Chat with Pip"}
+        aria-expanded={open}
         className="bg-winter fixed bottom-5 right-5 z-50 flex size-14 items-center justify-center rounded-full border-2 border-surface text-surface shadow-winter transition-transform hover:scale-105"
       >
         {open ? (
@@ -90,7 +102,11 @@ export function PipChat() {
 
       {/* ---- chat panel ---- */}
       {open ? (
-        <div className="card fixed bottom-22 right-5 z-50 flex h-[min(60vh,30rem)] w-[calc(100vw-2.5rem)] max-w-sm flex-col overflow-hidden shadow-winter animate-slide-up">
+        <div
+          role="dialog"
+          aria-label="Chat with Pip"
+          className="card fixed bottom-22 right-5 z-50 flex h-[min(60vh,30rem)] w-[calc(100vw-2.5rem)] max-w-sm flex-col overflow-hidden shadow-winter animate-slide-up"
+        >
           <div className="bg-winter flex items-center gap-2.5 px-4 py-3 text-surface">
             <span className="flex size-9 items-center justify-center rounded-full bg-surface">
               {/* eslint-disable-next-line @next/next/no-img-element -- kit art */}
@@ -102,18 +118,22 @@ export function PipChat() {
             </div>
           </div>
 
-          <div ref={scrollRef} className="flex flex-1 flex-col gap-3 overflow-y-auto bg-bg p-3.5">
+          <div
+            ref={scrollRef}
+            aria-live="polite"
+            className="flex flex-1 flex-col gap-3 overflow-y-auto bg-bg p-3.5"
+          >
             {messages.map((m, i) =>
               m.role === "user" ? (
                 <div key={i} className="flex justify-end">
-                  <p className="max-w-[85%] rounded-2xl rounded-br-sm bg-primary px-3.5 py-2 text-sm leading-relaxed text-surface">
+                  <p className="max-w-[85%] [overflow-wrap:anywhere] rounded-2xl rounded-br-sm bg-primary px-3.5 py-2 text-sm leading-relaxed text-surface">
                     {m.content}
                   </p>
                 </div>
               ) : (
                 <div key={i} className="flex items-end gap-2">
                   <img src={MASCOT.avatar} alt="" className="size-7 shrink-0 rounded-full border border-line bg-surface object-contain" />
-                  <p className="max-w-[85%] rounded-2xl rounded-bl-sm border border-line bg-surface px-3.5 py-2 text-sm leading-relaxed text-ink">
+                  <p className="max-w-[85%] [overflow-wrap:anywhere] rounded-2xl rounded-bl-sm border border-line bg-surface px-3.5 py-2 text-sm leading-relaxed text-ink">
                     {m.content}
                   </p>
                 </div>
@@ -144,6 +164,7 @@ export function PipChat() {
             }}
           >
             <input
+              ref={inputRef}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask Pip anything…"
@@ -155,13 +176,16 @@ export function PipChat() {
               disabled={busy || !input.trim()}
               aria-label="Send"
               className={cn(
-                "flex size-9 shrink-0 items-center justify-center rounded-full bg-primary text-surface transition-colors",
+                "flex size-11 shrink-0 items-center justify-center rounded-full bg-primary text-surface transition-colors",
                 "hover:bg-primary-deep disabled:opacity-40",
               )}
             >
               <Send className="size-4" aria-hidden />
             </button>
           </form>
+          <p className="border-t border-line bg-surface px-3 py-1.5 text-center text-[10px] text-muted">
+            AI helper — answers may contain mistakes. Press Esc to close.
+          </p>
         </div>
       ) : null}
     </>

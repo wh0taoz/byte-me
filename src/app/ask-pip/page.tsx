@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { getLocalProfile } from "@/lib/api";
 import { ICON, MASCOT } from "@/lib/kit";
-import { cn } from "@/lib/utils";
 
 interface Msg {
   role: "user" | "assistant";
@@ -25,7 +25,6 @@ export default function AskPipPage() {
   const [messages, setMessages] = useState<Msg[]>([GREETING]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [asked, setAsked] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
 
@@ -37,22 +36,24 @@ export default function AskPipPage() {
     const question = text.trim();
     if (!question || busy) return;
     setInput("");
-    setError(null);
     setAsked(true);
     setBusy(true);
     const next: Msg[] = [...messages, { role: "user", content: question }];
     setMessages(next);
     try {
-      const res = await fetch("/api/chat", {
+      const res = await fetch("/api/explain", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: next.slice(1) }),
+        body: JSON.stringify({
+          messages: next.slice(1),
+          level: getLocalProfile()?.level ?? "beginner",
+        }),
       });
       if (!res.ok) throw new Error(`Pip couldn't answer (${res.status})`);
       const data = (await res.json()) as { reply: string };
+      // On Gemma failure the route answers 200 with a friendly fallback reply.
       setMessages([...next, { role: "assistant", content: data.reply || "…" }]);
-    } catch (e) {
-      setError((e as Error).message);
+    } catch {
       setMessages([
         ...next,
         {
