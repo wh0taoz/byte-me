@@ -1,4 +1,4 @@
-# StepIn — "Every Step Counts"
+# Scout — "Every Step Counts"
 
 All tech events in one place, labeled by difficulty, with an AI guide that
 explains everything to a beginner — without judgment. Built at a hackathon,
