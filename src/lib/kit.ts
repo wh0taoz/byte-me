@@ -18,6 +18,7 @@ export function levelArt(level: Level): string {
 export const ICON = {
   arrowRight: "/assets/icons/arrow-right.svg",
   bookmark: "/assets/icons/bookmark.svg",
+  bookmarkFilled: "/assets/icons/bookmark-filled.svg",
   calendar: "/assets/icons/calendar.svg",
   chat: "/assets/icons/chat.svg",
   close: "/assets/icons/close.svg",

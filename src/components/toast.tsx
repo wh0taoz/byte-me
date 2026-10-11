@@ -1,5 +1,6 @@
 "use client";
 
+import { Check } from "lucide-react";
 import { useEffect, useState } from "react";
 
 /** Global toast — dispatch from anywhere: window.dispatchEvent(new CustomEvent("stepin:toast", { detail: "..." })) */
@@ -24,8 +25,9 @@ export function Toast() {
   return (
     <div
       role="status"
-      className="fixed bottom-20 left-1/2 z-50 -translate-x-1/2 rounded-xl bg-ink px-4 py-3 text-sm text-surface shadow-winter md:bottom-6"
+      className="fixed bottom-20 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2 rounded-xl bg-nav-dark px-4 py-3 text-sm font-semibold text-on-dark shadow-winter md:bottom-6"
     >
+      <Check className="size-4 shrink-0" aria-hidden />
       {msg}
     </div>
   );

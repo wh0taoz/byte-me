@@ -68,7 +68,7 @@ export default function SavedPage() {
   return (
     <div>
       <header className="mb-8">
-        <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.14em] text-primary-deep">
+        <p className="mb-2 text-xs font-bold uppercase tracking-[0.06em] text-primary-deep">
           Your collection
         </p>
         <h1 className="text-4xl font-extrabold tracking-tight md:text-5xl">
@@ -79,9 +79,9 @@ export default function SavedPage() {
         </p>
       </header>
 
-      <div className="card mb-6 flex items-center gap-4 border-2 border-b-4 p-5">
+      <div className="card mb-6 flex items-center gap-4 p-5">
         {/* eslint-disable-next-line @next/next/no-img-element -- kit icon */}
-        <img src={ICON.bookmark} alt="" className="size-12 shrink-0 rounded-xl bg-ice p-2.5" />
+        <img src={ICON.bookmark} alt="" className="size-12 shrink-0 rounded-xl bg-soft p-2.5" />
         <div>
           <p className="font-bold">
             {savedEvents.length > 0 ? "Saved for later" : "Nothing saved yet"}
@@ -119,9 +119,9 @@ export default function SavedPage() {
           action={<Button onClick={() => setReloadKey((k) => k + 1)}>Try again</Button>}
         />
       ) : !events ? (
-        <div className="grid gap-5 md:grid-cols-2">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {[...Array(2)].map((_, i) => (
-            <Skeleton key={i} className="h-56" />
+            <Skeleton key={i} className="h-80" />
           ))}
         </div>
       ) : filtered.length === 0 ? (
@@ -132,7 +132,7 @@ export default function SavedPage() {
           <p className="mt-1 text-sm text-muted">Save an event that sparks your curiosity.</p>
           <Link
             href="/"
-            className="mt-4 flex min-h-11 items-center gap-2 rounded-xl border-2 border-b-4 border-primary bg-surface px-5 text-sm font-bold text-primary-deep transition-colors hover:bg-ice"
+            className="mt-4 flex min-h-11 items-center gap-2 rounded-xl border-2 border-b-4 border-line-strong bg-surface px-5 text-sm font-bold text-ink transition-colors hover:bg-ice"
           >
             Discover events
           </Link>
@@ -145,7 +145,7 @@ export default function SavedPage() {
               {filtered.length} saved
             </span>
           </div>
-          <ul className="grid gap-5 md:grid-cols-2">
+          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((e) => (
               <EventCard
                 key={e.id}
@@ -161,7 +161,7 @@ export default function SavedPage() {
 
       <Link
         href="/"
-        className="mt-8 flex flex-col items-center gap-2 rounded-2xl border-2 border-b-4 border-line bg-surface px-6 py-6 text-center text-sm text-muted transition-colors hover:bg-ice"
+        className="mt-8 flex flex-col items-center gap-2 rounded-2xl border-2 border-b-4 border-line-strong bg-surface px-6 py-6 text-center text-sm text-muted transition-colors hover:bg-ice"
       >
         <span>There&apos;s more out there.</span>
         <strong className="text-primary-deep">Find another event →</strong>
@@ -184,10 +184,10 @@ function Tab({
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        "min-h-10 rounded-full border px-3.5 text-xs font-bold capitalize transition-colors",
+        "min-h-10 rounded-full border-[1.5px] px-3.5 text-[13px] font-semibold capitalize transition-colors",
         active
-          ? "border-primary bg-primary text-surface"
-          : "border-line bg-[#f6f8fa] text-muted hover:text-ink",
+          ? "border-transparent bg-nav-dark text-on-dark"
+          : "border-line bg-surface text-muted hover:border-primary-deep hover:text-ink",
       )}
     >
       {children}

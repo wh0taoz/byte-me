@@ -8,16 +8,16 @@ import type { EventRow, Level } from "@/lib/types";
 import { ICON, MASCOT, getSavedIds, toggleSaved } from "@/lib/kit";
 import { cn } from "@/lib/utils";
 import { EventCard } from "@/components/event-card";
-import { Button, Empty, LevelPill, Skeleton } from "@/components/ui";
+import { Button, Empty, Skeleton } from "@/components/ui";
 
 // useSearchParams needs a Suspense boundary during prerender.
 export default function DiscoverPage() {
   return (
     <Suspense
       fallback={
-        <div className="grid gap-5 md:grid-cols-2">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {[...Array(6)].map((_, i) => (
-            <Skeleton key={i} className="h-56" />
+            <Skeleton key={i} className="h-80" />
           ))}
         </div>
       }
@@ -117,77 +117,46 @@ function Discover() {
 
   return (
     <div>
-      {/* ---- teal gradient: light melts into dark ---- */}
-      <div
-        aria-hidden
-        className="fixed inset-0 -z-10"
-        style={{
-          background: `
-            radial-gradient(1100px 550px at 85% 100%, rgba(0, 116, 125, 0.5), transparent 60%),
-            radial-gradient(900px 480px at 8% 0%, rgba(255, 255, 255, 0.85), transparent 55%),
-            linear-gradient(180deg, #fbfdfc 0%, #e5f5ee 26%, #9ed8c9 58%, #00747d 100%)
-          `,
-        }}
-      />
-
       {/* ---- hero: Pip greets you ---- */}
-      <section className="mb-8">
-        <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.14em] text-primary-deep">
-          Every step counts
-        </p>
-        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <div className="max-w-xl">
-            <h1 className="text-4xl font-extrabold leading-[1.05] tracking-tight md:text-5xl">
-              Find your <span className="text-primary">first step.</span>
-            </h1>
-            <p className="mt-4 max-w-lg text-sm leading-relaxed text-ink/75 md:text-base">
-              Tech events with a difficulty level and a plain-language &quot;what to expect&quot;.
-              First time ever? Even better — that&apos;s the normal state around here.
+      <section className="card brand-gradient mb-7 flex flex-col gap-8 p-8 md:flex-row md:items-center md:p-11 md:pl-12">
+        <div className="flex max-w-xl flex-col gap-3.5">
+          <p className="text-xs font-bold uppercase tracking-[0.06em] text-primary-deep">
+            Tech events for first-timers
+          </p>
+          <h1 className="text-4xl font-extrabold leading-[1.16] tracking-[-0.02em] text-ink md:text-5xl">
+            Every step counts.
+          </h1>
+          <p className="max-w-lg text-base leading-relaxed text-muted md:text-[17px]">
+            Tech events simplified, no matter the experience. First time ever? No worries! Pip is
+            here to guide you through the scariest part – taking the first step.
+          </p>
+        </div>
+        <div className="flex shrink-0 flex-col items-end gap-1 md:w-[380px]">
+          <div className="card w-[210px] rounded-xl p-4">
+            <p className="text-[13px] font-semibold leading-snug">
+              Hi, I&apos;m Pip! Not sure an event is for you?{" "}
+              <Link href="/ask-pip" className="underline underline-offset-2">
+                Ask me anything.
+              </Link>
             </p>
           </div>
-          <div className="flex items-center gap-3.5">
-            {/* eslint-disable-next-line @next/next/no-img-element -- official kit mascot art */}
-            <img
-              src={MASCOT.heroWave}
-              alt="Pip the stoat waves hello"
-              className="h-28 w-[98px] shrink-0 object-contain md:h-32"
-            />
-            <div className="relative flex-1 rounded-2xl border-2 border-b-4 border-line bg-surface p-4">
-              <span
-                aria-hidden
-                className="absolute -left-[8px] top-2/5 size-3 rotate-45 border-b-2 border-l-2 border-line bg-surface"
-              />
-              <p className="text-sm font-bold">Hey! New around here?</p>
-              <p className="mt-1.5 text-xs leading-relaxed text-muted">
-                Find an event that feels right. I&apos;ll help with the first step.
-              </p>
-              <Link
-                href="/ask-pip"
-                className="mt-2 flex items-center justify-between text-xs font-bold text-primary-deep"
-              >
-                Ask me anything <span aria-hidden>→</span>
-              </Link>
-            </div>
-          </div>
-        </div>
-        <div className="mt-5 flex flex-wrap items-center gap-2">
-          {ALL_LEVELS.map((lv) => (
-            <LevelPill key={lv} level={lv} />
-          ))}
-          <span className="text-xs text-muted">
-            the Pip on every card shows the difficulty level
-          </span>
+          {/* eslint-disable-next-line @next/next/no-img-element -- official kit mascot art */}
+          <img
+            src={MASCOT.heroWave}
+            alt="Pip the stoat waves hello"
+            className="h-36 w-auto max-w-[55%] object-contain md:h-[190px] md:max-w-none"
+          />
         </div>
       </section>
 
       {/* ---- search + filters ---- */}
-      <section className="card mb-6 flex flex-col gap-3 border-2 p-3 shadow-winter lg:flex-row lg:items-center" aria-label="Find events">
+      <section className="card mb-7 flex flex-col gap-3 p-3 lg:flex-row lg:items-center" aria-label="Find events">
         <label className="relative flex-1">
           {/* eslint-disable-next-line @next/next/no-img-element -- kit icon */}
           <img
             src={ICON.search}
             alt=""
-            className="pointer-events-none absolute left-3.5 top-1/2 size-4.5 -translate-y-1/2 opacity-70"
+            className="pointer-events-none absolute left-3.5 top-1/2 size-4.5 -translate-y-1/2"
           />
           <input
             value={q}
@@ -195,13 +164,13 @@ function Discover() {
             type="search"
             placeholder="What are you curious about?"
             aria-label="Search events"
-            className="h-[52px] w-full rounded-xl border-2 border-line bg-[#f6f8fa] pl-11 pr-3 text-sm text-ink placeholder:text-muted focus:border-primary focus:outline-none"
+            className="h-[52px] w-full rounded-xl border-[1.5px] border-line bg-bg pl-11 pr-3 text-sm text-ink placeholder:text-muted focus:border-primary-deep focus:outline-none"
           />
         </label>
 
-        <label className="flex h-[52px] items-center gap-2 rounded-xl border-2 border-line bg-surface px-3 lg:w-48">
+        <label className="flex h-[52px] items-center gap-2 rounded-xl border-[1.5px] border-line bg-surface px-3 lg:w-48">
           {/* eslint-disable-next-line @next/next/no-img-element -- kit icon */}
-          <img src={ICON.pin} alt="" className="size-4.5 opacity-70" />
+          <img src={ICON.pin} alt="" className="size-4.5" />
           <select
             value={city}
             onChange={(e) => setCity(e.target.value)}
@@ -222,18 +191,18 @@ function Discover() {
             All levels
           </Chip>
           {ALL_LEVELS.map((lv) => (
-            <Chip key={lv} active={level === lv} onClick={() => setLevel(lv)} mint>
+            <Chip key={lv} active={level === lv} onClick={() => setLevel(lv)}>
               {levelLabel(lv)}
             </Chip>
           ))}
         </div>
 
         <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label="Type">
-          <Chip active={type === "all"} onClick={() => setType("all")} pill>
+          <Chip active={type === "all"} onClick={() => setType("all")}>
             All types
           </Chip>
           {ALL_TYPES.map((t) => (
-            <Chip key={t} active={type === t} onClick={() => setType(t)} pill>
+            <Chip key={t} active={type === t} onClick={() => setType(t)}>
               {t}
             </Chip>
           ))}
@@ -241,10 +210,13 @@ function Discover() {
       </section>
 
       {/* ---- results ---- */}
-      <div className="mb-4 flex items-baseline justify-between">
-        <h2 className="text-xl font-bold tracking-tight md:text-2xl">Pick your comfort zone</h2>
-        <span aria-live="polite" className="text-[13px] text-muted">
-          {events === null ? "…" : `${filtered.length} ${filtered.length === 1 ? "event" : "events"}`}
+      <div className="mb-5 text-center">
+        <h2 className="text-[26px] font-bold leading-[38px] tracking-[-0.01em] md:text-[30px]">
+          Find what suits you best
+        </h2>
+        {/* result count stays announced for screen readers */}
+        <span aria-live="polite" className="sr-only">
+          {events === null ? "Loading events" : `${filtered.length} ${filtered.length === 1 ? "event" : "events"}`}
         </span>
       </div>
 
@@ -255,9 +227,9 @@ function Discover() {
           action={<Button onClick={() => setReloadKey((k) => k + 1)}>Try again</Button>}
         />
       ) : !events ? (
-        <div className="grid gap-5 md:grid-cols-2">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {[...Array(6)].map((_, i) => (
-            <Skeleton key={i} className="h-56" />
+            <Skeleton key={i} className="h-80" />
           ))}
         </div>
       ) : filtered.length === 0 ? (
@@ -268,14 +240,14 @@ function Discover() {
           <p className="mt-1 text-sm text-muted">No events match yet. Try fewer filters.</p>
           <button
             onClick={resetFilters}
-            className="mt-4 flex min-h-11 items-center gap-2 rounded-xl border-2 border-b-4 border-primary bg-surface px-5 text-sm font-bold text-primary-deep transition-colors hover:bg-ice"
+            className="mt-4 flex min-h-11 items-center gap-2 rounded-xl border-2 border-b-4 border-line-strong bg-surface px-5 text-sm font-bold text-ink transition-colors hover:bg-ice"
           >
             Reset filters
           </button>
         </div>
       ) : (
         <>
-          <ul className="grid gap-5 md:grid-cols-2">
+          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {upcoming.map((e) => (
               <EventCard
                 key={e.id}
@@ -294,7 +266,7 @@ function Discover() {
                   {past.length} {past.length === 1 ? "event" : "events"}
                 </span>
               </div>
-              <ul className="grid gap-5 md:grid-cols-2">
+              <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {past.map((e) => (
                   <EventCard
                     key={e.id}
@@ -321,26 +293,20 @@ function Chip({
   active,
   onClick,
   children,
-  mint = false,
-  pill = false,
 }: {
   active: boolean;
   onClick: () => void;
   children: React.ReactNode;
-  mint?: boolean;
-  pill?: boolean;
 }) {
   return (
     <button
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        "min-h-10 border font-bold capitalize transition-colors",
-        pill ? "rounded-full border px-3 text-xs" : "rounded-xl border-2 border-b-4 px-3 text-[13px]",
-        active && mint && "border-line-strong bg-ice text-primary-deep",
-        active && !mint && "border-primary bg-primary text-surface",
-        active && pill && mint && "border-primary bg-primary text-surface",
-        !active && "border-line bg-surface text-muted hover:text-ink",
+        "min-h-10 rounded-full border-[1.5px] px-3.5 text-[13px] font-semibold capitalize transition-colors",
+        active
+          ? "border-transparent bg-nav-dark text-on-dark"
+          : "border-line bg-surface text-muted hover:border-primary-deep hover:text-ink",
       )}
     >
       {children}

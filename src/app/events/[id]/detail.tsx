@@ -127,7 +127,7 @@ export function EventDetailView() {
               href={e.registration_url}
               target="_blank"
               rel="noreferrer"
-              className="bg-winter shadow-winter flex flex-1 items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold text-surface transition-transform hover:-translate-y-0.5"
+              className="flex flex-1 items-center justify-center gap-2 rounded-xl border-2 border-b-4 border-line-strong bg-primary px-4 py-2.5 text-sm font-semibold text-on-accent transition-colors hover:bg-primary-deep hover:text-on-dark"
             >
               Register / RSVP on the organizer&apos;s site
               <ExternalLink className="size-4" aria-hidden />

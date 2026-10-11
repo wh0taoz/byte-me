@@ -4,7 +4,6 @@ import { Loader2, Sparkles } from "lucide-react";
 import type { ReactNode } from "react";
 import type { Level } from "@/lib/types";
 import { levelLabel } from "@/lib/api";
-import { levelArt } from "@/lib/kit";
 import { cn } from "@/lib/utils";
 
 export function Spinner({ className }: { className?: string }) {
@@ -12,9 +11,15 @@ export function Spinner({ className }: { className?: string }) {
 }
 
 /**
- * Level indicator: official Pip level art + the word — never colour alone.
- * beginner waves, intermediate reads, expert is on the laptop.
+ * Level badge: 8px dot + the word (never colour alone) on the level's soft fill.
+ * Light → dark = easy → hard.
  */
+const LEVEL_STYLE: Record<Level, string> = {
+  beginner: "bg-level-beginner-soft text-level-beginner",
+  intermediate: "bg-level-intermediate-soft text-level-intermediate",
+  expert: "bg-level-expert-soft text-level-expert",
+};
+
 export function LevelPill({
   level,
   size = "md",
@@ -27,14 +32,14 @@ export function LevelPill({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full border border-line-strong bg-mint font-semibold text-ink",
-        size === "sm" ? "px-2 py-0.5 text-[11px]" : "px-2.5 py-1 text-xs",
+        "inline-flex items-center gap-2 rounded-full font-bold uppercase tracking-[0.06em]",
+        size === "sm" ? "px-2.5 py-1 text-[11px]" : "px-3 py-[5px] text-xs",
+        LEVEL_STYLE[level],
         className,
       )}
       title={`Level: ${levelLabel(level)}`}
     >
-      {/* eslint-disable-next-line @next/next/no-img-element -- kit art is a static PNG asset */}
-      <img src={levelArt(level)} alt="" className={size === "sm" ? "size-4" : "size-4.5"} />
+      <span aria-hidden className="size-2 shrink-0 rounded-full bg-current" />
       {levelLabel(level)}
     </span>
   );
@@ -44,7 +49,7 @@ export function Chip({ children, className }: { children: ReactNode; className?:
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1 rounded-full border border-line bg-surface px-2.5 py-1 text-xs text-muted",
+        "inline-flex items-center gap-1 rounded-full border-[1.5px] border-line bg-surface px-3 py-1.5 text-[13px] font-semibold capitalize text-ink",
         className,
       )}
     >
@@ -90,11 +95,13 @@ export function Button({
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        "inline-flex items-center justify-center gap-1.5 rounded-lg font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50",
-        size === "sm" ? "px-2.5 py-1.5 text-xs" : "px-3.5 py-2 text-sm",
-        variant === "primary" && "bg-primary text-surface hover:bg-primary-deep",
-        variant === "secondary" && "border border-line-strong bg-surface text-ink hover:bg-bg",
-        variant === "ghost" && "text-muted hover:bg-bg hover:text-ink",
+        "inline-flex items-center justify-center gap-1.5 rounded-xl font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50",
+        size === "sm" ? "px-2.5 py-1.5 text-xs" : "px-5 py-2.5 text-sm",
+        variant === "primary" &&
+          "border-2 border-b-4 border-line-strong bg-primary text-on-accent hover:bg-primary-deep hover:text-on-dark",
+        variant === "secondary" &&
+          "border-2 border-b-4 border-line-strong bg-surface text-ink hover:bg-ice",
+        variant === "ghost" && "text-primary-deep hover:bg-ice hover:text-ink",
         className,
       )}
     >
@@ -118,6 +125,6 @@ export function Skeleton({ className }: { className?: string }) {
 }
 
 export const inputClass =
-  "w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink placeholder:text-muted focus:border-primary focus:outline-none";
+  "w-full rounded-xl border-[1.5px] border-line bg-surface px-3.5 py-2.5 text-sm text-ink placeholder:text-muted focus:border-primary-deep focus:outline-none";
 
 export const labelClass = "mb-1 block text-xs font-medium text-muted";

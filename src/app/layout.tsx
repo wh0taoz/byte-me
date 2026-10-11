@@ -21,27 +21,27 @@ export const metadata: Metadata = {
   title: `${BRAND.name} — ${BRAND.motto}`,
   description:
     "Tech events with a difficulty level, plain-language descriptions and zero judgment. Take the first step.",
-  icons: { icon: "/assets/brand/footsteps.svg" },
+  icons: { icon: "/assets/brand/scout-icon.png" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
-        <Suspense fallback={<div className="h-16 border-b-2 border-line" />}>
+        <Suspense fallback={<div className="h-19 border-b-2 border-line-strong" />}>
           <SiteHeader />
         </Suspense>
-        <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 md:px-6 md:py-10">
+        <main className="mx-auto w-full max-w-[1200px] flex-1 px-4 py-8 md:px-10 md:py-10">
           {children}
         </main>
-        <footer className="border-t-2 border-line">
-          <div className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-6 text-xs text-muted md:px-6">
+        <footer className="border-t-2 border-line-strong">
+          <div className="mx-auto flex max-w-[1200px] flex-col gap-1 px-4 py-6 text-xs text-muted md:px-10">
             <p className="font-semibold text-ink">
               {BRAND.name} — {BRAND.motto}.
             </p>
             <p>
-              Working name — final brand coming soon. AI answers may contain mistakes; registration
-              always happens on the organizer&apos;s site.
+              AI answers may contain mistakes; registration always happens on the organizer&apos;s
+              site.
             </p>
           </div>
         </footer>

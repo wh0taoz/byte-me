@@ -69,15 +69,17 @@ export default function AskPipPage() {
   return (
     <div className="mx-auto max-w-2xl">
       {/* ---- Pip header ---- */}
-      <div className="flex items-center gap-4 border-b-2 border-line pb-6">
-        {/* eslint-disable-next-line @next/next/no-img-element -- official kit mascot art */}
-        <img
-          src={MASCOT.helperWink}
-          alt="Pip, your friendly event guide"
-          className="h-28 w-[98px] shrink-0 object-contain"
-        />
+      <div className="flex items-center gap-5 border-b-2 border-line pb-6">
+        <span className="flex size-[84px] shrink-0 items-center justify-center rounded-full border-2 border-b-4 border-line-strong bg-soft">
+          {/* eslint-disable-next-line @next/next/no-img-element -- official kit mascot art */}
+          <img
+            src={MASCOT.helperWink}
+            alt="Pip, your friendly event guide"
+            className="h-16 w-14 object-contain"
+          />
+        </span>
         <div>
-          <p className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-primary-deep">
+          <p className="mb-1.5 text-xs font-bold uppercase tracking-[0.06em] text-primary-deep">
             Your event sidekick
           </p>
           <h1 className="text-4xl font-extrabold tracking-tight">
@@ -92,18 +94,21 @@ export default function AskPipPage() {
         {messages.map((m, i) =>
           m.role === "user" ? (
             <div key={i} className="flex justify-end">
-              <p className="max-w-[85%] [overflow-wrap:anywhere] rounded-2xl rounded-br-sm border-2 border-b-4 border-primary bg-primary px-4 py-3 text-sm leading-relaxed text-surface">
+              <p className="max-w-[460px] [overflow-wrap:anywhere] rounded-[18px] rounded-br-[4px] bg-primary px-4 py-3 text-[15px] leading-relaxed text-on-accent">
                 {m.content}
               </p>
             </div>
           ) : (
             <div key={i} className="flex items-end gap-2">
               {/* eslint-disable-next-line @next/next/no-img-element -- official kit mascot art */}
-              <img src={MASCOT.avatar} alt="Pip" className="size-9 shrink-0 object-contain" />
-              <div className="max-w-[85%] rounded-2xl rounded-bl-sm border-2 border-b-4 border-line bg-surface px-4 py-3">
-                <p className="text-sm leading-relaxed">{m.content}</p>
-                <span className="mt-2 block text-[10px] text-muted">Pip · here to help</span>
-              </div>
+              <img
+                src={MASCOT.avatar}
+                alt="Pip"
+                className="size-9 shrink-0 rounded-full bg-soft object-contain"
+              />
+              <p className="max-w-[460px] [overflow-wrap:anywhere] rounded-[18px] rounded-bl-[4px] border-[1.5px] border-line bg-surface px-4 py-3 text-[15px] leading-relaxed">
+                {m.content}
+              </p>
             </div>
           ),
         )}
@@ -111,8 +116,12 @@ export default function AskPipPage() {
         {busy ? (
           <div className="flex items-end gap-2">
             {/* eslint-disable-next-line @next/next/no-img-element -- official kit mascot art */}
-            <img src={MASCOT.avatar} alt="Pip" className="size-9 shrink-0 object-contain" />
-            <p className="flex items-center gap-1.5 rounded-2xl rounded-bl-sm border-2 border-b-4 border-line bg-surface px-4 py-3.5">
+            <img
+              src={MASCOT.avatar}
+              alt="Pip"
+              className="size-9 shrink-0 rounded-full bg-soft object-contain"
+            />
+            <p className="flex items-center gap-1.5 rounded-[18px] rounded-bl-[4px] border-[1.5px] border-line bg-surface px-4 py-3.5">
               {[0, 1, 2].map((d) => (
                 <span
                   key={d}
@@ -129,7 +138,7 @@ export default function AskPipPage() {
       {/* ---- quick questions ---- */}
       {!asked ? (
         <div className="mt-8">
-          <p className="mb-2.5 text-[10px] font-bold uppercase tracking-[0.14em] text-muted">
+          <p className="mb-2.5 text-xs font-bold uppercase tracking-[0.06em] text-muted">
             A few things you can ask
           </p>
           <div className="flex flex-col gap-2">
@@ -137,12 +146,12 @@ export default function AskPipPage() {
               <button
                 key={q.label}
                 onClick={() => void send(q.label)}
-                className="flex min-h-13 w-full items-center gap-2.5 rounded-xl border-2 border-b-4 border-line bg-surface px-3.5 py-3 text-left text-[13px] font-semibold transition-colors hover:bg-ice"
+                className="flex min-h-13 w-full items-center gap-2.5 rounded-xl border-[1.5px] border-line bg-surface px-3.5 py-3 text-left text-[13px] font-semibold transition-colors hover:border-primary-deep hover:bg-ice"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element -- kit icon */}
                 <img src={q.icon} alt="" className="size-4.5" />
                 {q.label}
-                <span className="ml-auto text-primary" aria-hidden>
+                <span className="ml-auto text-primary-deep" aria-hidden>
                   ↗
                 </span>
               </button>
@@ -153,7 +162,7 @@ export default function AskPipPage() {
 
       {/* ---- composer ---- */}
       <form
-        className="mt-6 flex items-center gap-2 rounded-2xl border-2 border-b-4 border-line bg-surface py-1.5 pl-4 pr-1.5 focus-within:border-primary"
+        className="card mt-6 flex items-center gap-2 rounded-[20px] py-1.5 pl-4 pr-1.5 focus-within:border-primary-deep"
         onSubmit={(e) => {
           e.preventDefault();
           void send(input);
@@ -175,10 +184,10 @@ export default function AskPipPage() {
           type="submit"
           aria-label="Send question"
           disabled={busy || !input.trim()}
-          className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary shadow-[0_4px_0_var(--color-primary-deep)] transition-colors hover:bg-primary-deep disabled:opacity-40"
+          className="flex size-11 shrink-0 items-center justify-center rounded-xl border-2 border-b-4 border-line-strong bg-primary transition-colors hover:bg-primary-deep disabled:opacity-40"
         >
           {/* eslint-disable-next-line @next/next/no-img-element -- kit icon */}
-          <img src={ICON.arrowRight} alt="" className="size-4 brightness-0 invert" />
+          <img src={ICON.arrowRight} alt="" className="size-4 brightness-0" />
         </button>
       </form>
       <p className="mt-2.5 text-center text-[11px] leading-relaxed text-muted">

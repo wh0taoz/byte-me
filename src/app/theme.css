@@ -1,17 +1,32 @@
-/* StepIn UI kit V2 palette (design-tokens.json):
-   navy type, teal actions, mint surfaces, white cards, tactile borders. */
+/* SCOUT UI kit — warm palette (SCOUT-DESIGN-SPEC):
+   bright orange/yellow are the primary colors; darker browns/reds are only
+   for highlights (links, icons, pressed states, tactile borders). */
 
 @theme {
-  --color-primary: #00787f;        /* buttons, links — teal actions (AA with white text) */
-  --color-primary-deep: #006068;   /* hover / pressed */
-  --color-accent: #0096a1;         /* AI / highlights */
-  --color-ink: #132039;            /* body text — navy */
-  --color-muted: #52647b;          /* secondary text (AA on bg + surface) */
-  --color-bg: #f2f5f1;             /* page background */
-  --color-surface: #ffffff;        /* cards */
-  --color-ice: #e5f5ee;            /* mint tint fills */
-  --color-line: #e2e8ed;           /* borders */
-  --color-line-strong: #b5dacd;    /* emphasized borders (mint-dark) */
+  --color-primary: #F79E3A;        /* primary buttons, toggles ON, send button */
+  --color-primary-deep: #B52D02;   /* hover/pressed — also links + colored icons */
+  --color-accent: #B52D02;         /* AI highlights / colored icons on light bg */
+  --color-ink: #270902;            /* body text — dark brown */
+  --color-muted: #7E1902;          /* secondary text — dark red */
+  --color-bg: #FFF8E7;             /* page background — cream */
+  --color-surface: #FFFDF8;        /* cards, panels, inputs */
+  --color-ice: #FEF0C2;            /* soft highlight fills, active nav item */
+  --color-line: #F3D6A4;           /* subtle outlines */
+  --color-line-strong: #4A0D02;    /* tactile borders */
+
+  --color-nav-dark: #270902;       /* dark surfaces: active chip, toast */
+  --color-on-dark: #FDDF84;        /* text/icons on dark surfaces */
+  --color-on-accent: #270902;      /* text ON bright orange */
+  --color-soft: #FDDF84;           /* avatar circles, icon chips */
+  --color-unread: #B52D02;
+
+  /* difficulty levels: light → dark = easy → hard */
+  --color-level-beginner: #7E1902;
+  --color-level-beginner-soft: #FDDF84;
+  --color-level-intermediate: #270902;
+  --color-level-intermediate-soft: #F79E3A;
+  --color-level-expert: #FDDF84;
+  --color-level-expert-soft: #B52D02;
 
   --color-success: #4c711f;
   --color-warning: #9a6b2f;
@@ -21,30 +36,3 @@
 }
 
 body { background: var(--color-bg); color: var(--color-ink); }
-
-/* ---- brand accents --------------------------------------------------- */
-.bg-winter {
-  background: linear-gradient(135deg, #00787f 0%, #005e66 100%);
-}
-.shadow-winter {
-  box-shadow: 0 8px 24px rgba(0, 116, 125, 0.18);
-}
-
-/* ---- level badges ------------------------------------------------------
-   The word is always shown (never colour alone); the Pip level art is the
-   friendly signal.                                                              */
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  padding: 0.1rem 0.55rem;
-  border-radius: 999px;
-  font-size: 0.6875rem;
-  font-weight: 650;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-.badge-high   { background: color-mix(in srgb, var(--color-urgent) 12%, transparent); color: var(--color-urgent); }
-.badge-medium { background: color-mix(in srgb, var(--color-warning) 12%, transparent); color: var(--color-warning); }
-.badge-low    { color: var(--color-muted); }

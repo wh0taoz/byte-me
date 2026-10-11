@@ -85,19 +85,22 @@ export function PipChat() {
 
   return (
     <>
-      {/* ---- floating stoat button, bottom right ---- */}
+      {/* ---- floating "Ask Pip" button, bottom right ---- */}
       <button
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Close Pip chat" : "Chat with Pip"}
         aria-expanded={open}
-        className="bg-winter fixed bottom-5 right-5 z-50 flex size-14 items-center justify-center rounded-full border-2 border-surface text-surface shadow-winter transition-transform hover:scale-105"
+        className="brand-gradient fixed bottom-5 right-5 z-50 flex items-center gap-2.5 rounded-full border-2 border-b-4 border-line-strong pb-3.5 pl-2 pr-5 pt-3 shadow-winter transition-transform hover:scale-105 md:bottom-10 md:right-10"
       >
-        {open ? (
-          <X className="size-6" aria-hidden />
-        ) : (
-          // eslint-disable-next-line @next/next/no-img-element -- kit art
-          <img src={MASCOT.avatar} alt="" className="size-11 object-contain" />
-        )}
+        <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-surface">
+          {open ? (
+            <X className="size-4 text-ink" aria-hidden />
+          ) : (
+            // eslint-disable-next-line @next/next/no-img-element -- kit art
+            <img src={MASCOT.avatar} alt="" className="size-7 object-contain" />
+          )}
+        </span>
+        <span className="text-sm font-semibold text-ink">{open ? "Close" : "Ask Pip"}</span>
       </button>
 
       {/* ---- chat panel ---- */}
@@ -105,10 +108,10 @@ export function PipChat() {
         <div
           role="dialog"
           aria-label="Chat with Pip"
-          className="card fixed bottom-22 right-5 z-50 flex h-[min(60vh,30rem)] w-[calc(100vw-2.5rem)] max-w-sm flex-col overflow-hidden shadow-winter animate-slide-up"
+          className="card fixed bottom-24 right-5 z-50 flex h-[min(60vh,30rem)] w-[calc(100vw-2.5rem)] max-w-sm flex-col overflow-hidden shadow-winter animate-slide-up md:right-10"
         >
-          <div className="bg-winter flex items-center gap-2.5 px-4 py-3 text-surface">
-            <span className="flex size-9 items-center justify-center rounded-full bg-surface">
+          <div className="flex items-center gap-2.5 bg-nav-dark px-4 py-3 text-on-dark">
+            <span className="flex size-9 items-center justify-center rounded-full bg-soft">
               {/* eslint-disable-next-line @next/next/no-img-element -- kit art */}
               <img src={MASCOT.avatar} alt="" className="size-7 object-contain" />
             </span>
@@ -126,14 +129,19 @@ export function PipChat() {
             {messages.map((m, i) =>
               m.role === "user" ? (
                 <div key={i} className="flex justify-end">
-                  <p className="max-w-[85%] [overflow-wrap:anywhere] rounded-2xl rounded-br-sm bg-primary px-3.5 py-2 text-sm leading-relaxed text-surface">
+                  <p className="max-w-[85%] [overflow-wrap:anywhere] rounded-[18px] rounded-br-[4px] bg-primary px-4 py-3 text-sm leading-relaxed text-on-accent">
                     {m.content}
                   </p>
                 </div>
               ) : (
                 <div key={i} className="flex items-end gap-2">
-                  <img src={MASCOT.avatar} alt="" className="size-7 shrink-0 rounded-full border border-line bg-surface object-contain" />
-                  <p className="max-w-[85%] [overflow-wrap:anywhere] rounded-2xl rounded-bl-sm border border-line bg-surface px-3.5 py-2 text-sm leading-relaxed text-ink">
+                  {/* eslint-disable-next-line @next/next/no-img-element -- kit art */}
+                  <img
+                    src={MASCOT.avatar}
+                    alt=""
+                    className="size-9 shrink-0 rounded-full bg-soft object-contain"
+                  />
+                  <p className="max-w-[85%] [overflow-wrap:anywhere] rounded-[18px] rounded-bl-[4px] border-[1.5px] border-line bg-surface px-4 py-3 text-sm leading-relaxed text-ink">
                     {m.content}
                   </p>
                 </div>
@@ -142,8 +150,13 @@ export function PipChat() {
 
             {busy ? (
               <div className="flex items-end gap-2">
-                <img src={MASCOT.avatar} alt="" className="size-7 shrink-0 rounded-full border border-line bg-surface object-contain" />
-                <p className="flex items-center gap-1 rounded-2xl rounded-bl-sm border border-line bg-surface px-3.5 py-2.5">
+                {/* eslint-disable-next-line @next/next/no-img-element -- kit art */}
+                <img
+                  src={MASCOT.avatar}
+                  alt=""
+                  className="size-9 shrink-0 rounded-full bg-soft object-contain"
+                />
+                <p className="flex items-center gap-1 rounded-[18px] rounded-bl-[4px] border-[1.5px] border-line bg-surface px-4 py-3.5">
                   {[0, 1, 2].map((d) => (
                     <span
                       key={d}
@@ -157,7 +170,7 @@ export function PipChat() {
           </div>
 
           <form
-            className="flex gap-2 border-t border-line bg-surface p-2.5"
+            className="flex gap-2 border-t-[1.5px] border-line bg-surface p-2.5"
             onSubmit={(e) => {
               e.preventDefault();
               void send();
@@ -168,7 +181,7 @@ export function PipChat() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask Pip anything…"
-              className="min-w-0 flex-1 rounded-full border border-line bg-surface px-3.5 py-2 text-sm text-ink placeholder:text-muted focus:border-primary focus:outline-none"
+              className="min-w-0 flex-1 rounded-full border-[1.5px] border-line bg-surface px-3.5 py-2 text-sm text-ink placeholder:text-muted focus:border-primary-deep focus:outline-none"
               aria-label="Message Pip"
             />
             <button
@@ -176,14 +189,14 @@ export function PipChat() {
               disabled={busy || !input.trim()}
               aria-label="Send"
               className={cn(
-                "flex size-11 shrink-0 items-center justify-center rounded-full bg-primary text-surface transition-colors",
-                "hover:bg-primary-deep disabled:opacity-40",
+                "flex size-11 shrink-0 items-center justify-center rounded-full border-2 border-b-4 border-line-strong bg-primary text-on-accent transition-colors",
+                "hover:bg-primary-deep hover:text-on-dark disabled:opacity-40",
               )}
             >
               <Send className="size-4" aria-hidden />
             </button>
           </form>
-          <p className="border-t border-line bg-surface px-3 py-1.5 text-center text-[10px] text-muted">
+          <p className="border-t-[1.5px] border-line bg-surface px-3 py-1.5 text-center text-[10px] text-muted">
             AI helper — answers may contain mistakes. Press Esc to close.
           </p>
         </div>
