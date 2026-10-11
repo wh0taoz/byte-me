@@ -208,7 +208,7 @@ export function explainSystem(level: Level, eventContext?: string): string {
   const ctx = eventContext
     ? `\n- They are looking at this event: ${eventContext}. Connect your answer to it in one sentence, without inventing details that are not given.`
     : "";
-  return `You are the guide on "Every Step Counts", a platform that helps people go to tech events, often for the first time.
+  return `You are the guide on "SCOUT" ("Every step counts"), a platform that helps people go to tech events, often for the first time.
 ${levelRule}
 How to answer:
 - Begin with a short, natural thank-you or encouragement for the question, then answer.

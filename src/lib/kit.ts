@@ -1,4 +1,4 @@
-// Shared helpers for the StepIn UI kit assets + persisted saves.
+// Shared helpers for the SCOUT UI kit assets + persisted saves.
 import type { Level } from "./types";
 
 /** Official mascot art from the kit — never a substitute. */

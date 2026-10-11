@@ -70,7 +70,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
     "CALSCALE:GREGORIAN",
-    "PRODID:-//Every Step Counts//EN",
+    "PRODID:-//SCOUT//EN",
     "BEGIN:VEVENT",
     `UID:${event.id}`,
     `DTSTAMP:${formatICSDate(new Date().toISOString())}`,

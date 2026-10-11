@@ -1,4 +1,4 @@
-// Shared types for Every Step Counts — mirrors supabase/schema-esc.sql.
+// Shared types for SCOUT — mirrors supabase/schema-esc.sql.
 
 export type Level = "beginner" | "intermediate" | "expert";
 export type EventType = "hackathon" | "meetup" | "seminar" | "workshop" | "conference";

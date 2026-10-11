@@ -1,4 +1,4 @@
--- Every Step Counts — demo seed. Re-runnable: truncate + re-insert, paste & run any time.
+-- SCOUT — demo seed. Re-runnable: truncate + re-insert, paste & run any time.
 -- All dates are within 7 weeks of 2026-10-10. Level mix: 11 beginner / 14 intermediate / 10 expert.
 
 truncate events, guides, profiles, going, team_posts restart identity cascade;

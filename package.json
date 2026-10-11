@@ -2,6 +2,7 @@
   "name": "byte-me",
   "version": "0.1.0",
   "private": true,
+  "description": "SCOUT — Every step counts",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

@@ -1,4 +1,4 @@
--- Every Step Counts — new schema (5 tables). Supabase → SQL Editor → paste → Run.
+-- SCOUT — new schema (5 tables). Supabase → SQL Editor → paste → Run.
 -- Adds the ESC tables alongside the old organiser tables (old ones stay untouched).
 -- Hackathon mode: RLS on with open policies. Tighten before any real launch.
 

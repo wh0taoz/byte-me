@@ -1,7 +1,7 @@
-# byte-me — AI Agent Context
+# SCOUT — AI Agent Context
 
 ## Project
-"Every Step Counts": all tech events in one place, labeled by difficulty
+SCOUT ("Every step counts"): all tech events in one place, labeled by difficulty
 (beginner / intermediate / expert), with Gemma explaining everything to a
 beginner — without judgment. The test for every feature: does it reduce
 the fear of the first step? Stack: Next.js (App Router, TypeScript,
