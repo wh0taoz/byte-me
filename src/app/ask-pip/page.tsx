@@ -191,7 +191,7 @@ export default function AskPipPage() {
         </button>
       </form>
       <p className="mt-2.5 text-center text-[11px] leading-relaxed text-muted">
-        AI helper — answers may contain mistakes. Check details with the organizer.
+        Pip&apos;s answers may contain mistakes. Check details with the organizer.
       </p>
     </div>
   );

@@ -36,7 +36,7 @@ function Discover() {
   const [q, setQ] = useState(() => searchParams.get("q") ?? "");
   const [level, setLevel] = useState<Level | "all">(() => {
     const l = searchParams.get("level");
-    return ALL_LEVELS.includes(l as Level) ? (l as Level) : "beginner";
+    return ALL_LEVELS.includes(l as Level) ? (l as Level) : "all";
   });
   const [type, setType] = useState<string>(
     () => (ALL_TYPES as readonly string[]).includes(searchParams.get("type") ?? "")

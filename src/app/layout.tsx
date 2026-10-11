@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Suspense } from "react";
 import "./globals.css";
-import { PipChat } from "@/components/pip-chat";
 import { SiteHeader } from "@/components/site-header";
 import { Toast } from "@/components/toast";
 import { BRAND } from "@/lib/brand";
@@ -40,15 +39,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               {BRAND.name} — {BRAND.motto}.
             </p>
             <p>
-              AI answers may contain mistakes; registration always happens on the organizer&apos;s
-              site.
+              Pip&apos;s answers may contain mistakes; registration always happens on the
+              organizer&apos;s site.
             </p>
           </div>
         </footer>
         <Toast />
-        <Suspense fallback={null}>
-          <PipChat />
-        </Suspense>
       </body>
     </html>
   );

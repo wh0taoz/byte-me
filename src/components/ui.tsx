@@ -58,8 +58,8 @@ export function Chip({ children, className }: { children: ReactNode; className?:
   );
 }
 
-/** AI output — always labelled, per the team rule: "AI summary — may contain mistakes". */
-export function AiBlock({ children, label = "AI summary" }: { children: ReactNode; label?: string }) {
+/** Pip's output — always labelled: "Pip's summary — may contain mistakes". */
+export function AiBlock({ children, label = "Pip's summary" }: { children: ReactNode; label?: string }) {
   return (
     <div className="rounded-lg border border-line bg-ice/60 px-3.5 py-3">
       <p className="mb-1.5 flex items-center gap-1.5 text-xs font-semibold text-muted">
@@ -117,6 +117,39 @@ export function Empty({ title, hint, action }: { title: string; hint?: string; a
       {hint ? <p className="text-xs text-muted">{hint}</p> : null}
       {action ? <div className="mt-3">{action}</div> : null}
     </div>
+  );
+}
+
+/** Toggle switch — 46×28 pill, 22px knob; ON uses the primary accent. */
+export function Toggle({
+  checked,
+  onChange,
+  label,
+}: {
+  checked: boolean;
+  onChange: (next: boolean) => void;
+  label: string;
+}) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={checked}
+      aria-label={label}
+      onClick={() => onChange(!checked)}
+      className={cn(
+        "relative h-7 w-[46px] shrink-0 rounded-full border-2 border-line-strong transition-colors",
+        checked ? "bg-primary" : "bg-soft",
+      )}
+    >
+      <span
+        aria-hidden
+        className={cn(
+          "absolute top-1/2 size-[22px] -translate-y-1/2 rounded-full bg-surface transition-[left]",
+          checked ? "left-[calc(100%-25px)]" : "left-[3px]",
+        )}
+      />
+    </button>
   );
 }
 

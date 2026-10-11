@@ -92,6 +92,9 @@ export function EventDetailView() {
 
   return (
     <div>
+      {/* slightly darker canvas for this page — Pip's pale level art was
+          blending into the default cream background */}
+      <div aria-hidden className="fixed inset-0 -z-10 bg-ice" />
       <Link
         href="/"
         className="mb-5 inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-ink"
@@ -142,8 +145,8 @@ export function EventDetailView() {
         </div>
       </section>
 
-      {/* ---- Pip says the AI summary ---- */}
-      <section className="mt-6 flex items-start gap-2.5 md:gap-4" aria-label="AI summary">
+      {/* ---- Pip's summary (Pip is the AI — the label stays honest) ---- */}
+      <section className="mt-6 flex items-start gap-2.5 md:gap-4" aria-label="Pip's summary">
         {/* eslint-disable-next-line @next/next/no-img-element -- official kit level art */}
         <img
           src={levelArt(e.level)}
@@ -158,7 +161,7 @@ export function EventDetailView() {
           />
           <p className="mb-2 flex items-center gap-1.5 text-xs font-semibold text-muted">
             <Sparkles className="size-3.5 text-accent" aria-hidden />
-            Pip&apos;s AI summary <span className="font-normal">— may contain mistakes</span>
+            Pip&apos;s summary <span className="font-normal">— may contain mistakes</span>
           </p>
 
           <div className="text-sm leading-relaxed">
