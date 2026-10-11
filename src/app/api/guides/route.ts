@@ -10,7 +10,11 @@ export async function GET() {
     .order("order", { ascending: true });
 
   if (error) {
-    return NextResponse.json({ error: error.message, code: 500 }, { status: 500 });
+    console.error("[guides] list failed:", error.message);
+    return NextResponse.json(
+      { error: "We couldn't load guides right now — please try again.", code: 500 },
+      { status: 500 },
+    );
   }
   return NextResponse.json(data);
 }

@@ -13,7 +13,11 @@ export async function GET() {
     .order("created_at", { ascending: true });
 
   if (error) {
-    return NextResponse.json({ error: error.message, code: 500 }, { status: 500 });
+    console.error("[profiles] list failed:", error.message);
+    return NextResponse.json(
+      { error: "We couldn't load profiles right now — please try again.", code: 500 },
+      { status: 500 },
+    );
   }
   return NextResponse.json(data);
 }
@@ -45,7 +49,11 @@ export async function POST(req: Request) {
     .single();
 
   if (error) {
-    return NextResponse.json({ error: error.message, code: 500 }, { status: 500 });
+    console.error("[profiles] create failed:", error.message);
+    return NextResponse.json(
+      { error: "We couldn't create your profile right now — please try again.", code: 500 },
+      { status: 500 },
+    );
   }
   return NextResponse.json(data);
 }
