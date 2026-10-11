@@ -138,3 +138,5 @@ English translation; package.json union). Then, in one pass:
 - **Demo safety** — gemma.ts client is lazy (missing key degrades to
   fallbacks, no module-load crash); .env.example pruned; legacy
   supabase/schema.sql + seed.sql deleted.
+- Saved page bookmark icon sized (`size-12` chip) — the kit SVG has no
+  intrinsic dimensions, so the bare `<img>` fell back to 300x150 (c3de22d).
