@@ -20,14 +20,21 @@ export function EventCard({
   event: e,
   saved,
   onToggleSave,
+  past = false,
 }: {
   event: EventRow;
   saved: boolean;
   onToggleSave: (id: string) => void;
+  past?: boolean;
 }) {
   const art = ART[e.type];
   return (
-    <li className="card flex flex-col overflow-hidden border-2 border-b-4 shadow-winter transition-transform hover:-translate-y-0.5 sm:flex-row">
+    <li
+      className={cn(
+        "card flex flex-col overflow-hidden border-2 border-b-4 shadow-winter transition-transform hover:-translate-y-0.5 sm:flex-row",
+        past && "opacity-75 saturate-[0.6]",
+      )}
+    >
       {/* ---- half the card: the Pip level art IS the level ---- */}
       <div
         className="relative flex min-h-[8.5rem] items-center justify-center p-6 sm:w-1/2"
@@ -49,7 +56,13 @@ export function EventCard({
       {/* ---- half the card: the basics ---- */}
       <div className="flex flex-1 flex-col p-4 sm:w-1/2 sm:p-5">
         <div className="mb-2 flex items-start justify-between gap-2">
-          {e.level === "beginner" ? (
+          {past ? (
+            <span className="inline-flex items-center gap-1.5 rounded-lg bg-[#f6f8fa] px-2 py-1 text-[11px] font-bold text-muted">
+              {/* eslint-disable-next-line @next/next/no-img-element -- kit icon */}
+              <img src={ICON.calendar} alt="" className="size-4" />
+              Finished
+            </span>
+          ) : e.level === "beginner" ? (
             <span className="inline-flex items-center gap-1.5 rounded-lg bg-[#e8f4d9] px-2 py-1 text-[11px] font-bold text-[#4c711f]">
               {/* eslint-disable-next-line @next/next/no-img-element -- kit icon */}
               <img src={ICON.sprout} alt="" className="size-4" />
@@ -75,8 +88,8 @@ export function EventCard({
         <p className="mt-2 flex items-center gap-2 text-[13px] text-muted">
           {/* eslint-disable-next-line @next/next/no-img-element -- kit icon */}
           <img src={ICON.calendar} alt="" className="size-4" />
-          <span className="capitalize">{e.type}</span> · {smartRange(e.starts_at, e.ends_at)}
-          {e.ends_at ? ` · ${fmtTime(e.starts_at)}` : ""}
+          <span className="capitalize">{e.type}</span> · {smartRange(e.starts_at, e.ends_at)} ·{" "}
+          {fmtTime(e.starts_at)}
         </p>
         <p className="mb-3 mt-1 flex items-center gap-2 text-[13px] text-muted">
           {/* eslint-disable-next-line @next/next/no-img-element -- kit icon */}

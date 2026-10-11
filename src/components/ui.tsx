@@ -103,11 +103,12 @@ export function Button({
   );
 }
 
-export function Empty({ title, hint }: { title: string; hint?: string }) {
+export function Empty({ title, hint, action }: { title: string; hint?: string; action?: ReactNode }) {
   return (
     <div className="card flex flex-col items-center gap-1 px-6 py-10 text-center">
       <p className="text-sm font-medium text-ink">{title}</p>
       {hint ? <p className="text-xs text-muted">{hint}</p> : null}
+      {action ? <div className="mt-3">{action}</div> : null}
     </div>
   );
 }

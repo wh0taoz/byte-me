@@ -2,28 +2,33 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { getLocalProfileId, getMyGoing, levelLabel } from "@/lib/api";
+import { getLocalProfile, getMyGoing, markAttended, unGoing } from "@/lib/api";
 import type { GoingRow } from "@/lib/api";
 import { CHECKLIST_ITEMS, ICON, MASCOT, getChecklist, setChecklist } from "@/lib/kit";
 import { fmtTime } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import { LevelPill, Skeleton } from "@/components/ui";
+import { Button, Empty, LevelPill, Skeleton } from "@/components/ui";
 
 export default function MyEventsPage() {
   const [going, setGoing] = useState<GoingRow[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [reloadKey, setReloadKey] = useState(0);
+  const [nickname, setNickname] = useState<string | null>(null);
   const [hasProfile, setHasProfile] = useState(true);
 
   useEffect(() => {
-    const pid = getLocalProfileId();
-    if (!pid) {
+    const p = getLocalProfile();
+    setNickname(p?.nickname ?? null);
+    if (!p) {
       setHasProfile(false);
       setGoing([]);
       return;
     }
-    void getMyGoing(pid)
+    setError(null);
+    void getMyGoing(p.id)
       .then(setGoing)
-      .catch(() => setGoing([]));
-  }, []);
+      .catch((e: Error) => setError(e.message));
+  }, [reloadKey]);
 
   const [now, setNow] = useState(0);
   useEffect(() => {
@@ -37,9 +42,17 @@ export default function MyEventsPage() {
     () => (going ?? []).filter((g) => +new Date(g.events.starts_at) < now),
     [going, now],
   );
+  const attendedCount = useMemo(
+    () => (going ?? []).filter((g) => g.attended).length,
+    [going],
+  );
 
   const [tab, setTab] = useState<"upcoming" | "past">("upcoming");
   const shown = tab === "upcoming" ? upcoming : past;
+
+  function refresh() {
+    setReloadKey((k) => k + 1);
+  }
 
   return (
     <div>
@@ -50,6 +63,9 @@ export default function MyEventsPage() {
         <h1 className="text-4xl font-extrabold tracking-tight md:text-5xl">
           You&apos;re going places<span className="text-primary">.</span>
         </h1>
+        {nickname ? (
+          <p className="mt-3 text-sm text-muted">Good to see you, {nickname}.</p>
+        ) : null}
       </header>
 
       {/* ---- journey / progress ---- */}
@@ -71,7 +87,13 @@ export default function MyEventsPage() {
                 : "Mark an event as going and it becomes a plan."}
           </p>
           <div className="mt-4 flex items-center gap-1.5">
-            <span className="size-3.5 rounded-full border-2 border-[#a9ccc2] bg-primary" aria-label="done" />
+            <span
+              className={cn(
+                "size-3.5 rounded-full border-2 border-[#a9ccc2]",
+                hasProfile ? "bg-primary" : "bg-white",
+              )}
+              aria-label={hasProfile ? "done" : "todo"}
+            />
             <i className="h-0.5 flex-1 bg-[#bbddd2]" />
             <span
               className={cn(
@@ -88,6 +110,11 @@ export default function MyEventsPage() {
             <span>Show up</span>
             <span>Find your people</span>
           </div>
+          {attendedCount > 0 ? (
+            <p className="mt-2.5 text-xs font-bold text-primary-deep">
+              {attendedCount} {attendedCount === 1 ? "step" : "steps"} taken — every one counts.
+            </p>
+          ) : null}
         </div>
         {/* eslint-disable-next-line @next/next/no-img-element -- official kit mascot art */}
         <img
@@ -122,10 +149,19 @@ export default function MyEventsPage() {
           )}
         >
           Past events
+          {past.length > 0 ? (
+            <span className="ml-1 rounded-md bg-surface px-1.5 py-px text-primary-deep">{past.length}</span>
+          ) : null}
         </button>
       </div>
 
-      {!hasProfile ? (
+      {error ? (
+        <Empty
+          title="Couldn't load your plan"
+          hint={error}
+          action={<Button onClick={refresh}>Try again</Button>}
+        />
+      ) : !hasProfile ? (
         <div className="card flex flex-col items-center px-6 py-12 text-center">
           {/* eslint-disable-next-line @next/next/no-img-element -- official kit mascot art */}
           <img src={MASCOT.listening} alt="Pip listens" className="h-32 object-contain" />
@@ -167,7 +203,7 @@ export default function MyEventsPage() {
       ) : (
         <ul className="grid gap-5 md:grid-cols-2">
           {shown.map((g) => (
-            <PlanCard key={g.id} row={g} />
+            <PlanCard key={g.id} row={g} past={tab === "past"} onChanged={refresh} />
           ))}
         </ul>
       )}
@@ -180,10 +216,13 @@ export default function MyEventsPage() {
   );
 }
 
-function PlanCard({ row: g }: { row: GoingRow }) {
+function PlanCard({ row: g, past, onChanged }: { row: GoingRow; past: boolean; onChanged: () => void }) {
   const e = g.events;
   const start = new Date(e.starts_at);
   const [checked, setChecked] = useState<number[]>([]);
+  const [attended, setAttended] = useState(g.attended ?? false);
+  const [busy, setBusy] = useState(false);
+  const [removing, setRemoving] = useState(false);
 
   useEffect(() => {
     setChecked(getChecklist(e.id));
@@ -193,6 +232,41 @@ function PlanCard({ row: g }: { row: GoingRow }) {
     const next = checked.includes(i) ? checked.filter((x) => x !== i) : [...checked, i];
     setChecked(next);
     setChecklist(e.id, next);
+  }
+
+  function toast(msg: string) {
+    window.dispatchEvent(new CustomEvent("stepin:toast", { detail: msg }));
+  }
+
+  async function onAttended() {
+    if (busy || attended) return;
+    setBusy(true);
+    try {
+      await markAttended(g.id);
+      setAttended(true);
+      toast("Step counted! 🐾");
+      onChanged();
+    } catch (err) {
+      toast((err as Error).message || "Couldn't save that right now — please try again.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function onRemove() {
+    if (removing) return;
+    setRemoving(true);
+    try {
+      const pid = getLocalProfile()?.id;
+      if (!pid) throw new Error();
+      await unGoing(e.id, pid);
+      toast("Removed from your plan.");
+      onChanged();
+    } catch {
+      toast("Couldn't remove that right now — try again in a moment.");
+    } finally {
+      setRemoving(false);
+    }
   }
 
   return (
@@ -233,6 +307,20 @@ function PlanCard({ row: g }: { row: GoingRow }) {
             : "In your plan"}
       </div>
 
+      {past ? (
+        attended ? (
+          <p className="mt-3 flex items-center gap-2 rounded-xl bg-[#e8f4d9] px-3 py-2.5 text-xs font-bold text-[#4c711f]">
+            {/* eslint-disable-next-line @next/next/no-img-element -- kit icon */}
+            <img src={ICON.sprout} alt="" className="size-4" />
+            You were there — step counted 🐾
+          </p>
+        ) : (
+          <Button variant="secondary" className="mt-3 w-full" disabled={busy} onClick={() => void onAttended()}>
+            {busy ? "Counting…" : "I was there"}
+          </Button>
+        )
+      ) : null}
+
       <fieldset className="mt-4 rounded-xl bg-bg p-4">
         <legend className="px-1 text-sm font-bold">A tiny checklist</legend>
         {CHECKLIST_ITEMS.map((item, i) => (
@@ -256,9 +344,13 @@ function PlanCard({ row: g }: { row: GoingRow }) {
         {/* eslint-disable-next-line @next/next/no-img-element -- kit icon */}
         <img src={ICON.arrowRight} alt="" className="size-4 brightness-0 invert" />
       </Link>
-      <p className="mt-3 text-center text-xs text-muted">
-        Your plan · registration happens on the organizer&apos;s site
-      </p>
+      <button
+        onClick={() => void onRemove()}
+        disabled={removing}
+        className="mt-3 w-full text-center text-xs font-semibold text-muted underline decoration-dotted underline-offset-2 transition-colors hover:text-ink disabled:opacity-50"
+      >
+        {removing ? "Removing…" : "Can't make it? Remove from my plan"}
+      </button>
     </li>
   );
 }

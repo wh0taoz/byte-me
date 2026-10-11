@@ -57,6 +57,8 @@ export function SiteHeader() {
               >
                 <KitIcon src={icon} />
                 <span className="hidden sm:inline">{label}</span>
+                {/* icon-only below sm — keep an accessible name for screen readers */}
+                <span className="sr-only sm:hidden">{label}</span>
               </Link>
             );
           })}

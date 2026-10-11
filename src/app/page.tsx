@@ -1,31 +1,80 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { ALL_LEVELS, ALL_TYPES, getEvents, levelLabel } from "@/lib/api";
 import type { EventRow, Level } from "@/lib/types";
-import { ICON, MASCOT, getSavedIds, isSaved, toggleSaved } from "@/lib/kit";
+import { ICON, MASCOT, getSavedIds, toggleSaved } from "@/lib/kit";
 import { cn } from "@/lib/utils";
 import { EventCard } from "@/components/event-card";
-import { Empty, LevelPill, Skeleton } from "@/components/ui";
+import { Button, Empty, LevelPill, Skeleton } from "@/components/ui";
 
+// useSearchParams needs a Suspense boundary during prerender.
 export default function DiscoverPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="grid gap-5 md:grid-cols-2">
+          {[...Array(6)].map((_, i) => (
+            <Skeleton key={i} className="h-56" />
+          ))}
+        </div>
+      }
+    >
+      <Discover />
+    </Suspense>
+  );
+}
+
+function Discover() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [events, setEvents] = useState<EventRow[] | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [q, setQ] = useState("");
-  const [level, setLevel] = useState<Level | "all">("beginner");
-  const [type, setType] = useState<string>("all");
-  const [city, setCity] = useState("Belgrade");
+  const [reloadKey, setReloadKey] = useState(0);
+  const [q, setQ] = useState(() => searchParams.get("q") ?? "");
+  const [level, setLevel] = useState<Level | "all">(() => {
+    const l = searchParams.get("level");
+    return ALL_LEVELS.includes(l as Level) ? (l as Level) : "beginner";
+  });
+  const [type, setType] = useState<string>(
+    () => (ALL_TYPES as readonly string[]).includes(searchParams.get("type") ?? "")
+      ? (searchParams.get("type") as string)
+      : "all",
+  );
+  const [city, setCity] = useState(() => searchParams.get("city") ?? "Belgrade");
   const [savedIds, setSavedIds] = useState<string[]>([]);
 
-  useEffect(() => {
+  const load = useCallback(() => {
     void getEvents()
-      .then(setEvents)
+      .then((ev) => {
+        setEvents(ev);
+        setError(null);
+      })
       .catch((e: Error) => setError(e.message));
-    setSavedIds(getSavedIds());
   }, []);
 
+  useEffect(() => {
+    load();
+    setSavedIds(getSavedIds());
+  }, [load, reloadKey]);
+
+  // Filters live in the URL — refresh, share and back/forward keep your view.
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (q.trim()) params.set("q", q.trim());
+    if (level !== "all") params.set("level", level);
+    if (type !== "all") params.set("type", type);
+    if (city !== "all") params.set("city", city);
+    const qs = params.toString();
+    router.replace(qs ? `/?${qs}` : "/", { scroll: false });
+  }, [q, level, type, city, router]);
+
   const cities = useMemo(() => [...new Set((events ?? []).map((e) => e.city))], [events]);
+
+  const [now, setNow] = useState(0);
+  useEffect(() => setNow(Date.now()), []);
 
   const filtered = useMemo(() => {
     if (!events) return [];
@@ -41,6 +90,13 @@ export default function DiscoverPage() {
       return true;
     });
   }, [events, q, level, type, city]);
+
+  const { upcoming, past } = useMemo(() => {
+    const up: EventRow[] = [];
+    const gone: EventRow[] = [];
+    for (const e of filtered) (new Date(e.ends_at ?? e.starts_at).getTime() < now ? gone : up).push(e);
+    return { upcoming: up, past: gone };
+  }, [filtered, now]);
 
   function onToggleSave(id: string) {
     const next = toggleSaved(id);
@@ -188,12 +244,16 @@ export default function DiscoverPage() {
       <div className="mb-4 flex items-baseline justify-between">
         <h2 className="text-xl font-bold tracking-tight md:text-2xl">Pick your comfort zone</h2>
         <span aria-live="polite" className="text-[13px] text-muted">
-          {filtered.length} {filtered.length === 1 ? "event" : "events"}
+          {events === null ? "…" : `${filtered.length} ${filtered.length === 1 ? "event" : "events"}`}
         </span>
       </div>
 
       {error ? (
-        <Empty title="Couldn't load events" hint={error} />
+        <Empty
+          title="Couldn't load events"
+          hint={error}
+          action={<Button onClick={() => setReloadKey((k) => k + 1)}>Try again</Button>}
+        />
       ) : !events ? (
         <div className="grid gap-5 md:grid-cols-2">
           {[...Array(6)].map((_, i) => (
@@ -214,16 +274,40 @@ export default function DiscoverPage() {
           </button>
         </div>
       ) : (
-        <ul className="grid gap-5 md:grid-cols-2">
-          {filtered.map((e) => (
-            <EventCard
-              key={e.id}
-              event={e}
-              saved={savedIds.includes(e.id) || isSaved(e.id)}
-              onToggleSave={onToggleSave}
-            />
-          ))}
-        </ul>
+        <>
+          <ul className="grid gap-5 md:grid-cols-2">
+            {upcoming.map((e) => (
+              <EventCard
+                key={e.id}
+                event={e}
+                saved={savedIds.includes(e.id)}
+                onToggleSave={onToggleSave}
+              />
+            ))}
+          </ul>
+
+          {past.length > 0 ? (
+            <div className="mt-10">
+              <div className="mb-4 flex items-baseline justify-between">
+                <h2 className="text-lg font-bold tracking-tight text-muted">Already happened</h2>
+                <span className="text-[13px] text-muted">
+                  {past.length} {past.length === 1 ? "event" : "events"}
+                </span>
+              </div>
+              <ul className="grid gap-5 md:grid-cols-2">
+                {past.map((e) => (
+                  <EventCard
+                    key={e.id}
+                    event={e}
+                    saved={savedIds.includes(e.id)}
+                    onToggleSave={onToggleSave}
+                    past
+                  />
+                ))}
+              </ul>
+            </div>
+          ) : null}
+        </>
       )}
 
       <p className="mt-10 text-center text-xs text-muted">

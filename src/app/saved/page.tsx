@@ -7,17 +7,35 @@ import type { EventRow } from "@/lib/types";
 import { ICON, MASCOT, getSavedIds, toggleSaved } from "@/lib/kit";
 import { cn } from "@/lib/utils";
 import { EventCard } from "@/components/event-card";
-import { Skeleton } from "@/components/ui";
+import { Button, Empty, Skeleton } from "@/components/ui";
 
 export default function SavedPage() {
   const [events, setEvents] = useState<EventRow[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [reloadKey, setReloadKey] = useState(0);
   const [savedIds, setSavedIds] = useState<string[]>([]);
   const [collection, setCollection] = useState<string>("all");
 
   useEffect(() => {
-    void getEvents().then(setEvents);
+    let live = true;
+    void getEvents()
+      .then((ev) => {
+        if (live) {
+          setEvents(ev);
+          setError(null);
+        }
+      })
+      .catch((e: Error) => {
+        if (live) setError(e.message);
+      });
     setSavedIds(getSavedIds());
-  }, []);
+    return () => {
+      live = false;
+    };
+  }, [reloadKey]);
+
+  const [now, setNow] = useState(0);
+  useEffect(() => setNow(Date.now()), []);
 
   const savedEvents = useMemo(
     () => (events ?? []).filter((e) => savedIds.includes(e.id)),
@@ -94,7 +112,13 @@ export default function SavedPage() {
         </div>
       ) : null}
 
-      {!events ? (
+      {error ? (
+        <Empty
+          title="Couldn't load your saved events"
+          hint={error}
+          action={<Button onClick={() => setReloadKey((k) => k + 1)}>Try again</Button>}
+        />
+      ) : !events ? (
         <div className="grid gap-5 md:grid-cols-2">
           {[...Array(2)].map((_, i) => (
             <Skeleton key={i} className="h-56" />
@@ -123,7 +147,13 @@ export default function SavedPage() {
           </div>
           <ul className="grid gap-5 md:grid-cols-2">
             {filtered.map((e) => (
-              <EventCard key={e.id} event={e} saved onToggleSave={onToggleSave} />
+              <EventCard
+                key={e.id}
+                event={e}
+                saved
+                onToggleSave={onToggleSave}
+                past={new Date(e.ends_at ?? e.starts_at).getTime() < now}
+              />
             ))}
           </ul>
         </>

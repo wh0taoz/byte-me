@@ -3,19 +3,31 @@
 import { BookOpen, Clock } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getGuides } from "@/lib/api";
-import { Empty, Skeleton } from "@/components/ui";
+import { Button, Empty, Skeleton } from "@/components/ui";
 
 type Guide = Awaited<ReturnType<typeof getGuides>>[number];
 
 export default function GuidesPage() {
   const [guides, setGuides] = useState<Guide[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
+    let live = true;
     void getGuides()
-      .then(setGuides)
-      .catch((e: Error) => setError(e.message));
-  }, []);
+      .then((g) => {
+        if (live) {
+          setGuides(g);
+          setError(null);
+        }
+      })
+      .catch((e: Error) => {
+        if (live) setError(e.message);
+      });
+    return () => {
+      live = false;
+    };
+  }, [reloadKey]);
 
   return (
     <div>
@@ -28,13 +40,22 @@ export default function GuidesPage() {
       </header>
 
       {error ? (
-        <Empty title="Couldn't load the guides" hint={error} />
+        <Empty
+          title="Couldn't load the guides"
+          hint={error}
+          action={<Button onClick={() => setReloadKey((k) => k + 1)}>Try again</Button>}
+        />
       ) : !guides ? (
         <div className="flex flex-col gap-4">
           {[...Array(3)].map((_, i) => (
             <Skeleton key={i} className="h-32" />
           ))}
         </div>
+      ) : guides.length === 0 ? (
+        <Empty
+          title="No guides yet"
+          hint="Pip is still writing them — check back in a little while."
+        />
       ) : (
         <div className="flex flex-col gap-4">
           {guides.map((g, i) => (
