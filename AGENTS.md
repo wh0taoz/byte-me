@@ -20,7 +20,8 @@ either.
 11 Oct 2026: `origin/homepage` (the whole P3 frontend) is merged to main
 and the UX holes are fixed. Chat is unified on POST /api/explain — the
 old /api/chat route is deleted; do not resurrect it. Frontend pages:
-`/`, `/events/[id]`, `/guides`, `/saved`, `/my-events`, `/ask-pip`.
+`/`, `/events/[id]`, `/guides`, `/saved`, `/my-events`, `/ask-pip`,
+`/profile`.
 
 ## Data model (LOCKED — do not change without team agreement)
 - events: id, title, organizer, type (hackathon|meetup|seminar|workshop|
@@ -50,8 +51,9 @@ Live:
   DTEND defaults +2h; slug filename)
 - POST /api/explain → {reply}; {reply, fallback: true} on Gemma failure
 - POST /api/simplify → {text}; {text: original, fallback: true} on failure
-- POST /api/going → {going, buddy: {nickname} | null} (idempotent per
-  profile+event; first-timer buddy pairing, oldest waiter first)
+- POST /api/going → { going: {id}, buddy: {nickname, intro?} | null }
+  (idempotent per profile+event; first-timer buddy pairing — see
+  "Buddy pairing" below; intro field added by upcoming commit)
 - GET /api/going?profile_id= → going rows + event data + buddy_nickname
 - DELETE /api/going?event_id=&profile_id= → {ok: true} (clears buddy
   links on both sides)
@@ -74,6 +76,19 @@ Error convention: `{error: friendly text, code}` — never raw Postgres
 or SDK messages (uuid → 404, FK → 422, 5xx → friendly text; details go
 to server logs only).
 
+## Buddy pairing (POST /api/going)
+- Rule-based matching, no AI for the match itself
+- Hackathons: pick the first unpaired first-timer whose interests
+  complement the newcomer's (overlap < min(a.length, b.length) —
+  identical, covering, or empty lists never count); if nobody
+  complements, fall back to the oldest waiter
+- Meetups/workshops/seminars/conferences: oldest unpaired
+  first-timer
+- Idempotent: an existing going row is returned without re-pairing
+- Response: { going: {id}, buddy: {nickname, intro?} | null }
+- intro: Gemma-generated welcome message for the pair (added
+  separately, upcoming commit)
+
 ## Gemma API (in src/lib/gemma.ts)
 
 Base calls:
@@ -83,7 +98,7 @@ Base calls:
 
 Constants: `GEMMA_FAST` = gemma-4-26b-a4b-it (chat) ·
 `GEMMA_QUALITY` = gemma-4-31b-it (simplify, summaries, level
-suggestions).
+suggestions, guides).
 Type `Level` = "beginner" | "intermediate" | "expert".
 
 Route-facing prompt functions:
@@ -123,7 +138,7 @@ eventName)`.
 ## Out of scope (do not build)
 - Login / accounts (demo profile = localStorage + a profiles row)
 - Scraping or Meetup/Luma import (events are entered manually)
-- Matching algorithm (buddy pairing is a simple first-timer lookup)
+- AI/ML matching (buddy pairing stays rule-based — see "Buddy pairing")
 - Self-hosting Gemma (production plan only; hackathon uses the hosted API)
 - Native app
 - Monetization
