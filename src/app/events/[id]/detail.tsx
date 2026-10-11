@@ -400,11 +400,18 @@ function GoingCard({ eventId }: { eventId: string }) {
       ) : result ? (
         <div className="mt-3 rounded-lg border border-line bg-ice/60 px-3 py-3 text-sm leading-relaxed animate-fade-in">
           {result.buddy ? (
-            <p>
-              <span className="font-semibold">You&apos;re paired with {result.buddy.nickname}!</span>{" "}
-              Look for each other at the entrance — you&apos;re each other&apos;s buddy for this
-              event.
-            </p>
+            <>
+              <p>
+                <span className="font-semibold">You&apos;re paired with {result.buddy.nickname}!</span>{" "}
+                Look for each other at the entrance — you&apos;re each other&apos;s buddy for this
+                event.
+              </p>
+              {/* Warm intro from Gemma (or fallback text). Not labeled "AI" because:
+                  (a) fallback is hardcoded, not AI-generated, and (b) the text is
+                  tone-only — no factual claims. Judgment gate already prevents
+                  condescending language. */}
+              {result.buddy.intro ? <p className="mt-1.5 italic text-muted">{result.buddy.intro}</p> : null}
+            </>
           ) : firstTimer ? (
             <p>
               <span className="font-semibold">You&apos;re on the buddy list.</span> As soon as
