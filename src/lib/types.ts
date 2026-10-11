@@ -1,32 +1,59 @@
-// Shared types — agree on these first so all three of you build against the same shapes.
-export type Level = "beginner" | "intermediate" | "advanced";
-export type Urgency = "low" | "medium" | "high";
-export type TaskStatus = "todo" | "in_progress" | "blocked" | "done";
-export type DriveAccess = "reader" | "commenter" | "writer";
+// Shared types for Every Step Counts — mirrors supabase/schema-esc.sql.
 
-export interface Person {
-  id: string; name: string; email: string | null; github: string | null;
-  level: Level; tags: string[]; available_hours: number; mascot_xp: number;
+export type Level = "beginner" | "intermediate" | "expert";
+export type EventType = "hackathon" | "meetup" | "seminar" | "workshop" | "conference";
+export type TeamPostKind = "looking_for_team" | "looking_for_member";
+
+export interface EventRow {
+  id: string;
+  title: string;
+  organizer: string;
+  type: EventType;
+  level: Level;
+  city: string;
+  starts_at: string;
+  ends_at: string | null;
+  venue: string | null;
+  registration_url: string | null;
+  description: string;
+  what_to_expect: string[] | null;
+  ai_summary: {
+    summary?: string;
+    prior_knowledge?: string[];
+    key_terms?: { term: string; meaning: string }[];
+  } | null;
+  ai_level_suggestion: string | null;
+  created_at: string;
 }
-export interface Role { id: string; name: string; description: string | null; default_tags: string[]; }
-export interface RoleFile { id: string; role_id: string; drive_file_id: string; file_name: string | null; file_url: string | null; access: DriveAccess; }
-export interface RoleGroup { id: string; role_id: string; group_name: string; invite_url: string | null; }
-export interface Task {
-  id: string; title: string; description: string | null; tags: string[]; urgency: Urgency;
-  deadline: string | null; estimate_h: number; status: TaskStatus;
-  assignee_id: string | null; ai_reason: string | null; source: string;
+
+export interface GuideRow {
+  slug: string;
+  title: string;
+  body_md: string;
+  emoji: string | null;
+  order: number | null;
 }
-export interface Resource {
-  id: string; type: "stock" | "vendor" | "sponsor" | "budget"; name: string;
-  qty: number | null; unit: string | null; per_person_per_day: number | null;
-  amount: number | null; contact: string | null; status: string | null; notes: string | null;
+
+export interface ProfileRow {
+  id: string;
+  nickname: string;
+  level: Level | null;
+  interests: string[] | null;
+  first_timer: boolean | null;
+  steps: number | null;
+  created_at: string;
 }
-export interface Candidate extends Person { open_tasks: number; open_hours: number; score: number; }
+
+export interface GoingResult {
+  going: { id: string };
+  buddy: { nickname: string } | null;
+}
 
 // ---- API contracts ----
-// GET  /api/health                                              -> { ok, gemma, supabase }
-// POST /api/assign          { task_id }                         -> { person_id, reason, alternatives: [{person_id, reason}] }
-// POST /api/role-pack/apply { person_id, role_id, google_token } -> { brief, files, groups, tasks }
-// POST /api/role-pack/revoke{ person_role_id, google_token }     -> { revoked: number }
-// POST /api/restock         {}                                  -> { shortages: [...], tasks_created: number }
-// POST /api/command         { text, confirm?, proposal? }       -> { proposal } | { result }
+// GET  /api/events?level=&type=&city=        -> EventRow[]
+// GET  /api/events/[id]                      -> EventRow
+// GET  /api/events/[id]/ics                  -> text/calendar (download)
+// POST /api/going { event_id, profile_id, first_timer } -> GoingResult
+// GET  /api/guides                           -> GuideRow[]
+// GET  /api/profiles                         -> ProfileRow[]
+// POST /api/profiles { nickname, level?, first_timer? } -> ProfileRow

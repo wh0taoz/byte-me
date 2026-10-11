@@ -1,33 +1,50 @@
-/* Import this from src/app/globals.css right after `@import "tailwindcss";`
-   Tailwind v4: tokens become classes like bg-primary, text-ink, bg-accent, text-urgent. */
+/* StepIn UI kit V2 palette (design-tokens.json):
+   navy type, teal actions, mint surfaces, white cards, tactile borders. */
 
 @theme {
-  --color-primary: #3B4CCA;      /* buttons, links — trust, focus (6.8:1 on white) */
-  --color-accent: #F5A524;       /* firefly glow, highlights — always dark text on it */
-  --color-ink: #1F2433;          /* body text */
-  --color-bg: #FAF8F5;           /* page background */
-  --color-surface: #FFFFFF;      /* cards */
-  --color-muted: #5B6275;        /* secondary text */
-  --color-success: #15803D;      /* done, in stock */
-  --color-warning: #B45309;      /* low stock, due soon */
-  --color-urgent: #C62828;       /* overdue / critical only */
-  --radius-card: 12px;
-}
+  --color-primary: #0096a1;        /* buttons, links — teal actions */
+  --color-primary-deep: #00747d;   /* hover / pressed */
+  --color-accent: #0096a1;         /* AI / highlights */
+  --color-ink: #132039;            /* body text — navy */
+  --color-muted: #52647b;          /* secondary text (AA on bg + surface) */
+  --color-bg: #f2f5f1;             /* page background */
+  --color-surface: #ffffff;        /* cards */
+  --color-ice: #e5f5ee;            /* mint tint fills */
+  --color-line: #e2e8ed;           /* borders */
+  --color-line-strong: #b5dacd;    /* emphasized borders (mint-dark) */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-primary: #8C9BFF;
-    --color-ink: #E8EAF6;
-    --color-bg: #14172A;
-    --color-surface: #1C2036;
-    --color-muted: #A3A9C2;
-  }
+  --color-success: #4c711f;
+  --color-warning: #9a6b2f;
+  --color-urgent: #b0483f;
+
+  --radius-card: 20px;
 }
 
 body { background: var(--color-bg); color: var(--color-ink); }
 
-/* Urgency must never rely on colour alone: always render the word too. */
-.badge { display: inline-flex; gap: .25rem; align-items: center; padding: .125rem .5rem; border-radius: 999px; font-size: .75rem; font-weight: 600; }
+/* ---- brand accents --------------------------------------------------- */
+.bg-winter {
+  background: linear-gradient(135deg, #0096a1 0%, #00747d 100%);
+}
+.shadow-winter {
+  box-shadow: 0 8px 24px rgba(0, 116, 125, 0.18);
+}
+
+/* ---- level badges ------------------------------------------------------
+   The word is always shown (never colour alone); the Pip level art is the
+   friendly signal.                                                              */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.1rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.6875rem;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
 .badge-high   { background: color-mix(in srgb, var(--color-urgent) 12%, transparent); color: var(--color-urgent); }
 .badge-medium { background: color-mix(in srgb, var(--color-warning) 12%, transparent); color: var(--color-warning); }
-.badge-low    { background: color-mix(in srgb, var(--color-muted) 12%, transparent); color: var(--color-muted); }
+.badge-low    { color: var(--color-muted); }
