@@ -81,7 +81,7 @@ export default function SavedPage() {
 
       <div className="card mb-6 flex items-center gap-4 border-2 border-b-4 p-5">
         {/* eslint-disable-next-line @next/next/no-img-element -- kit icon */}
-        <img src={ICON.bookmark} alt="" className="rounded-xl bg-ice p-2.5" />
+        <img src={ICON.bookmark} alt="" className="size-12 shrink-0 rounded-xl bg-ice p-2.5" />
         <div>
           <p className="font-bold">
             {savedEvents.length > 0 ? "Saved for later" : "Nothing saved yet"}
