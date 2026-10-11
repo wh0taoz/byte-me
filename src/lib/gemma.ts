@@ -47,6 +47,7 @@ async function generate(system: string, user: string, json: boolean, opts: AskOp
       return res.text ?? "";
     } catch (e) {
       const msg = String(e);
+      console.warn(`[gemma] ${model} attempt ${attempt + 1}/4 failed:`, msg.slice(0, 200)); // 429? 5xx? 400?
       if (msg.includes("400") && json && supportsJson) { supportsJson = false; continue; }
       if (msg.includes("400") && supportsSystem) { supportsSystem = false; continue; }
       if (attempt === 3) throw e;
@@ -92,6 +93,22 @@ export const containsJudgment = (text: string) => judgmentWords(text).length > 0
 export const rewriteRequest = (question: string, words: string[]) =>
   `${question}\n\n(Your previous answer used these words: ${words.join(", ")}. ` +
   "Rewrite the answer without them and without implying the question is easy.)";
+
+/** Drops the judgment words that can be removed without changing the meaning:
+ *  "Git is just a tool" → "Git is a tool", "Of course, git…" → "Git…". No Gemma call.
+ *  "easy", "basic" and the Serbian words can't be dropped safely; those still go through a rewrite. */
+export function stripRemovable(text: string): string {
+  return text
+    .replace(/\bsimply put\b/gi, (m) => (m[0] === "S" ? "In other words" : "in other words"))
+    // "not just X" means "not only X" — dropping "just" would flip the meaning
+    .replace(/(\bnot|n't) (?:just|simply)\b/gi, "$1 only")
+    // sentence start: "Just ask." → "Ask."
+    .replace(/(^|[.!?]\s+)(?:just|simply|obviously|of course),?\s+(\p{L})/gimu,
+      (_m, start: string, c: string) => start + c.toUpperCase())
+    // mid-sentence: "Git is just a tool" → "Git is a tool"
+    .replace(/\s*\b(?:just|simply|obviously|of course)\b,?/gi, "")
+    .replace(/[ \t]{2,}/g, " ");
+}
 
 // =====================================================================
 // Checklist functions
@@ -193,14 +210,33 @@ How to answer:
 - Reply in the same language as the question. If the question is in Serbian, answer in Serbian (Latin script) and use the informal "ti" throughout.`;
 }
 
-/** Non-streaming answer with the quality gate built in (regenerates once if judgment words slip through). */
+/** Non-streaming answer with the quality gate built in.
+ *  1. Words that can be dropped ("just", "simply", "of course"…) are removed locally — no second call.
+ *  2. Anything else ("easy", "basic", Serbian words) gets one rewrite.
+ *  3. If the rewrite fails or still has judgment words, the user gets the cleaned first answer.
+ *  Only a failed FIRST call throws — the quality gate can never turn a real answer into an error. */
 export async function answerWithoutJudgment(question: string, level: Level, eventContext?: string): Promise<string> {
   const system = explainSystem(level, eventContext);
+  const t0 = Date.now();
   const first = await ask(system, question);
-  const words = judgmentWords(first);
-  if (!words.length) return first;
-  const second = await ask(system, rewriteRequest(question, words));
-  return containsJudgment(second) && !containsJudgment(first) ? first : second || first;
+  const firstWords = judgmentWords(first);
+  console.log(`[gemma] explain: first ${Date.now() - t0}ms, ${first.length} chars, judgment [${firstWords.join(", ")}]`);
+  if (!firstWords.length) return first;
+
+  const cleaned = stripRemovable(first).trim() || first;
+  const words = judgmentWords(cleaned);
+  if (!words.length) return cleaned;
+
+  try {
+    const t1 = Date.now();
+    const second = stripRemovable(await ask(system, rewriteRequest(question, words))).trim();
+    console.log(`[gemma] explain: rewrite ${Date.now() - t1}ms, ${second.length} chars, judgment [${judgmentWords(second).join(", ")}]`);
+    if (second && !containsJudgment(second)) return second;
+  } catch (e) {
+    console.error("[gemma] explain: rewrite failed, keeping first answer:", String(e).slice(0, 300));
+  }
+  console.warn(`[gemma] explain: returning first answer with [${words.join(", ")}]`);
+  return cleaned;
 }
 
 // ---------- simplify → POST /api/simplify ("say it simply" button) ----------
