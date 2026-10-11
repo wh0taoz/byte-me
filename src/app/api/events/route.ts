@@ -32,5 +32,18 @@ export async function GET(req: Request) {
       { status: 500 },
     );
   }
-  return NextResponse.json(data);
+  // Newcomer badge: first-timer count per event. Best-effort — a failure
+  // here must not sink the list, events just show without the badge.
+  const counts = new Map<string, number>();
+  const { data: goingRows } = await supabaseAdmin
+    .from("going")
+    .select("event_id")
+    .eq("first_timer", true);
+  if (goingRows) {
+    for (const row of goingRows) counts.set(row.event_id, (counts.get(row.event_id) ?? 0) + 1);
+  }
+
+  return NextResponse.json(
+    (data ?? []).map((e) => ({ ...e, first_timer_count: counts.get(e.id) ?? 0 })),
+  );
 }

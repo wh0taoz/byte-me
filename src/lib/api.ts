@@ -185,6 +185,27 @@ export async function createProfile(input: {
   return post<ProfileRow>("/api/profiles", input);
 }
 
+// ---- GitHub (demo profile enrichment) ---------------------------------------------
+export interface GithubProfile {
+  username: string;
+  name: string | null;
+  bio: string | null;
+  avatar_url: string;
+  location: string | null;
+  company: string | null;
+  blog: string | null;
+  public_repos: number;
+  followers: number;
+  following: number;
+  created_at: string;
+  top_languages: string[];
+  recent_repos: { name: string; description: string | null; language: string | null; stars: number; url: string }[];
+}
+
+export async function getGithubProfile(username: string): Promise<GithubProfile> {
+  return request<GithubProfile>(`/api/github/${encodeURIComponent(username)}`);
+}
+
 // ---- labels ---------------------------------------------------------------------
 export function levelLabel(level: Level): string {
   return { beginner: "Beginner", intermediate: "Intermediate", expert: "Expert" }[level];

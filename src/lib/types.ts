@@ -29,6 +29,8 @@ export interface EventRow {
   ai_summary: AiSummary | null;
   ai_level_suggestion: string | null;
   created_at: string;
+  /** Live first-timer count, added by the API (not a DB column). */
+  first_timer_count?: number;
 }
 
 export interface GuideRow {

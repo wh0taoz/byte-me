@@ -64,6 +64,12 @@ export function EventCard({
           <img src={ICON.pin} alt="" className="size-4 shrink-0" />
           {e.venue ?? e.city} · {e.city}
         </p>
+        {e.first_timer_count ? (
+          <p className="flex items-center gap-1.5 text-[13px] font-medium text-primary-deep">
+            <span aria-hidden>🐾</span>
+            {e.first_timer_count} newcomer{e.first_timer_count === 1 ? "" : "s"} going
+          </p>
+        ) : null}
 
         <div className="mt-auto flex items-center gap-2 pt-2">
           {past ? (

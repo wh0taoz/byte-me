@@ -2,22 +2,28 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { Bookmark, CalendarDays, Check, Footprints, Info, Pencil, X } from "lucide-react";
+import { Bookmark, CalendarDays, Check, ExternalLink, Footprints, Info, Pencil, Star, X } from "lucide-react";
 import {
   ALL_LEVELS,
   clearLocalProfile,
+  getGithubProfile,
   getLocalProfile,
   getMyGoing,
   levelLabel,
   setLocalProfile,
 } from "@/lib/api";
-import type { LocalProfile, GoingRow } from "@/lib/api";
+import type { GithubProfile, LocalProfile, GoingRow } from "@/lib/api";
 import type { Level } from "@/lib/types";
 import { getSavedIds } from "@/lib/kit";
 import { cn } from "@/lib/utils";
 import { LevelPill, Toggle } from "@/components/ui";
 
 const NOTIF_PREF_KEY = "stepin:notif-prefs";
+
+// Demo wiring: the profile page shows this GitHub account via our
+// /api/github/[username] integration. Change the username here to demo
+// someone else.
+const GITHUB_USERNAME = "wh0taoz";
 const NOTIF_PREFS = [
   { key: "new_events", label: "New events near me", hint: "When a beginner-friendly event lands in your city." },
   { key: "buddies", label: "Buddy matches", hint: "When another first-timer gets paired with you." },
@@ -34,6 +40,7 @@ export default function ProfilePage() {
   const [nick, setNick] = useState("");
   const [prefs, setPrefs] = useState<Record<string, boolean>>({});
   const [now, setNow] = useState(0);
+  const [github, setGithub] = useState<GithubProfile | null>(null);
 
   useEffect(() => {
     setNow(Date.now());
@@ -52,6 +59,10 @@ export default function ProfilePage() {
         .catch(() => setGoing([])); // stats just show 0 if the check fails
     }
     setReady(true);
+    // GitHub enrichment is best-effort: if it fails the page still works.
+    void getGithubProfile(GITHUB_USERNAME)
+      .then(setGithub)
+      .catch(() => setGithub(null));
   }, []);
 
   const stats = useMemo(() => {
@@ -104,8 +115,17 @@ export default function ProfilePage() {
     <div className="flex flex-col gap-7">
       {/* ---- header card ---- */}
       <section className="card brand-gradient flex flex-col items-start gap-6 p-6 sm:flex-row sm:items-center sm:p-8">
-        <span className="flex size-28 shrink-0 items-center justify-center rounded-full border-2 border-b-4 border-line-strong bg-soft text-5xl font-extrabold text-primary-deep">
-          {profile?.nickname?.trim()?.[0]?.toUpperCase() ?? "S"}
+        <span className="flex size-28 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-b-4 border-line-strong bg-soft text-5xl font-extrabold text-primary-deep">
+          {github ? (
+            // eslint-disable-next-line @next/next/no-img-element -- GitHub avatar
+            <img
+              src={github.avatar_url}
+              alt={`${github.username} on GitHub`}
+              className="size-full object-cover"
+            />
+          ) : (
+            (profile?.nickname?.trim()?.[0]?.toUpperCase() ?? "S")
+          )}
         </span>
         <div className="min-w-0 flex-1">
           {editing ? (
@@ -176,6 +196,82 @@ export default function ProfilePage() {
           </Link>
         )}
       </section>
+
+      {/* ---- GitHub card (demo integration, username hardcoded) ---- */}
+      {github ? (
+        <section className="card p-6" aria-label="GitHub profile">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <h2 className="flex items-center gap-2 text-lg font-semibold">
+                GitHub
+                <a
+                  href={`https://github.com/${github.username}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1 text-sm font-normal text-primary-deep hover:underline"
+                >
+                  @{github.username} <ExternalLink className="size-3.5" aria-hidden />
+                </a>
+              </h2>
+              {github.bio ? <p className="mt-1 text-[13px] text-muted">{github.bio}</p> : null}
+            </div>
+            <div className="flex gap-5 text-sm">
+              <GitHubStat value={github.public_repos} label="repos" />
+              <GitHubStat value={github.followers} label="followers" />
+              <GitHubStat value={github.following} label="following" />
+            </div>
+          </div>
+
+          {github.top_languages.length ? (
+            <div className="mt-4 flex flex-wrap items-center gap-2">
+              <span className="text-xs font-bold uppercase tracking-[0.06em] text-muted">
+                Top languages
+              </span>
+              {github.top_languages.map((lang) => (
+                <span
+                  key={lang}
+                  className="rounded-full border-[1.5px] border-line bg-surface px-3 py-1 text-xs font-semibold text-ink"
+                >
+                  {lang}
+                </span>
+              ))}
+            </div>
+          ) : null}
+
+          {github.recent_repos.length ? (
+            <ul className="mt-4 flex flex-col">
+              {github.recent_repos.map((repo, i) => (
+                <li
+                  key={repo.name}
+                  className={cn("py-2.5", i > 0 && "border-t-[1.5px] border-line")}
+                >
+                  <a
+                    href={repo.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink hover:text-primary-deep hover:underline"
+                  >
+                    {repo.name}
+                    {repo.language ? (
+                      <span className="font-normal text-muted">· {repo.language}</span>
+                    ) : null}
+                  </a>
+                  {repo.description ? (
+                    <p className="mt-0.5 text-[13px] leading-relaxed text-muted">
+                      {repo.description}
+                    </p>
+                  ) : null}
+                  {repo.stars > 0 ? (
+                    <p className="mt-0.5 flex items-center gap-1 text-xs text-muted">
+                      <Star className="size-3" aria-hidden /> {repo.stars}
+                    </p>
+                  ) : null}
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </section>
+      ) : null}
 
       {/* ---- stats ---- */}
       <section className="grid grid-cols-1 gap-6 sm:grid-cols-3" aria-label="Your stats">
@@ -345,6 +441,15 @@ export default function ProfilePage() {
           ))}
         </div>
       </section>
+    </div>
+  );
+}
+
+function GitHubStat({ value, label }: { value: number; label: string }) {
+  return (
+    <div className="text-center">
+      <p className="text-xl font-extrabold leading-tight">{value}</p>
+      <p className="text-xs text-muted">{label}</p>
     </div>
   );
 }

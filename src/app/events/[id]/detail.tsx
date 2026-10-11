@@ -115,6 +115,11 @@ export function EventDetailView() {
             {smartRange(e.starts_at, e.ends_at)}
             {oneDay ? ` · ${fmtTime(e.starts_at)}` : ""}
           </Chip>
+          {e.first_timer_count ? (
+            <Chip className="border-primary-deep bg-soft font-semibold text-primary-deep">
+              🐾 {e.first_timer_count} newcomer{e.first_timer_count === 1 ? "" : "s"} going
+            </Chip>
+          ) : null}
         </div>
 
         <h1 className="text-3xl font-bold tracking-tight md:text-4xl">{e.title}</h1>
