@@ -17,6 +17,11 @@ organiser routes and unused lib files were removed (commit dbb2d54); old
 organiser tables remain in Supabase (kept, harmless) — do not resurrect
 either.
 
+11 Oct 2026: `origin/homepage` (the whole P3 frontend) is merged to main
+and the UX holes are fixed. Chat is unified on POST /api/explain — the
+old /api/chat route is deleted; do not resurrect it. Frontend pages:
+`/`, `/events/[id]`, `/guides`, `/saved`, `/my-events`, `/ask-pip`.
+
 ## Data model (LOCKED — do not change without team agreement)
 - events: id, title, organizer, type (hackathon|meetup|seminar|workshop|
   conference), level (beginner|intermediate|expert), city, starts_at,
@@ -38,19 +43,32 @@ bring: string[] }`
 Live:
 - GET /api/health → {ok, gemma, supabase}
 - GET /api/events → Event[] sorted by starts_at asc; filters
-  ?level=&type=&city=
+  ?level=&type=&city= (city is case-insensitive)
 - GET /api/events/[id] → Event (generates + caches ai_summary on first
   read; friendly fallback + fallback: true if Gemma fails)
-- POST /api/going → {going, buddy: {nickname} | null} (first-timer
-  buddy pairing)
-- GET /api/events/[id]/ics → .ics file
+- GET /api/events/[id]/ics → .ics file (RFC 5545: DTSTAMP, folding,
+  DTEND defaults +2h; slug filename)
 - POST /api/explain → {reply}; {reply, fallback: true} on Gemma failure
 - POST /api/simplify → {text}; {text: original, fallback: true} on failure
+- POST /api/going → {going, buddy: {nickname} | null} (idempotent per
+  profile+event; first-timer buddy pairing, oldest waiter first)
+- GET /api/going?profile_id= → going rows + event data + buddy_nickname
+- DELETE /api/going?event_id=&profile_id= → {ok: true} (clears buddy
+  links on both sides)
+- POST /api/going/attended {going_id} → {ok: true} (idempotent;
+  profiles.steps + 1)
+- GET /api/guides → Guide[] ordered
+- GET/POST /api/profiles → list / create demo profile (nickname
+  identity, no auth)
 
 Planned (P2, contracts in 00-TEAM-SPLIT.md):
-- light: POST /api/events, POST /api/going/attended
+- light: POST /api/events (organizer form with suggestLevel)
 - team_posts: P3 reads/writes directly with the Supabase browser client
   (no route of our own)
+
+Error convention: `{error: friendly text, code}` — never raw Postgres
+or SDK messages (uuid → 404, FK → 422, 5xx → friendly text; details go
+to server logs only).
 
 ## Gemma API (in src/lib/gemma.ts)
 

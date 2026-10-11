@@ -1,6 +1,6 @@
 # Progress
 
-Last updated: 11 Oct 2026, 02:02
+Last updated: 11 Oct 2026, 03:40
 
 ## P1 — AI / Pitch
 - [x] Prompt functions in src/lib/gemma.ts (all exported functions, incl. answerWithoutJudgment, simplify, eventSummary, suggestLevel, guideDraft)
@@ -31,18 +31,29 @@ Last updated: 11 Oct 2026, 02:02
 - [x] Seed re-run in Supabase (verified: 15 events, 6 beginner / 6 intermediate / 3 expert, 2 hackathons, English)
 - [x] 15 AI summaries regenerated after the re-run (15/15; one retry on ReDesign for Her)
 - [x] Skip Vercel deploy logged — video-first pitch
+- [x] POST /api/going is idempotent (existing row returned, no duplicate/re-pair); buddy candidates ordered created_at asc (deterministic "paired with Ana/Luka" demo)
+- [x] DELETE /api/going (un-going; clears the buddy link on both sides)
+- [x] POST /api/going/attended ("I was there", idempotent, profiles.steps + 1)
+- [x] GET /api/going?profile_id= returns buddy_nickname
+- [x] Friendly errors everywhere: uuid guards → 404 (no raw Postgres), FK → 422, 5xx mapped to friendly text (details only in server logs)
+- [x] ICS: DTSTAMP + CALSCALE, DTEND defaults +2h, 75-octet folding, escaped URL, slug filename
+- [x] gemma.ts client is lazy — missing GEMINI_API_KEY degrades to fallbacks instead of crashing route module load
 - Blocked by: none
 
 ## P3 — Frontend
-- [ ] Event list with level badges + filters (level, type, city)
-- [ ] Event page: what to expect, AI summary, "Say it simply", chatbot
-- [ ] First-timer tag + buddy pairing UI
-- [ ] Add to calendar (.ics)
-- [ ] Guides pages (3)
-- [ ] Light if green: Team Board, organizer form, My steps
-- [ ] P3's work is on `origin/homepage` branch (commit b12e07a, Krstinja, 01:55) — NOT merged to main. BLOCKER for video recording.
-- Note: violates the 16:00 main-only decision. P3 must merge to main ASAP.
-- Blocked by: none — unblocked since the 22:30 checkpoint
+- [x] Event list with level badges + filters (level, type, city) — filters persist in the URL; upcoming/past split with "Finished" cards
+- [x] Event page: what to expect, AI summary (ml's shape), "Say it simply" (toggle + fallback), chatbot
+- [x] First-timer tag + buddy pairing UI — reload keeps the going state (no duplicate POST), remove-from-plan on both pages
+- [x] Add to calendar (.ics) — blob download, failure = toast (never a raw JSON page)
+- [x] Guides pages (3) — inline accordions
+- [x] My events: greeting, buddy status, "I was there" (steps count), remove
+- [x] origin/homepage MERGED to main (b18165e) + UX holes fixed — the video-recording blocker is resolved
+- [x] Chat unified on the contract route /api/explain (event-aware, level from profile); /api/chat deleted (it broke against P1's gemma.ts rewrite)
+- [x] Profile: nickname + level select + first_timer; localStorage keeps {id, nickname, level, first_timer} (legacy id-only keys still work); stale profile self-heals
+- [x] Error/empty states on every page: friendly text + Try again; saved page no longer hangs on skeletons; my-events distinguishes error from empty
+- [x] A11y: mobile nav names, chat panel dialog semantics + Esc + focus + live region + disclaimer, 44px send, teal darkened to AA
+- [ ] Light if green: Team Board, organizer form (/submit)
+- Blocked by: none
 
 ## Checkpoints
 - 22:30 ✓ Schema + seed in Supabase, /api/health ok, events API live

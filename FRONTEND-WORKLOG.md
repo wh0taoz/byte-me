@@ -93,3 +93,48 @@ matching the kit's system-font direction.
 | `250e685` | TT Neoris + JustSans wiring, deep blue text, Pip v3 |
 | `ae2b70e` | All demo seed content translated to English (script + seed SQL) |
 | `b545a19` | StepIn UI kit V2 migration — the current visual direction |
+
+## 11 Oct — merge to main + UX hole fixes (post-merge pass)
+
+`origin/homepage` merged into main (seed conflict resolved to main's
+English translation; package.json union). Then, in one pass:
+
+- **Chat unified on `/api/explain`** — `/api/chat` (broke against P1's
+  gemma.ts rewrite: `MODELS` gone) is deleted. PipChat + /ask-pip send
+  `{messages, event_id?, level}`; the panel is event-aware via the URL,
+  level comes from the local profile. Route date locale sr-RS → en-GB.
+- **AI summary card fixed for P1's shape** — the UI read `summary` /
+  `key_terms[].meaning` which the backend never writes; now renders
+  what_to_expect / is_this_for_me / key_terms[].explanation /
+  prior_knowledge / bring (types.ts mirrors gemma.ts's AiSummary).
+- **Going flow** — POST is idempotent (reload can't duplicate or
+  re-pair); detail page shows the already-going state via GET
+  /api/going (now with buddy_nickname); "Remove from my plan"
+  everywhere (DELETE clears the buddy link on both sides); buddy
+  candidates ordered created_at asc; stale local profile self-heals
+  (422 → clear + nickname form).
+- **ICS** — DTSTAMP/CALSCALE, DTEND +2h default, 75-octet folding,
+  escaped URL, slug filename, uuid-guard 404; UI downloads via blob so
+  a failure is a toast, not a JSON page.
+- **Discover** — upcoming/past split ("Finished" cards), filters
+  persist in the URL, cards always show the start time, count hidden
+  while loading.
+- **Errors/empties** — shared friendly mapping in lib/api.ts (network /
+  5xx / raw messages never reach the user), Try again buttons on every
+  page, saved page no longer hangs on skeletons, my-events error ≠
+  empty, guides empty state.
+- **A11y/mobile** — mobile nav accessible names, chat panel dialog
+  semantics + Esc + focus + aria-live + "may contain mistakes" footer,
+  44px send button, bubble overflow-wrap, teal darkened to AA
+  (#00787f), journey dot 1 tied to profile existence.
+- **Profile** — level select on creation; localStorage keeps
+  {id, nickname, level, first_timer} (legacy id-only entries still
+  read); chat + simplify are level-aware; My events greets by nickname.
+- **"Say it simply"** wired to /api/simplify with toggle + graceful
+  fallback (verified live: pending label, fallback keeps the original).
+- **"I was there"** — POST /api/going/attended (idempotent, steps+1,
+  verified via API) + button on past plan cards + steps-taken line on
+  the journey card.
+- **Demo safety** — gemma.ts client is lazy (missing key degrades to
+  fallbacks, no module-load crash); .env.example pruned; legacy
+  supabase/schema.sql + seed.sql deleted.

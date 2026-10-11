@@ -2,8 +2,8 @@
    navy type, teal actions, mint surfaces, white cards, tactile borders. */
 
 @theme {
-  --color-primary: #0096a1;        /* buttons, links — teal actions */
-  --color-primary-deep: #00747d;   /* hover / pressed */
+  --color-primary: #00787f;        /* buttons, links — teal actions (AA with white text) */
+  --color-primary-deep: #006068;   /* hover / pressed */
   --color-accent: #0096a1;         /* AI / highlights */
   --color-ink: #132039;            /* body text — navy */
   --color-muted: #52647b;          /* secondary text (AA on bg + surface) */
@@ -24,7 +24,7 @@ body { background: var(--color-bg); color: var(--color-ink); }
 
 /* ---- brand accents --------------------------------------------------- */
 .bg-winter {
-  background: linear-gradient(135deg, #0096a1 0%, #00747d 100%);
+  background: linear-gradient(135deg, #00787f 0%, #005e66 100%);
 }
 .shadow-winter {
   box-shadow: 0 8px 24px rgba(0, 116, 125, 0.18);
