@@ -1,6 +1,6 @@
 # Progress
 
-Last updated: 11 Oct 2026, 03:40
+Last updated: 11 Oct 2026, 10:28
 
 ## P1 — AI / Pitch
 - [x] Prompt functions in src/lib/gemma.ts (all exported functions, incl. answerWithoutJudgment, simplify, eventSummary, suggestLevel, guideDraft)
@@ -30,6 +30,7 @@ Last updated: 11 Oct 2026, 03:40
 - [x] Seed translated to English (fcf4d11)
 - [x] Seed re-run in Supabase (verified: 15 events, 6 beginner / 6 intermediate / 3 expert, 2 hackathons, English)
 - [x] 15 AI summaries regenerated after the re-run (15/15; one retry on ReDesign for Her)
+- [x] 18 missing AI summaries (events from the 20-event seed, 6424204) regenerated → 35/35 cached (18/18 OK, zero retries/fallbacks, ~33 min)
 - [x] Skip Vercel deploy logged — video-first pitch
 - [x] POST /api/going is idempotent (existing row returned, no duplicate/re-pair); buddy candidates ordered created_at asc (deterministic "paired with Ana/Luka" demo)
 - [x] DELETE /api/going (un-going; clears the buddy link on both sides)
