@@ -31,6 +31,7 @@ interface AskOptions { model?: string; temperature?: number; maxTokens?: number 
 async function generate(system: string, user: string, json: boolean, opts: AskOptions = {}): Promise<string> {
   const { model = GEMMA_FAST, temperature = json ? 0 : 0.4, maxTokens = 2048 } = opts;
   const g = client(); // throws fast when unconfigured, before any retries
+  let empties = 0;
   for (let attempt = 0; attempt < 4; attempt++) {
     try {
       const res = await g.models.generateContent({
@@ -44,7 +45,16 @@ async function generate(system: string, user: string, json: boolean, opts: AskOp
           ...(json && supportsJson ? { responseMimeType: "application/json" } : {}),
         },
       });
-      return res.text ?? "";
+      const text = res.text ?? "";
+      if (text.trim()) return text;
+      // HTTP 200 with no text: log why (MAX_TOKENS? SAFETY? only thought parts?) and retry once.
+      const c = res.candidates?.[0];
+      const block = res.promptFeedback?.blockReason;
+      console.warn(`[gemma] ${model} attempt ${attempt + 1}/4 empty reply:`,
+        `finish=${c?.finishReason ?? "?"} block=${block ?? "-"} parts=${c?.content?.parts?.length ?? 0}`,
+        `usage=${JSON.stringify(res.usageMetadata ?? {})}`);
+      if (block || ++empties > 1) return ""; // blocked prompt won't change on retry; cap empty retries at 1
+      continue;
     } catch (e) {
       const msg = String(e);
       console.warn(`[gemma] ${model} attempt ${attempt + 1}/4 failed:`, msg.slice(0, 200)); // 429? 5xx? 400?
@@ -210,7 +220,23 @@ How to answer:
 - Reply in the same language as the question. If the question is in Serbian, answer in Serbian (Latin script) and use the informal "ti" throughout.`;
 }
 
+/** Resolves with the first non-empty result; "" if all came back empty; rejects only if none succeeded. */
+function firstNonEmpty(tasks: (() => Promise<string>)[]): Promise<string> {
+  return new Promise((resolve, reject) => {
+    let pending = tasks.length;
+    let sawEmpty = false;
+    let lastErr: unknown;
+    const settle = () => { if (--pending === 0) sawEmpty ? resolve("") : reject(lastErr); };
+    for (const t of tasks) {
+      t().then((s) => { if (s.trim()) resolve(s); else { sawEmpty = true; settle(); } },
+               (e) => { lastErr = e; settle(); });
+    }
+  });
+}
+
 /** Non-streaming answer with the quality gate built in.
+ *  0. The first answer is requested twice in parallel (same prompt); the first non-empty one wins.
+ *     Gemma sometimes returns HTTP 200 with no text after 40–75s; two lanes make that rare without adding wait time.
  *  1. Words that can be dropped ("just", "simply", "of course"…) are removed locally — no second call.
  *  2. Anything else ("easy", "basic", Serbian words) gets one rewrite.
  *  3. If the rewrite fails or still has judgment words, the user gets the cleaned first answer.
@@ -218,7 +244,10 @@ How to answer:
 export async function answerWithoutJudgment(question: string, level: Level, eventContext?: string): Promise<string> {
   const system = explainSystem(level, eventContext);
   const t0 = Date.now();
-  const first = await ask(system, question);
+  const first = await firstNonEmpty([
+    () => ask(system, question),
+    () => ask(system, question, { temperature: 0.5 }), // slightly different sample, so the lanes don't fail together
+  ]);
   const firstWords = judgmentWords(first);
   console.log(`[gemma] explain: first ${Date.now() - t0}ms, ${first.length} chars, judgment [${firstWords.join(", ")}]`);
   if (!firstWords.length) return first;
