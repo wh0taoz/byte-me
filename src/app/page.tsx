@@ -247,7 +247,7 @@ function Discover() {
         </div>
       ) : (
         <>
-          <ul className="events-grid grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {upcoming.map((e) => (
               <EventCard
                 key={e.id}
@@ -266,7 +266,7 @@ function Discover() {
                   {past.length} {past.length === 1 ? "event" : "events"}
                 </span>
               </div>
-              <ul className="events-grid grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {past.map((e) => (
                   <EventCard
                     key={e.id}
