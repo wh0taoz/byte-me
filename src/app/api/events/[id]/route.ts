@@ -42,8 +42,16 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     return NextResponse.json({ error: "Event not found", code: 404 }, { status: 404 });
   }
 
+  // Live count for the "N first-timers are going" badge — runs on every read,
+  // so it must not be cached inside the ai_summary column.
+  const { count } = await supabaseAdmin
+    .from("going")
+    .select("*", { count: "exact", head: true })
+    .eq("event_id", id)
+    .eq("first_timer", true);
+
   if (event.ai_summary) {
-    return NextResponse.json(event);
+    return NextResponse.json({ ...event, first_timer_count: count || 0 });
   }
 
   const summary = await eventSummary({
@@ -58,8 +66,13 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 
   if (summary) {
     await supabaseAdmin.from("events").update({ ai_summary: summary }).eq("id", id);
-    return NextResponse.json({ ...event, ai_summary: summary });
+    return NextResponse.json({ ...event, ai_summary: summary, first_timer_count: count || 0 });
   }
 
-  return NextResponse.json({ ...event, ai_summary: FALLBACK_SUMMARY, fallback: true });
+  return NextResponse.json({
+    ...event,
+    ai_summary: FALLBACK_SUMMARY,
+    fallback: true,
+    first_timer_count: count || 0,
+  });
 }
