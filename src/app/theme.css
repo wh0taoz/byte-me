@@ -22,9 +22,9 @@
 
   /* difficulty levels: light → dark = easy → hard */
   --color-level-beginner: #7E1902;
-  --color-level-beginner-soft: #FDDF84;
-  --color-level-intermediate: #270902;
-  --color-level-intermediate-soft: #F79E3A;
+  --color-level-beginner-soft: #F89E3A;
+  --color-level-intermediate: #F2B277;
+  --color-level-intermediate-soft: #D65505;
   --color-level-expert: #FDDF84;
   --color-level-expert-soft: #B52D02;
 

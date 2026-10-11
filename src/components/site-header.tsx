@@ -94,7 +94,7 @@ export function SiteHeader() {
         <Link href="/" aria-label={`${BRAND.name} home`} className="flex shrink-0 items-center gap-2.5">
           {/* logo fills its rounded square edge-to-edge (the badge art bleeds
               slightly so no orange corners peek through) */}
-          <span className="relative block size-9 overflow-hidden rounded-xl">
+          <span className="relative block size-10 overflow-hidden rounded-xl">
             {/* eslint-disable-next-line @next/next/no-img-element -- official SCOUT logo mark */}
             <img
               src="/assets/brand/scout-icon.png"
