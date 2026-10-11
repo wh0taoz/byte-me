@@ -275,7 +275,7 @@ Keep the meaning and all facts (names, dates, places, links); do not add new fac
 Use short sentences and everyday words; explain any technical term in a few words the first time it appears.
 Never use these words: simply, just, obviously, easy, basic, of course, everyone knows.
 Keep the same language as the text. Return only the rewritten text.`;
-  const out = await ask(system, text);
+  const out = await ask(system, text, { model: GEMMA_QUALITY });
   if (containsJudgment(out)) {
     return (await ask(system, `${text}\n\n(Do not use these words: ${judgmentWords(out).join(", ")}.)`)) || out;
   }
