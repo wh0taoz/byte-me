@@ -1,6 +1,6 @@
 # Progress
 
-Last updated: 11 Oct 2026, 10:28
+Last updated: 11 Oct 2026, 10:44
 
 ## P1 — AI / Pitch
 - [x] Prompt functions in src/lib/gemma.ts (all exported functions, incl. answerWithoutJudgment, simplify, eventSummary, suggestLevel, guideDraft)
@@ -17,7 +17,7 @@ Last updated: 11 Oct 2026, 10:28
 ## P2 — Backend
 - [x] /api/health green (Gemma + Supabase; fixed for P1's gemma.ts API in eb9c12a)
 - [x] schema-esc.sql run in Supabase
-- [x] seed-esc.sql run (15 events, 3 guides, 4 profiles, 2 going, 5 team posts)
+- [x] seed-esc.sql run (35 events, 3 guides, 4 profiles, 2 going, 5 team posts)
 - [x] GET /api/events works (verified: 6 beginner, 2 hackathon)
 - [x] GET /api/events/[id] works (with ai_summary generate + cache)
 - [x] Legacy organiser routes + unused lib files removed (dbb2d54)
@@ -26,9 +26,9 @@ Last updated: 11 Oct 2026, 10:28
 - [x] POST /api/explain (calls answerWithoutJudgment)
 - [x] POST /api/simplify
 - [x] AI summary cache in GET /api/events/[id]
-- [x] Pre-generated summaries for all 15 events (15/15)
+- [x] Pre-generated summaries for all 35 events (35/35)
 - [x] Seed translated to English (fcf4d11)
-- [x] Seed re-run in Supabase (verified: 15 events, 6 beginner / 6 intermediate / 3 expert, 2 hackathons, English)
+- [x] Seed re-run in Supabase (verified: 35 events, 11 beginner / 14 intermediate / 10 expert, 3 hackathons, English)
 - [x] 15 AI summaries regenerated after the re-run (15/15; one retry on ReDesign for Her)
 - [x] 18 missing AI summaries (events from the 20-event seed, 6424204) regenerated → 35/35 cached (18/18 OK, zero retries/fallbacks, ~33 min)
 - [x] Skip Vercel deploy logged — video-first pitch

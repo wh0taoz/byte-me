@@ -84,7 +84,7 @@ npm run dev                  # http://localhost:3000
 ```
 
 Database (one-time, Supabase SQL editor): run `supabase/schema-esc.sql`,
-then `supabase/seed-esc.sql` (15 events, guides, demo profiles with buddy
+then `supabase/seed-esc.sql` (35 events, guides, demo profiles with buddy
 rows, team posts).
 
 Check `http://localhost:3000/api/health` → `{"ok": true}` means Gemma and
