@@ -1,6 +1,8 @@
 // POST   /api/going — mark going (idempotent per profile+event). First-timers
 // get paired with another unpaired first-timer (buddy_profile_id linked both
-// ways, oldest waiting first so demo pairings are predictable).
+// ways). On hackathons the buddy is the waiter whose interests complement the
+// newcomer's; every other type — and the fallback when nobody complements —
+// takes the oldest waiter, so demo pairings stay predictable.
 // GET    /api/going?profile_id= — the profile's going rows with event data and
 // buddy nicknames (My events, "already going" check on the detail page).
 // DELETE /api/going?event_id=&profile_id= — un-going. If a buddy was paired,
@@ -20,6 +22,16 @@ async function buddyNickname(buddyProfileId: string): Promise<string | null> {
     .eq("id", buddyProfileId)
     .maybeSingle();
   return data?.nickname ?? null;
+}
+
+// Complementary interests: the overlap is smaller than the shorter of the two
+// lists — anything from disjoint to partial overlap, but never one list
+// covering the other. Empty lists can't be judged, so they never match.
+function isComplementary(a: string[], b: string[]): boolean {
+  if (!a.length || !b.length) return false;
+  const overlap = a.filter((x) => b.includes(x)).length;
+  const minLen = Math.min(a.length, b.length);
+  return overlap < minLen;
 }
 
 export async function GET(req: Request) {
@@ -115,21 +127,74 @@ export async function POST(req: Request) {
 
   let buddy: { nickname: string } | null = null;
   if (first_timer) {
-    const { data: candidate } = await supabaseAdmin
-      .from("going")
-      .select("id, profile_id")
-      .eq("event_id", event_id)
-      .eq("first_timer", true)
-      .is("buddy_profile_id", null)
-      .neq("profile_id", profile_id)
-      .order("created_at", { ascending: true }) // oldest waiter first — deterministic pairing
-      .limit(1)
-      .maybeSingle();
+    // Event type (decides how the buddy is picked) and the unpaired
+    // first-timer waiters, fetched together. Oldest waiter first so the
+    // fallback stays the same deterministic pick as before skill matching.
+    const [eventRes, waitersRes] = await Promise.all([
+      supabaseAdmin.from("events").select("type").eq("id", event_id).maybeSingle(),
+      supabaseAdmin
+        .from("going")
+        .select("id, profile_id")
+        .eq("event_id", event_id)
+        .eq("first_timer", true)
+        .is("buddy_profile_id", null)
+        .neq("profile_id", profile_id)
+        .order("created_at", { ascending: true }),
+    ]);
+    if (eventRes.error) console.error("[going] event lookup failed:", eventRes.error.message);
+    if (waitersRes.error) console.error("[going] waiters lookup failed:", waitersRes.error.message);
 
-    if (candidate) {
+    const eventType = eventRes.data?.type;
+    const waiters = waitersRes.data ?? [];
+    console.log("[going] event.type:", eventType);
+
+    // Nicknames + interests of everyone involved (the newcomer included) in
+    // one profiles lookup — reused for matching, logging and the response.
+    const profilesById = new Map<string, { nickname: string; interests: string[] }>();
+    if (waiters.length) {
+      const { data: profilesData, error: profilesError } = await supabaseAdmin
+        .from("profiles")
+        .select("id, nickname, interests")
+        .in("id", [profile_id, ...waiters.map((w: { profile_id: string }) => w.profile_id)]);
+      if (profilesError) console.error("[going] interests lookup failed:", profilesError.message);
+      for (const p of profilesData ?? [])
+        profilesById.set(p.id, { nickname: p.nickname, interests: p.interests ?? [] });
+    }
+
+    const candidates = waiters.map((w: { id: string; profile_id: string }) => ({
+      id: w.id,
+      profile_id: w.profile_id,
+      nickname: profilesById.get(w.profile_id)?.nickname ?? "",
+      interests: profilesById.get(w.profile_id)?.interests ?? [],
+    }));
+
+    let chosen: { id: string; profile_id: string; nickname: string; interests: string[] } | null = null;
+    let reason: "complementary" | "fallback-first-unpaired" = "fallback-first-unpaired";
+
+    if (eventType === "hackathon" && candidates.length) {
+      const currentInterests = profilesById.get(profile_id)?.interests ?? [];
+      console.log("[going] current interests:", currentInterests);
+      console.log(
+        "[going] candidates:",
+        candidates.map((c) => ({ nickname: c.nickname, interests: c.interests })),
+      );
+
+      const match = candidates.find((c) => isComplementary(currentInterests, c.interests));
+      if (match) {
+        chosen = match;
+        reason = "complementary";
+      }
+    }
+
+    if (!chosen && candidates.length) {
+      chosen = candidates[0]; // oldest waiter — the pick before skill matching
+    }
+
+    if (chosen) {
+      console.log("[going] chosen:", chosen.nickname, "reason:", reason);
       const [mine, theirs] = await Promise.all([
-        supabaseAdmin.from("going").update({ buddy_profile_id: candidate.profile_id }).eq("id", going.id),
-        supabaseAdmin.from("going").update({ buddy_profile_id: profile_id }).eq("id", candidate.id),
+        supabaseAdmin.from("going").update({ buddy_profile_id: chosen.profile_id }).eq("id", going.id),
+        supabaseAdmin.from("going").update({ buddy_profile_id: profile_id }).eq("id", chosen.id),
       ]);
       const updateError = mine.error ?? theirs.error;
       if (updateError) {
@@ -140,7 +205,7 @@ export async function POST(req: Request) {
         );
       }
 
-      const nickname = await buddyNickname(candidate.profile_id);
+      const nickname = chosen.nickname || (await buddyNickname(chosen.profile_id));
       if (nickname) buddy = { nickname };
     }
   }
