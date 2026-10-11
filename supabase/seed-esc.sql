@@ -19,7 +19,7 @@ insert into events (title, organizer, type, level, city, starts_at, ends_at, ven
        'You leave with your first repository on GitHub']),
 
 -- 2. Sat 17 Oct, beginner workshop, Belgrade
-('ReDesign for Her: UX from the First Sketch', 'ReDesign zajednica', 'workshop', 'beginner', 'Belgrade',
+('ReDesign for Her: UX from the First Sketch', 'ReDesign Community', 'workshop', 'beginner', 'Belgrade',
  '2026-10-17 10:00+02', '2026-10-17 14:00+02', 'Startit Center, Kraljice Natalije 32',
  'https://redesign.rs/for-her-2026',
  'In a relaxed atmosphere we go through the whole UX process — user research, personas, wireframes and a prototype in Figma. After that we test the prototypes with teams from other tables and iterate based on feedback. Design experience is not needed; curiosity is.',
@@ -31,7 +31,7 @@ insert into events (title, organizer, type, level, city, starts_at, ends_at, ven
 -- 3. Tue 20 Oct, intermediate meetup, Belgrade
 ('Startit AI Hub: RAG Pipeline from Scratch', 'Startit', 'meetup', 'intermediate', 'Belgrade',
  '2026-10-20 18:30+02', '2026-10-20 21:00+02', 'Startit Center, Kraljice Natalije 32',
- 'https://startit.rs/ai-hub-oktobar-2026',
+ 'https://startit.rs/ai-hub-october-2026',
  'A meetup dedicated to the RAG pipeline: chunking, embeddings and vector databases. We will show how documents are split, turned into embeddings and stored in Pgvector, and how an LLM queries the database to answer user questions. We close with a discussion about hallucinations and how to measure answer quality.',
  array['Two 30-minute technical talks, then a discussion',
        'Helpful but not required: Python and basic SQL',
@@ -39,9 +39,9 @@ insert into events (title, organizer, type, level, city, starts_at, ends_at, ven
        'Recording and slides arrive by email after the event']),
 
 -- 4. Thu 22 Oct, expert seminar, Belgrade
-('Yettel Tech Talk: 5G Core in the Cloud', 'Yettel Srbija', 'seminar', 'expert', 'Belgrade',
+('Yettel Tech Talk: 5G Core in the Cloud', 'Yettel Serbia', 'seminar', 'expert', 'Belgrade',
  '2026-10-22 18:30+02', '2026-10-22 20:30+02', 'Yettel office building, Bulevar Zorana Đinđića',
- 'https://yettel.rs/tech-talk-oktobar-2026',
+ 'https://yettel.rs/tech-talk-october-2026',
  'What the 5G core looks like once it moves into Kubernetes: service mesh, stateful sets and zero-downtime upgrades of the radio network. We also touch the observability stack — OpenTelemetry, distributed tracing and how we protect a 99.999 percent SLA. The talk is given by the chief architect of the core network team.',
  array['One deep one-hour talk, then questions',
        'Aimed at engineers already working in cloud or telecom',
@@ -89,7 +89,7 @@ insert into events (title, organizer, type, level, city, starts_at, ends_at, ven
        'Entry is free, registration is only needed to count the seats']),
 
 -- 9. Sat 31 Oct, beginner workshop, Online
-('Online Introduction to Artificial Intelligence', 'AI Beginners Srbija', 'workshop', 'beginner', 'Online',
+('Online Introduction to Artificial Intelligence', 'AI Beginners Serbia', 'workshop', 'beginner', 'Online',
  '2026-10-31 10:00+01', '2026-10-31 13:00+01', 'Google Meet (link arrives by email)',
  'https://aibeginners.rs/online-uvod-2026',
  'What artificial intelligence is, and what a large language model is — without math. Through examples we show what the model does well, where it hallucinates and how to write a good prompt. The workshop is free and made for people touching the topic for the first time.',
@@ -99,7 +99,7 @@ insert into events (title, organizer, type, level, city, starts_at, ends_at, ven
        'The recording is shared with everyone who signed up after the workshop']),
 
 -- 10. Wed 4 Nov, intermediate seminar, Belgrade
-('BEST Course: Agile and Scrum in Practice', 'BEST Beograd', 'seminar', 'intermediate', 'Belgrade',
+('BEST Course: Agile and Scrum in Practice', 'BEST Belgrade', 'seminar', 'intermediate', 'Belgrade',
  '2026-11-04 18:00+01', '2026-11-04 20:00+01', 'Faculty of Electrical Engineering (ETF), Bulevar kralja Aleksandra 73',
  'https://bestbeograd.org.rs/course-jesen-2026',
  'Through a simulation of a real sprint we assign roles — product owner, scrum master and development team — and run it from planning to retrospective. We talk about the backlog, estimation and Daily meetings, but also about where agile breaks in practice. We close with a discussion of when waterfall is actually the better choice.',
@@ -121,7 +121,7 @@ insert into events (title, organizer, type, level, city, starts_at, ends_at, ven
 -- 12. Tue 10 Nov, intermediate meetup, Belgrade
 ('Nordeus Tech Meetup: Game Architecture in Production', 'Nordeus', 'meetup', 'intermediate', 'Belgrade',
  '2026-11-10 18:00+01', '2026-11-10 21:00+01', 'Nordeus, Bulevar Vojvođanske brigade',
- 'https://nordeus.com/events/tech-meetup-novembar-2026',
+ 'https://nordeus.com/events/tech-meetup-november-2026',
  'What happens when a million players tap at the same time: game servers, matchmaking and live ops events. We talk about balancing a game economy without ruining the fun, and what the pipeline from idea to a live feature looks like. Bonus topic: what a day of a game programmer looks like in the biggest Serbian game studio.',
  array['Two shorter talks from the Nordeus engineering team',
        'A studio tour after the talks for anyone interested',
@@ -129,8 +129,8 @@ insert into events (title, organizer, type, level, city, starts_at, ends_at, ven
        'Drinks and pizza after the program, with conversation with the engineers']),
 
 -- 13. Thu 12 Nov, intermediate workshop, Belgrade
-('Microsoft Developer Workshop: .NET 10 and GitHub Copilot', 'Microsoft Srbija', 'workshop', 'intermediate', 'Belgrade',
- '2026-11-12 17:00+01', '2026-11-12 20:00+01', 'Microsoft Srbija, Ulica Španskih boraca 3',
+('Microsoft Developer Workshop: .NET 10 and GitHub Copilot', 'Microsoft Serbia', 'workshop', 'intermediate', 'Belgrade',
+ '2026-11-12 17:00+01', '2026-11-12 20:00+01', 'Microsoft Serbia, Ulica Španskih boraca 3',
  'https://aka.ms/rs-dev-workshop-2026',
  'We will build a small web API in .NET 10, write tests and let GitHub Copilot write our boilerplate — and then judge what is acceptable and what needs a rework. The theme of the evening: what AI can do instead of us, and what we still have to do ourselves. We work in pairs, so everyone has a partner for code review.',
  array['A live workshop in the Microsoft office',
@@ -139,8 +139,8 @@ insert into events (title, organizer, type, level, city, starts_at, ends_at, ven
        'Forty seats, registration is first come first served']),
 
 -- 14. Sat 14 Nov, expert conference, Belgrade
-('DevFest Belgrade 2026', 'GDG Beograd', 'conference', 'expert', 'Belgrade',
- '2026-11-14 09:00+01', '2026-11-14 18:00+01', 'Dom omladine Beograda, Makedonska 22',
+('DevFest Belgrade 2026', 'GDG Belgrade', 'conference', 'expert', 'Belgrade',
+ '2026-11-14 09:00+01', '2026-11-14 18:00+01', 'Belgrade Youth Center, Makedonska 22',
  'https://gdgbelgrade.dev/devfest-2026',
  'One day, five parallel tracks and more than thirty talks — from Kotlin multiplatform through WebGPU to cloud cost optimization. The keynote is given by a principal engineer from Munich about the next generation of on-device models. Between talks: demo booths, lightning talks and street food in the yard.',
  array['More than thirty talks in five rooms — you pick what interests you',
@@ -149,7 +149,7 @@ insert into events (title, organizer, type, level, city, starts_at, ends_at, ven
        'Slides and recordings of all talks are available after the conference']),
 
 -- 15. Sat 21 Nov, expert workshop, Belgrade
-('EESTEC Advanced Workshop: Embedded Rust', 'EESTEC Beograd', 'workshop', 'expert', 'Belgrade',
+('EESTEC Advanced Workshop: Embedded Rust', 'EESTEC Belgrade', 'workshop', 'expert', 'Belgrade',
  '2026-11-21 10:00+01', '2026-11-21 17:00+01', 'ETF, Bulevar kralja Aleksandra 73',
  'https://eestec-beograd.rs/advanced-workshop-2026',
  'We spend the whole day writing no_std Rust for ESP32 boards, reading sensors over the I2C protocol and fighting the borrow checker on hardware that shows no mercy. At the end every team has a small device that measures something and shows it on a display. The workshop is for people who already program confidently and want to step down from applications to the metal.',
@@ -191,7 +191,7 @@ insert into events (title, organizer, type, level, city, starts_at, ends_at, ven
 -- 19. Sun 25 Oct, beginner meetup, Belgrade
 ('Python Belgrade Monthly Meetup', 'Python Belgrade', 'meetup', 'beginner', 'Belgrade',
  '2026-10-25 18:00+01', '2026-10-25 21:00+01', 'ICT Hub, Kralja Milana 10',
- 'https://pythonbelgrade.rs/meetup-oktobar-2026',
+ 'https://pythonbelgrade.rs/meetup-october-2026',
  'An evening with two talks: a gentle tour of async and await in Python and when they actually help, then building a command line tool in Typer and publishing it to PyPI. Between talks there is time for questions, lightning announcements and the traditional pub continuation. All levels are welcome.',
  array['Two talks, the first one friendly to complete beginners',
        'No Python experience needed to follow the story',
@@ -201,7 +201,7 @@ insert into events (title, organizer, type, level, city, starts_at, ends_at, ven
 -- 20. Tue 27 Oct, beginner meetup, Belgrade
 ('JS Belgrade Monthly Meetup', 'JS Belgrade', 'meetup', 'beginner', 'Belgrade',
  '2026-10-27 18:30+01', '2026-10-27 21:30+01', 'HUB 201, Kralja Petra 20',
- 'https://jsbelgrade.rs/meetup-oktobar-2026',
+ 'https://jsbelgrade.rs/meetup-october-2026',
  'Two talks about the modern web platform: what the V8 engine does between your source file and the CPU, and how React server components change where your code runs. We close with a live session on finding memory leaks in browser DevTools. Questions from beginners are explicitly welcome.',
  array['Two talks with a break, then open discussion',
        'Recordings land on the YouTube channel afterwards',
@@ -211,7 +211,7 @@ insert into events (title, organizer, type, level, city, starts_at, ends_at, ven
 -- 21. Fri 30 Oct, beginner meetup, Niš
 ('NišJS Meetup', 'NišJS', 'meetup', 'beginner', 'Niš',
  '2026-10-30 18:00+01', '2026-10-30 20:30+01', 'Innovation Center Niš, University of Niš',
- 'https://nisjs.rs/meetup-oktobar-2026',
+ 'https://nisjs.rs/meetup-october-2026',
  'A meetup of the Niš JavaScript community: this month a talk about how bundlers work — parse, transform, minify — and why the node_modules folder grows so large. The second part is a show and tell of small side projects from the community. The atmosphere is informal.',
  array['One talk, then anyone can show what they are building',
        'Half of the audience is at their first meetup',
@@ -221,7 +221,7 @@ insert into events (title, organizer, type, level, city, starts_at, ends_at, ven
 -- 22. Fri 6 Nov, intermediate meetup, Niš
 ('NisJUG Java User Group', 'NisJUG', 'meetup', 'intermediate', 'Niš',
  '2026-11-06 18:00+01', '2026-11-06 20:30+01', 'Faculty of Electronic Engineering Niš, Aleksandra Medvedeva 14',
- 'https://nisjug.rs/meetup-novembar-2026',
+ 'https://nisjug.rs/meetup-november-2026',
  'The Niš Java User Group meets at the faculty of electronic engineering: this session covers JVM garbage collectors after the generational ZGC change, plus a practical part on profiling a Spring Boot service under load. Expect live flame graphs and long arguments about heap sizes.',
  array['A technical talk, then hands-on profiling on provided laptops',
        'Best if you already write Java or a similar language',
@@ -231,7 +231,7 @@ insert into events (title, organizer, type, level, city, starts_at, ends_at, ven
 -- 23. Tue 3 Nov, intermediate meetup, Belgrade
 ('Kubernetes Belgrade Meetup', 'Kubernetes Belgrade', 'meetup', 'intermediate', 'Belgrade',
  '2026-11-03 18:30+01', '2026-11-03 21:30+01', 'Endava, Ulica Kneza Miloša 33',
- 'https://kubernetesbelgrade.rs/meetup-novembar-2026',
+ 'https://kubernetesbelgrade.rs/meetup-november-2026',
  'This month: GitOps with Argo CD — how a git commit becomes a deployment, rollbacks included. The second talk covers pod autoscaling under real traffic and why the horizontal pod autoscaler needs custom metrics. A short hands-on slot lets everyone deploy a demo app to a local cluster.',
  array['Two talks plus a short hands-on demo',
        'Basic Docker knowledge helps, the rest is explained',
@@ -241,7 +241,7 @@ insert into events (title, organizer, type, level, city, starts_at, ends_at, ven
 -- 24. Wed 11 Nov, intermediate meetup, Belgrade
 ('DevOps Meetup Belgrade', 'DevOps Belgrade', 'meetup', 'intermediate', 'Belgrade',
  '2026-11-11 18:00+01', '2026-11-11 21:00+01', 'Vega IT, Bulevar Zorana Đinđića 80',
- 'https://devopsbelgrade.rs/meetup-novembar-2026',
+ 'https://devopsbelgrade.rs/meetup-november-2026',
  'An evening about the unglamorous parts of the pipeline: secrets management with Vault, tracing with OpenTelemetry and post-mortems after incidents. The main talk walks through a real production outage and what the blameless retrospective changed afterwards. We close with a tooling show and tell.',
  array['One main talk, one short one, then discussion',
        'For people who run systems, or plan to',
@@ -251,7 +251,7 @@ insert into events (title, organizer, type, level, city, starts_at, ends_at, ven
 -- 25. Thu 19 Nov, intermediate meetup, Belgrade
 ('Game Dev Meetup by SGA', 'SGA', 'meetup', 'intermediate', 'Belgrade',
  '2026-11-19 18:00+01', '2026-11-19 21:00+01', 'Startit Center, Kraljice Natalije 32',
- 'https://sga.rs/meetup-novembar-2026',
+ 'https://sga.rs/meetup-november-2026',
  'The Serbian Games Association meetup: a talk about procedural content generation in Unity — noise functions, tile based generation and keeping the result fun to play. The second slot is a portfolio review where artists and designers get honest feedback. Studios from Belgrade usually come to scout.',
  array['A technical talk, then portfolio review in small groups',
        'For artists, designers and programmers alike',
@@ -300,7 +300,7 @@ insert into events (title, organizer, type, level, city, starts_at, ends_at, ven
 
 -- 30. Sun 8 → Tue 10 Nov, expert conference, Novi Sad
 ('IS 26 Conference', 'ZNIS', 'conference', 'expert', 'Novi Sad',
- '2026-11-08 09:00+01', '2026-11-10 16:00+01', 'Fakultet tehničkih nauka (FTN), Trg Dositeja Obradovića 6',
+ '2026-11-08 09:00+01', '2026-11-10 16:00+01', 'Faculty of Technical Sciences (FTN), Trg Dositeja Obradovića 6',
  'https://znis.rs/is-26',
  'IS 26 is the international conference on information society technologies: three days of refereed papers on data engineering, software quality and human-computer interaction. Sessions run in parallel tracks, each paper gets a discussant, and the best papers go to a journal special issue. The proceedings are indexed, so citations matter here.',
  array['Academic conference, three days of parallel tracks',
@@ -310,7 +310,7 @@ insert into events (title, organizer, type, level, city, starts_at, ends_at, ven
 
 -- 31. Sun 8 → Tue 10 Nov, beginner workshop, Kragujevac
 ('ParkUP! Student Startup Camp', 'ParkUP', 'workshop', 'beginner', 'Kragujevac',
- '2026-11-08 10:00+01', '2026-11-10 18:00+01', 'Fakultet inženjerskih nauka (FINK), Sestre Janjić 6',
+ '2026-11-08 10:00+01', '2026-11-10 18:00+01', 'Faculty of Engineering Sciences (FINK), Sestre Janjić 6',
  'https://parkup.rs/2026',
  'ParkUP! is a three-day camp where student teams turn rough ideas into pitched startups: customer discovery, the lean canvas and a demo that has to work on the last day. Mentors from Belgrade and Kragujevac startups rotate between the teams. No business experience is expected.',
  array['A camp, not a lecture, you work on your own idea',
@@ -321,7 +321,7 @@ insert into events (title, organizer, type, level, city, starts_at, ends_at, ven
 -- 32. Wed 28 Oct, beginner meetup, Novi Sad
 ('LUGoNS Linux User Group', 'LUGoNS', 'meetup', 'beginner', 'Novi Sad',
  '2026-10-28 18:00+01', '2026-10-28 20:30+01', 'LUGoNS hackerspace, Bulevar Oslobođenja 92',
- 'https://lugons.org/meetup-oktobar-2026',
+ 'https://lugons.org/meetup-october-2026',
  'The Novi Sad Linux user group meets monthly: this time a hands-on session on installing Arch Linux the manual way — partitioning, chroot and a window manager that does nothing until you configure it. Bring a laptop, or just watch someone else fix their bootloader. All questions get answers.',
  array['A hands-on session, you can follow on your own laptop',
        'Absolute beginners welcome, we start from zero',
@@ -349,7 +349,7 @@ insert into events (title, organizer, type, level, city, starts_at, ends_at, ven
        'Certificates of attendance for students']),
 
 -- 35. Mon 16 → Sun 22 Nov, intermediate conference, Belgrade
-('Belgrade Blockchain Week 2026', 'Blockchain Srbija', 'conference', 'intermediate', 'Belgrade',
+('Belgrade Blockchain Week 2026', 'Blockchain Serbia', 'conference', 'intermediate', 'Belgrade',
  '2026-11-16 18:00+01', '2026-11-22 20:00+01', 'Various venues across Belgrade — see the schedule',
  'https://blockchainweek.rs/2026',
  'A week of events across Belgrade about distributed ledgers: workshops on writing and auditing smart contracts, panels on regulation under MiCA, and a hackathon weekend that closes the program. Venues change daily, as companies and hubs each host one evening. The full schedule lives on the website.',
