@@ -282,6 +282,68 @@ Keep the same language as the text. Return only the rewritten text.`;
   return out;
 }
 
+// ---------- buddyIntro → POST /api/going (first-timer buddy pairing) ----------
+/** Warm 2-sentence intro for two first-timers who just got paired as buddies.
+ *  Never throws, and everything races a 20s wall-clock budget: the pairing is
+ *  already saved when this runs, so a loaded Gemma gets a fallback line
+ *  instead of holding the response hostage. */
+export async function buddyIntro(
+  currentUser: { nickname: string; interests: string[] },
+  buddy: { nickname: string; interests: string[] },
+  eventTitle: string,
+): Promise<string> {
+  const system = `You write warm, short intro messages for two people who just got paired as buddies at a tech event. Rules:
+- 2 sentences maximum.
+- Never use the words: simply, just, obviously, easy, basic.
+- Mention one thing they have in common OR what each brings.
+- Sound like a friend making an introduction.
+- Reply in English.`;
+
+  const user = `Current user: ${currentUser.nickname}, interests: ${currentUser.interests.join(", ")}.
+Buddy: ${buddy.nickname}, interests: ${buddy.interests.join(", ")}.
+Event: ${eventTitle}.
+
+Write the intro.`;
+
+  const fallback = `You'll meet ${buddy.nickname} at the entrance — you're both first-timers. Say hi!`;
+  const BUDGET_MS = 20_000;
+
+  const generate = async (): Promise<string | null> => {
+    try {
+      const t0 = Date.now();
+      const first = (await ask(system, user, { model: GEMMA_QUALITY })).trim();
+      const firstWords = judgmentWords(first);
+      console.log(`[gemma] buddyIntro: first ${Date.now() - t0}ms, ${first.length} chars, judgment [${firstWords.join(", ")}]`);
+      if (first && !firstWords.length) return first;
+      // Same one-retry gate as simplify(): banned words → one rewrite; keep the
+      // retry even if it still trips, never loop.
+      const t1 = Date.now();
+      const retry = (await ask(
+        system,
+        firstWords.length ? `${user}\n\n(Do not use these words: ${firstWords.join(", ")}.)` : user,
+        { model: GEMMA_QUALITY },
+      )).trim();
+      console.log(`[gemma] buddyIntro: retry ${Date.now() - t1}ms, ${retry.length} chars, judgment [${judgmentWords(retry).join(", ")}]`);
+      return retry || first || null;
+    } catch (e) {
+      console.error("[gemma] buddyIntro failed:", String(e).slice(0, 300));
+      return null;
+    }
+  };
+
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const onTimeout = new Promise<null>((resolve) => {
+    timer = setTimeout(() => {
+      console.warn(`[gemma] buddyIntro: over ${BUDGET_MS}ms budget — returning fallback intro`);
+      resolve(null);
+    }, BUDGET_MS);
+  });
+
+  const out = await Promise.race([generate(), onTimeout]);
+  clearTimeout(timer);
+  return out ?? fallback;
+}
+
 // ---------- guideDraft (optional, for P3's guide pages) ----------
 export async function guideDraft(topic: string): Promise<string> {
   const system = `Write a short guide for people going to a tech event for the first time, in warm, plain English.

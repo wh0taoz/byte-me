@@ -51,7 +51,8 @@ export interface ProfileRow {
 
 export interface GoingResult {
   going: { id: string };
-  buddy: { nickname: string } | null;
+  // intro is set only on a fresh pairing — the idempotent replay omits it.
+  buddy: { nickname: string; intro?: string } | null;
 }
 
 // ---- API contracts ----

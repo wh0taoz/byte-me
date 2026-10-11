@@ -2,13 +2,19 @@
 // get paired with another unpaired first-timer (buddy_profile_id linked both
 // ways). On hackathons the buddy is the waiter whose interests complement the
 // newcomer's; every other type — and the fallback when nobody complements —
-// takes the oldest waiter, so demo pairings stay predictable.
+// takes the oldest waiter, so demo pairings stay predictable. When a pair is
+// made, Gemma writes a short intro for it (buddy.intro) — the pairing itself
+// stays rule-based.
 // GET    /api/going?profile_id= — the profile's going rows with event data and
 // buddy nicknames (My events, "already going" check on the detail page).
 // DELETE /api/going?event_id=&profile_id= — un-going. If a buddy was paired,
 // the link is cleared on both sides so the other person is free to re-pair.
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import { buddyIntro } from "@/lib/gemma";
+
+// The Gemma intro on a fresh pairing can take 10-30s.
+export const maxDuration = 30;
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -125,13 +131,13 @@ export async function POST(req: Request) {
     );
   }
 
-  let buddy: { nickname: string } | null = null;
+  let buddy: { nickname: string; intro: string } | null = null;
   if (first_timer) {
     // Event type (decides how the buddy is picked) and the unpaired
     // first-timer waiters, fetched together. Oldest waiter first so the
     // fallback stays the same deterministic pick as before skill matching.
     const [eventRes, waitersRes] = await Promise.all([
-      supabaseAdmin.from("events").select("type").eq("id", event_id).maybeSingle(),
+      supabaseAdmin.from("events").select("type, title").eq("id", event_id).maybeSingle(),
       supabaseAdmin
         .from("going")
         .select("id, profile_id")
@@ -206,7 +212,16 @@ export async function POST(req: Request) {
       }
 
       const nickname = chosen.nickname || (await buddyNickname(chosen.profile_id));
-      if (nickname) buddy = { nickname };
+      if (nickname) {
+        // The pair is already saved; buddyIntro never throws, so the intro can't fail this response.
+        const me = profilesById.get(profile_id) ?? { nickname: "", interests: [] };
+        const intro = await buddyIntro(
+          { nickname: me.nickname, interests: me.interests },
+          { nickname, interests: chosen.interests },
+          eventRes.data?.title ?? "",
+        );
+        buddy = { nickname, intro };
+      }
     }
   }
 
